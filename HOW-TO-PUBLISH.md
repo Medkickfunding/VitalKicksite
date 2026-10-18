@@ -1,6 +1,6 @@
 # Publish the VitalKick website on GitHub
 
-This folder is the whole VitalKick website, ready to upload. You need a free GitHub account (you have one: **Medkickfunding**), a computer, and about 10 minutes. No code, no terminal.
+This repository is the whole VitalKick website. You need a free GitHub account (you have one: **Medkickfunding**), a computer, and about 10 minutes. No code, no terminal.
 
 When you finish, the site is live at:
 
@@ -8,7 +8,7 @@ When you finish, the site is live at:
 
 ---
 
-## What is in this folder
+## What is in this repository
 
 | Item | What it is |
 | --- | --- |
@@ -23,31 +23,9 @@ The full-quality 1080p reel (184 MB) is not included. GitHub's upload page takes
 
 ---
 
-## Step 1. Unzip
+## Steps 1 to 3. Done
 
-1. Find **vitalkick-website.zip** in your Downloads.
-2. Double-click it. A folder called **vitalkick-website** appears next to it.
-
-## Step 2. Create the repository on GitHub
-
-1. Go to **https://github.com/new** and sign in.
-2. **Repository name:** `vitalkick-website`
-3. Choose **Public**. GitHub only hosts free websites from public repositories. Nothing in this folder is private: it is the same content anyone sees on the website.
-4. Leave **Add a README**, **.gitignore** and **license** all unticked.
-5. Click **Create repository**.
-
-## Step 3. Upload the files
-
-1. On the new, empty repository page, find the line "Get started by creating a new file or **uploading an existing file**" and click **uploading an existing file**.
-2. Open the **vitalkick-website** folder on your computer.
-3. Select **everything inside it**: click inside the folder, then press **Cmd + A** on a Mac (**Ctrl + A** on Windows).
-4. Drag the selection onto the GitHub page, onto the box that says "Drag files here".
-
-   Drag the files *inside* the folder, not the folder itself. If you drag the folder, the whole site ends up one level too deep and the address will not work.
-
-5. Wait until GitHub finishes listing the files. There are about 70. The video takes the longest.
-6. Scroll down. In **Commit changes**, type `Add VitalKick website`.
-7. Click **Commit changes**.
+The repository `Medkickfunding/VitalKicksite` exists and every file is already uploaded. Start at Step 4.
 
 ## Step 4. Switch on the website
 

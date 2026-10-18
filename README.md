@@ -16,9 +16,11 @@ Static site: plain HTML, CSS and JavaScript, no build step, plus two small serve
 
 ## Deploy on Vercel and connect the domain
 
-Step-by-step instructions are in [`DEPLOY.md`](DEPLOY.md). In short: a separate Vercel project, Root Directory `website`, framework preset **Other**, no build command.
+Step-by-step instructions are in [`DEPLOY.md`](DEPLOY.md). In short: import this repository into Vercel, leave Root Directory blank (the files are at the top level here), framework preset **Other**, no build command.
+
+On GitHub Pages: Settings → Pages → Deploy from a branch → `main`, `/ (root)`. See [`HOW-TO-PUBLISH.md`](HOW-TO-PUBLISH.md).
 
 ## Editing copy
 
 All health copy on this site must pass the banned-phrase list in
-`vitalkick-app/packages/clinical/src/phrasing.ts` (no diagnosis words, no billing terms, no regulatory claims).
+`packages/clinical/src/phrasing.ts` in the private `vitalkick-app` repository (no diagnosis words, no billing terms, no regulatory claims).
