@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy policy · VitalKick</title>
+<meta name="description" content="What VitalKick collects, what it never collects, and the choices you control.">
+<meta property="og:title" content="Privacy policy · VitalKick"><meta property="og:description" content="What VitalKick collects, what it never collects, and the choices you control."><meta property="og:image" content="assets/poster.jpg">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout concept: an instrument panel. Hairline grid ground, mono labels that carry real units, one framed "screen" per page. */
+:root {
+  --ink: #05090a;        /* page ground */
+  --panel: #0b1314;      /* raised surfaces */
+  --line: rgba(205, 240, 232, .11);
+  --text: #e8f1ef;
+  --muted: #93a6a2;
+  --mint: #62e6cf;       /* VitalKick brand, sampled from the logo */
+  --mint-ink: #04201b;
+  --amber: #f2b84b;      /* estimates only */
+  --coral: #ff6b5c;
+  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --wrap: 1180px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box }
+html { scroll-behavior: smooth }
+body { margin: 0; background: var(--ink); color: var(--text); font: 400 17px/1.6 var(--body); -webkit-font-smoothing: antialiased }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px; mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 75%); opacity: .55 }
+a { color: inherit }
+img, video { max-width: 100%; display: block }
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: 24px }
+@media (max-width: 520px) { .wrap { padding-inline: 16px } }
+:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; border-radius: 6px }
+
+/* nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--ink) 78%, transparent); border-bottom: 1px solid var(--line) }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 68px }
+.brand { display: block; width: 132px; height: 34px; background: var(--mint); -webkit-mask: url(assets/wordmark.png) left center / contain no-repeat; mask: url(assets/wordmark.png) left center / contain no-repeat }
+.nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 15px; color: var(--muted) }
+.nav ul a { text-decoration: none } .nav ul a:hover, .nav ul a[aria-current] { color: var(--text) }
+@media (max-width: 860px) { .nav ul { display: none } }
+
+/* type */
+.eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .22em; text-transform: uppercase; color: var(--mint) }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 800; letter-spacing: -.025em }
+h1 { font-size: clamp(42px, 6.4vw, 82px); line-height: .98 }
+h2 { font-size: clamp(32px, 4.2vw, 52px); line-height: 1.04 }
+h3 { font-size: 21px; line-height: 1.25; letter-spacing: -.01em }
+h1 em, h2 em { font: 400 1.08em/1 var(--display); font-style: italic; color: var(--mint); letter-spacing: -.01em }
+.lede { font-size: 19px; color: var(--muted); max-width: 58ch }
+p { margin: 0 }
+.mono { font-family: var(--mono); font-size: 13px; letter-spacing: .06em }
+
+/* buttons */
+.btns { display: flex; flex-wrap: wrap; gap: 12px }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; font: 600 15px var(--body); text-decoration: none; border: 1px solid transparent; cursor: pointer }
+.btn.primary { background: var(--mint); color: var(--mint-ink) }
+.btn.primary:hover { filter: brightness(1.08) }
+.btn.ghost { border-color: color-mix(in srgb, var(--text) 24%, transparent); color: var(--text); background: transparent }
+.btn.ghost:hover { border-color: var(--mint) }
+
+/* sections */
+section { padding-block: clamp(64px, 9vw, 120px) }
+.sec-head { display: grid; gap: 18px; margin-bottom: 48px; max-width: 760px }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0 }
+
+/* framed screen with crop marks, echoing the reel HUD */
+.frame { position: relative; padding: 14px }
+.frame::before, .frame::after, .frame > .cm::before, .frame > .cm::after { content: ""; position: absolute; width: 18px; height: 18px; border-color: color-mix(in srgb, var(--text) 45%, transparent); border-style: solid; border-width: 0 }
+.frame::before { top: 0; left: 0; border-top-width: 1.5px; border-left-width: 1.5px }
+.frame::after { top: 0; right: 0; border-top-width: 1.5px; border-right-width: 1.5px }
+.frame > .cm::before { bottom: 0; left: 0; border-bottom-width: 1.5px; border-left-width: 1.5px }
+.frame > .cm::after { bottom: 0; right: 0; border-bottom-width: 1.5px; border-right-width: 1.5px }
+
+/* steps (a real sequence) */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line) }
+.steps.three { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+.step { padding: 28px 28px 8px 0; display: grid; gap: 12px; align-content: start; min-width: 0 }
+.step + .step { padding-left: 28px; border-left: 1px solid var(--line) }
+.step .n { font: 600 13px var(--mono); color: var(--mint); letter-spacing: .1em }
+.step p { color: var(--muted); font-size: 16px }
+@media (max-width: 900px) { .steps, .steps.three { grid-template-columns: 1fr } .step + .step { padding-left: 0; border-left: 0; border-top: 1px solid var(--line) } }
+
+.foot { border-top: 1px solid var(--line); padding-block: 40px; color: var(--muted); font-size: 14px }
+.foot .wrap { display: flex; flex-wrap: wrap; gap: 16px 40px; justify-content: space-between; align-items: center }
+.foot .mono { color: color-mix(in srgb, var(--muted) 80%, transparent) }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } * { animation: none !important; transition: none !important } }
+
+/* site footer */
+.sfoot { border-top: 1px solid var(--line); padding-block: 64px 32px; background: color-mix(in srgb, var(--ink) 92%, #000) }
+.sfoot .cols { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(5, minmax(0, 1fr)); gap: 32px 24px }
+@media (max-width: 1000px) { .sfoot .cols { grid-template-columns: repeat(3, minmax(0, 1fr)) } .sfoot .brandcol { grid-column: 1 / -1 } }
+@media (max-width: 560px) { .sfoot .cols { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+.sfoot h4 { margin: 0 0 14px; font: 600 11px var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--muted) }
+.sfoot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+.sfoot ul a { color: color-mix(in srgb, var(--text) 85%, var(--muted)); text-decoration: none; font-size: 15px } .sfoot ul a:hover { color: var(--mint) }
+.brandcol { display: grid; gap: 16px; align-content: start }
+.brandcol p { color: var(--muted); font-size: 15px; max-width: 34ch }
+.tel { font: 700 20px var(--body); color: var(--text); text-decoration: none } .tel:hover { color: var(--mint) }
+.sfoot .bottom { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; color: var(--muted); font-size: 13px }
+
+/* simple content pages */
+.page { padding-block: clamp(110px, 12vw, 160px) 80px }
+.page .wrap { max-width: 860px; display: grid; gap: 22px }
+.page h2 { font-size: clamp(26px, 3vw, 34px); margin-top: 26px }
+.page p, .page li { color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 68ch }
+.page ul { display: grid; gap: 8px; padding-left: 20px; margin: 0 }
+.page table { width: 100%; border-collapse: collapse; font-size: 15px }
+.page th, .page td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line) }
+.page th { font: 600 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+.tablewrap { overflow-x: auto }
+.crumb { font: 600 12px var(--mono); letter-spacing: .14em; color: var(--muted); text-decoration: none }
+
+/* Legal pages: sticky contents list beside numbered sections */
+.k-label { display: block; font: 600 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--mint) }
+.legal { padding-block: clamp(110px, 12vw, 160px) 90px }
+.legal .head { display: grid; gap: 18px; max-width: 860px; margin-bottom: 44px }
+.legal .meta { display: flex; flex-wrap: wrap; gap: 10px }
+.legal .meta span { font: 600 12px var(--mono); letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px }
+.legal .cols { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: start }
+@media (max-width: 900px) { .legal .cols { grid-template-columns: 1fr } }
+.toc { position: sticky; top: 96px; display: grid; gap: 2px; max-height: calc(100vh - 120px); overflow-y: auto; padding-right: 6px }
+.toc b { font: 600 11px var(--mono); letter-spacing: .16em; color: var(--muted); text-transform: uppercase; margin-bottom: 10px }
+.toc a { display: flex; gap: 10px; color: var(--muted); text-decoration: none; font-size: 14px; line-height: 1.35; padding: 7px 10px; border-left: 2px solid var(--line); min-height: 34px; align-items: center }
+.toc a span { font: 600 11px var(--mono); color: color-mix(in srgb, var(--mint) 70%, var(--muted)) }
+.toc a:hover, .toc a.on { color: var(--text); border-left-color: var(--mint) }
+@media (max-width: 900px) { .toc { position: relative; top: 0; max-height: none; border: 1px solid var(--line); border-radius: 18px; padding: 18px } }
+.legal article { display: grid; gap: 16px; min-width: 0 }
+.legal article h2 { font-size: clamp(24px, 2.6vw, 30px); margin: 34px 0 0; scroll-margin-top: 96px; display: flex; gap: 14px; align-items: baseline }
+.legal article h2 .n { font: 600 13px var(--mono); color: var(--mint) }
+.legal article h3 { font-size: 18px; margin: 10px 0 0 }
+.legal article p, .legal article li { color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 72ch; margin: 0 }
+.legal article ul { display: grid; gap: 9px; padding-left: 20px; margin: 0 }
+.legal article a { color: var(--mint) }
+.legal .tablewrap table { width: 100%; border-collapse: collapse; font-size: 15px }
+.legal .tablewrap th, .legal .tablewrap td { text-align: left; vertical-align: top; padding: 12px 10px; border-bottom: 1px solid var(--line) }
+.legal .tablewrap th { font: 600 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+.shortv { border: 1px solid color-mix(in srgb, var(--mint) 35%, transparent); border-radius: 22px; padding: clamp(20px, 3vw, 30px); background: linear-gradient(160deg, color-mix(in srgb, var(--mint) 8%, var(--panel)), var(--panel) 60%); display: grid; gap: 14px }
+.shortv h2 { margin: 0 !important; font-size: 22px !important }
+.shortv ul { list-style: none; padding: 0 !important }
+.shortv li { padding-left: 28px; position: relative }
+.shortv li::before { content: ""; position: absolute; left: 4px; top: .55em; width: 10px; height: 10px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 8px var(--mint) }
+.callout { border-left: 3px solid var(--amber); padding: 4px 0 4px 18px }
+
+/* FAQ accordion: one answer open at a time */
+.faq-cats { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px }
+.faq-cats a { font: 600 13px var(--body); color: var(--muted); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; min-height: 40px; display: inline-flex; align-items: center }
+.faq-cats a:hover { color: var(--text); border-color: var(--mint) }
+.faq-group { display: grid; gap: 12px; scroll-margin-top: 96px }
+.faq-group + .faq-group { margin-top: 34px }
+.faq-group > h2 { font-size: clamp(22px, 2.4vw, 28px); margin: 0 0 6px; display: flex; gap: 12px; align-items: center }
+.faq-group > h2 .n { font: 600 12px var(--mono); color: var(--mint) }
+.qa { border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--panel) 75%, transparent); transition: border-color .25s, background .25s }
+.qa.open { border-color: color-mix(in srgb, var(--mint) 45%, transparent); background: linear-gradient(160deg, color-mix(in srgb, var(--mint) 7%, var(--panel)), var(--panel) 70%) }
+.qa h3 { margin: 0; font-size: inherit }
+.qa button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 18px; text-align: left; background: none; border: 0; color: var(--text); font: 600 clamp(16px, 1.6vw, 18px)/1.4 var(--body); padding: 20px 22px; min-height: 64px; cursor: pointer; border-radius: 18px }
+.qa .pm { flex: none; width: 32px; height: 32px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--mint) 40%, transparent); position: relative; transition: transform .3s, background .3s }
+.qa .pm::before, .qa .pm::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; margin: -1px 0 0 -6px; background: var(--mint); border-radius: 2px; transition: transform .3s }
+.qa .pm::after { transform: rotate(90deg) }
+.qa.open .pm { background: var(--mint); transform: rotate(180deg) }
+.qa.open .pm::before { background: var(--mint-ink) } .qa.open .pm::after { transform: rotate(0); background: var(--mint-ink) }
+.qa .ans { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease }
+.qa.open .ans { grid-template-rows: 1fr }
+.qa .ans > div { overflow: hidden }
+.qa .ans .in { padding: 0 22px 22px; display: grid; gap: 10px; color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 76ch }
+.qa .ans p { margin: 0 } .qa .ans ul { margin: 0; padding-left: 20px; display: grid; gap: 6px } .qa .ans a { color: var(--mint) }
+
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main"><div class="wrap"><a class="brand" href="index.html" aria-label="VitalKick home"></a><ul><li><a href="technology.html">How it works</a></li><li><a href="biomarkers.html">Biomarkers</a></li><li><a href="validation.html">Validation</a></li><li><a href="research.html">For research</a></li><li><a href="contact.html">Contact</a></li></ul><a class="btn primary" href="book.html">Book a call</a></div></nav>
+<main class="legal"><div class="wrap">
+<div class="head"><a class="crumb" href="index.html">← VITALKICK</a><span class="k-label">Privacy policy</span><h1>Privacy <em>policy</em></h1><p class="lede">How VitalKick handles information on this website and in the app. The camera video never leaves your phone, and your health data is never sold.</p>
+<div class="meta"><span>Effective October 9, 2026</span><span>Last updated October 9, 2026</span></div></div>
+<div class="cols"><nav class="toc" aria-label="On this page"><b>On this page</b><a href="#who-we-are-and-what-this-covers"><span>01</span>Who we are and what this covers</a><a href="#information-we-collect"><span>02</span>Information we collect</a><a href="#how-the-scan-handles-your-camera"><span>03</span>How the scan handles your camera</a><a href="#how-we-use-information"><span>04</span>How we use information</a><a href="#consents-you-control"><span>05</span>Consents you control</a><a href="#how-we-share-information"><span>06</span>How we share information</a><a href="#de-identified-research"><span>07</span>De-identified research</a><a href="#biometric-information-retention-and-destruction"><span>08</span>Biometric information: retention and destruction</a><a href="#how-long-we-keep-information"><span>09</span>How long we keep information</a><a href="#how-we-protect-information"><span>10</span>How we protect information</a><a href="#your-rights-and-choices"><span>11</span>Your rights and choices</a><a href="#washington-consumer-health-data"><span>12</span>Washington consumer health data</a><a href="#children"><span>13</span>Children</a><a href="#where-information-is-stored"><span>14</span>Where information is stored</a><a href="#changes-to-this-policy"><span>15</span>Changes to this policy</a><a href="#contact-us"><span>16</span>Contact us</a></nav>
+<article><div class="shortv"><h2>The short version</h2>
+<ul>
+  <li>The camera video never leaves your phone. We never store face images or face geometry.</li>
+  <li>We keep the numbers your scan produces, and what you choose to log, so you can see your trends.</li>
+  <li>We never sell identifiable health data, and never sell, lease or profit from anything biometric.</li>
+  <li>Research use is a separate, optional consent. Saying no changes nothing about the app.</li>
+  <li>You can export, delete and see who accessed your data at any time.</li>
+  <li>This website sets no cookies and runs no analytics or ad trackers.</li>
+</ul>
+</div>
+
+<h2 id="who-we-are-and-what-this-covers"><span class="n">01</span>Who we are and what this covers</h2>
+<p>VitalKick ("VitalKick", "we", "us") makes a general wellness app that reads vital signs from a 60-second selfie video. This policy explains what we collect, why, who we share it with, and the choices you can make. It covers:</p>
+<ul>
+  <li>this website, including the booking and pilot request forms</li>
+  <li>the VitalKick app for iPhone and Android, when you sign up for it yourself</li>
+</ul>
+<p>When your clinician, health plan or another healthcare organisation enrols you in VitalKick, we handle your information on their behalf as their business associate under HIPAA. In that case their Notice of Privacy Practices governs your health information, and we follow our business associate agreement with them. The parts of this policy about the scan, security and biometric information still apply.</p>
+
+<h2 id="information-we-collect"><span class="n">02</span>Information we collect</h2>
+<h3>In the app</h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>What</th><th>Examples</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td>Account details</td><td>Name, email or phone number, sign-in details, time zone, language</td><td>To create and secure your account</td></tr>
+    <tr><td>Scan readings</td><td>The computed numbers from each scan, such as pulse rate and blood pressure, with a quality score and the time of the scan</td><td>To show your results and trends</td></tr>
+    <tr><td>Things you log</td><td>Medicines, meals, exercise, and details you add such as age, sex, height and weight</td><td>To give relevant guidance and show changes over time</td></tr>
+    <tr><td>Consent records</td><td>Which consents you gave or withdrew, when, and which policy version</td><td>To respect your choices and prove we did</td></tr>
+    <tr><td>Access log</td><td>Who opened or changed your health data, when, and from where</td><td>Security, and so you can see it yourself</td></tr>
+    <tr><td>Device and app details</td><td>Phone model, operating system, app version, and crash reports with health data removed</td><td>To keep the app working</td></tr>
+  </tbody>
+</table></div>
+<h3>On this website</h3>
+<ul>
+  <li><b>Hosting logs.</b> Our host, Vercel, records standard details for each visit, such as IP address, browser type and the page requested, to deliver the site and protect it from abuse.</li>
+  <li><b>Fonts.</b> The site loads its typefaces from Google Fonts, so Google receives your IP address and browser details when a page opens.</li>
+  <li><b>Call bookings.</b> When you book a call, we receive your name, the phone number and email you give, your organisation and note if you add them, the topic you pick and the time you choose. These are saved as an event in Dr. Bizanti's Google Calendar. The website itself keeps no copy. Your browser carries the time, your first name and the topic to the confirmation page inside the page address; that part of the address is not sent to our server.</li>
+  <li><b>Pilot requests and texts.</b> The pilot request form opens a text message on your own phone. We receive what you choose to send and your phone number.</li>
+</ul>
+<p>This website sets no cookies and runs no analytics, advertising pixels or session recording.</p>
+<h3>What we never collect</h3>
+<p>We never upload, store or share the camera video, still images of your face, face geometry, face templates or any other face data. We do not use facial recognition. Please do not send patient information through the website forms or by text.</p>
+
+<h2 id="how-the-scan-handles-your-camera"><span class="n">03</span>How the scan handles your camera</h2>
+<p>The rPPG engine runs on your phone. During the scan, camera frames are held in the phone's memory only long enough to measure the tiny colour changes each heartbeat causes in your skin. When the scan ends, the frames are discarded. Only the computed numbers are saved to your account. This is enforced in the app's code, not just promised here.</p>
+
+<h2 id="how-we-use-information"><span class="n">04</span>How we use information</h2>
+<ul>
+  <li>To run the scan, show your results against published ranges, and draw your trends</li>
+  <li>To pick the two or three numbers worth your attention and suggest everyday habits, using rules reviewed by a physician</li>
+  <li>To show a same-day prompt when a reading crosses an urgent level</li>
+  <li>To share readings with an organisation, only when you join its program and agree in the app</li>
+  <li>To keep the service secure, fix problems and improve it</li>
+  <li>To reply to bookings and pilot requests</li>
+  <li>To send product news, only if you opted in to marketing</li>
+  <li>To meet legal duties</li>
+</ul>
+<p>We do not use your health information for advertising, and we do not build advertising profiles.</p>
+
+<h2 id="consents-you-control"><span class="n">05</span>Consents you control</h2>
+<p>The app asks for each consent separately, on its own screen, with its own switch. You can change any of them in Settings at any time.</p>
+<div class="tablewrap"><table>
+  <thead><tr><th>Consent</th><th>Needed?</th><th>What it allows</th></tr></thead>
+  <tbody>
+    <tr><td>Account</td><td>Yes, to have an account</td><td>Storing your account details</td></tr>
+    <tr><td>Health data storage</td><td>Yes, to use the scan</td><td>Saving your readings and logs so you can see trends</td></tr>
+    <tr><td>De-identified research</td><td>No, optional</td><td>Including your data, with identifiers removed, in research datasets</td></tr>
+    <tr><td>Marketing</td><td>No, optional</td><td>Sending you product news</td></tr>
+  </tbody>
+</table></div>
+<p>Saying no to research or marketing never limits the app. Withdrawing a consent does not erase a record that you once gave it; we keep that history so we can show we respected your choice.</p>
+
+<h2 id="how-we-share-information"><span class="n">06</span>How we share information</h2>
+<p>We share information only in these cases:</p>
+<ul>
+  <li><b>With you,</b> and with people you choose, such as a family member you invite.</li>
+  <li><b>With organisations you join.</b> If you join a program run by your clinician, employer, health plan or a study, we share the readings that program needs, after you agree in the app.</li>
+  <li><b>With service providers</b> who host our systems or help us run the service, under written contracts that limit their use of the data. Providers that handle health data sign a business associate agreement or an equivalent agreement.</li>
+  <li><b>For research, de-identified only,</b> and only if you opted in. See the next section.</li>
+  <li><b>For legal reasons,</b> when the law requires it, or to protect someone's safety or our rights.</li>
+  <li><b>In a sale or merger</b> of VitalKick, where the buyer must keep honouring this policy.</li>
+</ul>
+<p>We never sell identifiable consumer health data. We never sell, lease, trade or otherwise profit from biometric identifiers or biometric information.</p>
+
+<h2 id="de-identified-research"><span class="n">07</span>De-identified research</h2>
+<p>If you opt in to research, your data can be included in research datasets after everything that could identify you is removed. We follow the HIPAA Safe Harbor standard: all 18 listed identifiers are removed, dates are reduced to the year, ages over 89 are grouped together, and locations are no finer than the first three digits of a ZIP code.</p>
+<ul>
+  <li>Every dataset puts each person in a group of at least 20 people who look the same in the data.</li>
+  <li>Anyone receiving the data is bound by contract not to re-identify anyone or combine it with other data to do so. We make the same commitment.</li>
+  <li>Data from programs run under HIPAA and data from people who signed up directly are never mixed in a research dataset.</li>
+  <li>If you withdraw, your data stops being included in new datasets within 24 hours. Data already delivered in a de-identified dataset cannot be recalled, because it no longer carries anything that links it to you.</li>
+</ul>
+<p>Separately, for study recruitment, we search only people who opted in to research contact. Sponsors see counts only, with groups under 20 suppressed, until a person gives study-specific consent.</p>
+
+<h2 id="biometric-information-retention-and-destruction"><span class="n">08</span>Biometric information: retention and destruction</h2>
+<p>This section is our public retention and destruction policy for biometric identifiers and biometric information, as Illinois law (740 ILCS 14/15(a)) requires.</p>
+<ul>
+  <li>VitalKick does not collect, store or keep biometric identifiers such as a scan of face geometry, and does not create face templates or face embeddings.</li>
+  <li>Camera frames exist only in the phone's memory during a scan and are destroyed when the scan ends, within seconds.</li>
+  <li>No face data is written to the phone's storage, sent to our servers, or shared with anyone.</li>
+  <li>If this ever changes, we will ask for your written consent first, update this policy, and destroy any such data once its purpose is met, and in no case later than three years after your last use of VitalKick.</li>
+</ul>
+
+<h2 id="how-long-we-keep-information"><span class="n">09</span>How long we keep information</h2>
+<ul>
+  <li><b>Account and health data:</b> while your account is open. When you delete your account, we delete your identifiable data from our active systems, except records the law requires us to keep, and it ages out of encrypted backups on their normal schedule.</li>
+  <li><b>Consent records and the access log:</b> kept as long as the law requires, because they prove how your data was handled.</li>
+  <li><b>Data held for a healthcare organisation:</b> kept and returned or destroyed as our agreement with that organisation requires.</li>
+  <li><b>Call bookings and texts:</b> kept in Dr. Bizanti's calendar and phone until no longer needed for the conversation, or sooner if you ask.</li>
+</ul>
+
+<h2 id="how-we-protect-information"><span class="n">10</span>How we protect information</h2>
+<ul>
+  <li>Health data is stored with a hosting provider that has signed a business associate agreement with us.</li>
+  <li>Data is encrypted in transit and at rest.</li>
+  <li>Database rules check your consent before any health data is saved, and limit each person to the data they are allowed to see.</li>
+  <li>Every read and write of health data is logged: who, what, when and from where.</li>
+  <li>Logs and crash reports are scrubbed of health information before they leave the app.</li>
+</ul>
+<p>No system is perfectly secure. If a breach affects your information, we will tell you and the authorities as the law requires.</p>
+
+<h2 id="your-rights-and-choices"><span class="n">11</span>Your rights and choices</h2>
+<p>Wherever you live, you can:</p>
+<ul>
+  <li><b>See and download</b> your data, from the app's settings</li>
+  <li><b>Correct</b> details that are wrong</li>
+  <li><b>Delete</b> your data and your account</li>
+  <li><b>See the access log</b> of who opened your health data</li>
+  <li><b>Withdraw</b> any consent, and opt out of marketing</li>
+</ul>
+<p>Depending on your state, such as California, Washington, Colorado, Connecticut, Virginia, Oregon, Texas or Nevada, the law may give you further rights, including the right to appeal if we turn down a request. You can use an authorised agent. We will not treat you differently for using any of these rights. To make a request outside the app, call or text <a href="tel:+13057534452">(305) 753-4452</a>. We will confirm who you are before acting on it.</p>
+
+<h2 id="washington-consumer-health-data"><span class="n">12</span>Washington consumer health data</h2>
+<p>This section is our Consumer Health Data Privacy Policy under Washington's My Health My Data Act. It applies to Washington residents and anyone whose data is collected in Washington.</p>
+<ul>
+  <li><b>What we collect:</b> the scan readings, things you log, and account and device details listed in "Information we collect".</li>
+  <li><b>Why:</b> the purposes in "How we use information".</li>
+  <li><b>Where it comes from:</b> you, the app on your phone, and organisations whose program you join.</li>
+  <li><b>Who receives it:</b> the recipients in "How we share information". We do not sell consumer health data.</li>
+  <li><b>Consent:</b> we ask separately to collect it and to share it, never inside these terms, and we never make the app depend on agreeing to share or sell.</li>
+  <li><b>Your rights:</b> to confirm whether we collect, share or sell your data, to get a list of everyone we shared it with, to withdraw consent, and to have it deleted. Use the app's settings or call or text <a href="tel:+13057534452">(305) 753-4452</a>. You may appeal a refusal, and if the appeal is denied you can contact the Washington State Attorney General.</li>
+</ul>
+
+<h2 id="children"><span class="n">13</span>Children</h2>
+<p>The VitalKick app is for adults 18 and over. This website is meant for adults and organisations and is not directed to children under 13. We do not knowingly collect information from children. If you believe a child has given us information, call or text us and we will delete it.</p>
+
+<h2 id="where-information-is-stored"><span class="n">14</span>Where information is stored</h2>
+<p>We store and process information in the United States. VitalKick is offered to people in the United States.</p>
+
+<h2 id="changes-to-this-policy"><span class="n">15</span>Changes to this policy</h2>
+<p>When we change this policy, we update the date at the top. If a change affects how we use health data you already gave us, we will tell you in the app and ask for your consent again before the change applies to you.</p>
+
+<h2 id="contact-us"><span class="n">16</span>Contact us</h2>
+<p>Questions or requests about privacy: call or text <a href="tel:+13057534452">(305) 753-4452</a>, or <a href="book.html">book a call</a>.</p>
+</article></div>
+</div></main>
+<script>(() => { const L = [...document.querySelectorAll('.toc a')]; const H = L.map(a => document.querySelector(a.getAttribute('href')));
+addEventListener('scroll', () => { let k = 0; H.forEach((h, i) => { if (h.getBoundingClientRect().top < 140) k = i; }); L.forEach((a, i) => a.classList.toggle('on', i === k)); }, { passive: true }); })();</script>
+<footer class="sfoot">
+  <div class="wrap">
+    <div class="cols">
+      <div class="brandcol"><a class="brand" href="index.html" aria-label="VitalKick home"></a><p>Vital signs from a 60-second selfie, processed on the phone.</p><a class="tel" href="tel:+13057534452">(305) 753-4452</a></div>
+      <div><h4>Product</h4><ul><li><a href="index.html#scan">The 60-second scan</a></li><li><a href="technology.html">How it works</a></li><li><a href="biomarkers.html">Biomarkers</a></li><li><a href="validation.html">Validation</a></li><li><a href="index.html#edge">Privacy &amp; security</a></li></ul></div>
+      <div><h4>Solutions</h4><ul><li><a href="solutions-telehealth.html">Telehealth</a></li><li><a href="solutions-checkins.html">Between-visit check-ins</a></li><li><a href="solutions-value-based-care.html">Value-based care</a></li><li><a href="solutions-senior-living.html">Senior living</a></li><li><a href="solutions-employers.html">Employers &amp; wellness</a></li><li><a href="research.html">Research &amp; trials</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="book.html">Book a call</a></li><li><a href="contact.html">Contact</a></li><li><a href="careers.html">Careers</a></li><li><a href="press.html">Press</a></li></ul></div>
+      <div><h4>Resources</h4><ul><li><a href="faq.html">FAQ</a></li><li><a href="blog.html">Blog</a></li><li><a href="help.html">Help center</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="privacy-policy.html">Privacy policy</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="accessibility.html">Accessibility</a></li></ul></div>
+    </div>
+    <div class="bottom"><span>© 2026 VitalKick. All rights reserved.</span><span>VitalKick is a general wellness product. Readings support your own wellness and do not replace care from your clinician.</span></div>
+  </div>
+</footer>
+</body>
+</html>

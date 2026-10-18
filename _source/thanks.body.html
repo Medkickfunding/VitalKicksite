@@ -1,0 +1,104 @@
+<style>
+.ty { padding-block: clamp(110px, 12vw, 150px) 90px; position: relative; overflow: hidden }
+.ty::before { content: ""; position: absolute; inset: 0 0 auto; height: 620px; background: radial-gradient(520px 340px at 50% 20%, color-mix(in srgb, var(--mint) 14%, transparent), transparent 70%); pointer-events: none }
+.ty .wrap { position: relative; max-width: 760px; display: grid; gap: 22px; justify-items: center; text-align: center }
+.av { position: relative; width: 148px; height: 148px }
+.av img { width: 148px; height: 148px; border-radius: 50%; object-fit: cover; border: 2px solid var(--mint); box-shadow: 0 0 0 8px color-mix(in srgb, var(--mint) 10%, transparent), 0 0 60px -10px var(--mint) }
+.av svg { position: absolute; inset: -14px; width: 176px; height: 176px; animation: spin 30s linear infinite }
+.av .ok { position: absolute; right: 2px; bottom: 6px; width: 38px; height: 38px; border-radius: 50%; background: var(--mint); display: grid; place-items: center; box-shadow: 0 0 0 4px var(--ink) }
+.av .ok svg { position: static; width: 20px; height: 20px; animation: none }
+@keyframes spin { to { transform: rotate(360deg) } }
+.ty h1 { font-size: clamp(40px, 6vw, 68px) }
+.ty .lede { margin: 0 }
+.ticket { width: 100%; text-align: left; border: 1px solid color-mix(in srgb, var(--mint) 35%, transparent); border-radius: 24px; background: linear-gradient(160deg, color-mix(in srgb, var(--mint) 8%, var(--panel)), var(--panel) 60%); overflow: hidden }
+.ticket .bar { display: flex; justify-content: space-between; gap: 12px; padding: 14px 24px; border-bottom: 1px dashed color-mix(in srgb, var(--mint) 30%, transparent); font: 600 12px var(--mono); letter-spacing: .1em; color: var(--mint) }
+.ticket.pending .bar { color: var(--amber) }
+.ticket dl { margin: 0; display: grid; grid-template-columns: 1fr 1fr }
+.ticket dl > div { padding: 20px 24px; border-bottom: 1px solid var(--line) }
+.ticket dl > div:nth-child(odd) { border-right: 1px solid var(--line) }
+.ticket dl > div.wide { grid-column: 1 / -1; border-right: 0 }
+@media (max-width: 600px) { .ticket dl { grid-template-columns: 1fr } .ticket dl > div:nth-child(odd) { border-right: 0 } }
+.ticket dt { font: 600 11px var(--mono); letter-spacing: .12em; color: var(--muted); text-transform: uppercase; margin-bottom: 6px }
+.ticket dd { margin: 0; font-size: 19px; font-weight: 600 } .ticket dd small { display: block; font: 400 14px var(--body); color: var(--muted); margin-top: 2px }
+.who { display: flex; gap: 14px; align-items: center } .who img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 1px solid var(--mint) }
+.ty .btns { justify-content: center }
+.ty .small { color: var(--muted); font-size: 15px; margin: 0 }
+</style>
+
+<main class="ty">
+  <div class="wrap" id="ty">
+    <div class="av">
+      <svg viewBox="0 0 176 176" aria-hidden="true"><circle cx="88" cy="88" r="84" fill="none" stroke="var(--mint)" stroke-opacity=".5" stroke-dasharray="2 6"/></svg>
+      <img src="assets/bizanti-avatar.png" alt="Sadik Bizanti, MD" width="148" height="148">
+      <span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--mint-ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
+    </div>
+    <h1 id="hi">Excited to meet you.</h1>
+    <p class="lede" id="sub">I'll see you then.</p>
+    <div class="ticket" id="ticket" hidden>
+      <div class="bar"><span id="state">CONFIRMED · IN THE CALENDAR</span><span>VITALKICK</span></div>
+      <dl>
+        <div><dt>Date</dt><dd id="t-date"></dd></div>
+        <div><dt>Time</dt><dd id="t-time"></dd></div>
+        <div><dt>With</dt><dd class="who"><img src="assets/bizanti-avatar.png" alt="" width="52" height="52"><span>Sadik Bizanti, MD<small>Founder &amp; CEO, VitalKick</small></span></dd></div>
+        <div><dt>How</dt><dd id="t-how"></dd></div>
+        <div class="wide"><dt>Topic</dt><dd id="t-topic"></dd></div>
+      </dl>
+    </div>
+    <div class="btns" id="acts"></div>
+    <p class="small">Need to change the time? Call or text <a class="tel" href="tel:+13057534452" style="font-size:inherit">(305) 753-4452</a>.</p>
+    <a class="crumb" href="index.html" style="margin-top:8px">← Back to VitalKick</a>
+  </div>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const TOPICS = { practice: 'VitalKick for my patients', research: 'Research and clinical trials', wellness: 'Employee or member wellness' };
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  let b = null;
+  try { b = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(location.hash.slice(1)))))); } catch { b = null; }
+  const start = b && new Date(b.s);
+  if (!start || isNaN(start)) {
+    $('hi').textContent = 'Thank you.';
+    $('sub').textContent = 'Book a time to talk with Dr. Bizanti.';
+    $('acts').innerHTML = '<a class="btn primary" href="book.html">Book a call</a>';
+    return;
+  }
+  const end = new Date(start.getTime() + 30 * 60e3);
+  const f = (d, o) => d.toLocaleString('en-US', o);
+  const LOCAL = Intl.DateTimeFormat().resolvedOptions().timeZone, ET = 'America/New_York';
+  const etSame = f(start, { timeZone: LOCAL, hour: 'numeric' }) === f(start, { timeZone: ET, hour: 'numeric' });
+  const topic = TOPICS[b.i] || 'VitalKick';
+  const first = (b.f || '').slice(0, 40);
+
+  $('hi').textContent = first ? `Excited to meet you, ${first}.` : 'Excited to meet you.';
+  $('t-date').innerHTML = esc(f(start, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }));
+  $('t-time').innerHTML = `${esc(f(start, { hour: 'numeric', minute: '2-digit' }))} to ${esc(f(end, { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }))}` +
+    (etSame ? '' : `<small>${esc(f(start, { timeZone: ET, hour: 'numeric', minute: '2-digit' }))} Eastern Time</small>`);
+  $('t-how').innerHTML = b.c === 'phone' ? 'Phone call<small>I will call the number you gave.</small>' : 'Video call<small>I will email you the link.</small>';
+  $('t-topic').textContent = topic;
+  $('ticket').hidden = false;
+
+  const z = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const title = 'VitalKick call with Sadik Bizanti, MD';
+  const details = `30-minute call about ${topic}. To change the time, call or text (305) 753-4452.`;
+
+  if (b.p) {
+    // Calendar not connected yet: the visitor sends the request by text and Dr. Bizanti confirms.
+    $('ticket').classList.add('pending');
+    $('state').textContent = 'REQUESTED · ONE STEP LEFT';
+    $('sub').textContent = 'Send this request by text and I will confirm the time with you.';
+    const msg = `VitalKick call request\nName: ${b.n || first}\n${b.o ? 'Organisation: ' + b.o + '\n' : ''}${b.e ? 'Email: ' + b.e + '\n' : ''}When: ${f(start, { timeZone: ET, weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })} ET\nTopic: ${topic}`;
+    $('acts').innerHTML = `<a class="btn primary" href="sms:+13057534452?&body=${encodeURIComponent(msg)}">Send request by text</a><a class="btn ghost" href="tel:+13057534452">Call instead</a>`;
+    return;
+  }
+
+  $('sub').textContent = "I'll see you then. It is already in my calendar.";
+  const gcal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${z(start)}/${z(end)}&details=${encodeURIComponent(details)}`;
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//VitalKick//Booking//EN', 'BEGIN:VEVENT',
+    `UID:${z(start)}-${Math.random().toString(36).slice(2)}@vitalkick`, `DTSTAMP:${z(new Date())}`, `DTSTART:${z(start)}`, `DTEND:${z(end)}`,
+    `SUMMARY:${title}`, `DESCRIPTION:${details.replace(/,/g, '\\,')}`, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+  $('acts').innerHTML = `<a class="btn primary" href="${gcal}" target="_blank" rel="noopener">Add to Google Calendar</a><a class="btn ghost" href="${url}" download="vitalkick-call.ics">Apple or Outlook (.ics)</a>`;
+})();
+</script>

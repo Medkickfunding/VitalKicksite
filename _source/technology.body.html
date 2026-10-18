@@ -1,0 +1,123 @@
+<style>
+.tk-hero { padding-block: clamp(110px, 12vw, 150px) 30px }
+.tk-hero .wrap { display: grid; gap: 20px } .tk-hero .wrap > * { max-width: 860px }
+.tk-sec { padding-block: clamp(48px, 7vw, 90px); border-top: 1px solid var(--line) }
+.tk-sec .lede { max-width: 720px }
+.tk-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: center }
+@media (max-width: 860px) { .tk-two { grid-template-columns: 1fr } }
+.tk-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 28px }
+.tk-card { border: 1px solid var(--line); border-radius: 20px; padding: 22px; background: linear-gradient(160deg, color-mix(in srgb, var(--mint) 6%, var(--panel)), var(--panel) 60%); display: grid; gap: 10px; align-content: start }
+.tk-card .n { font: 600 12px var(--mono); color: var(--mint); letter-spacing: .12em }
+.tk-card h3 { font-size: 19px; margin: 0 } .tk-card p { margin: 0; color: var(--muted); font-size: 15px }
+.wave { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 22px; background: var(--panel) }
+.wave .grid line { stroke: var(--line) }
+.wave .sig { fill: none; stroke: var(--mint); stroke-width: 2.4; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--mint) 70%, transparent)); stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: draw 4s ease-out forwards }
+.wave .raw { fill: none; stroke: var(--muted); stroke-opacity: .5; stroke-width: 1.2 }
+.wave text { font: 600 11px var(--mono); fill: var(--muted); letter-spacing: .08em }
+@keyframes draw { to { stroke-dashoffset: 0 } }
+.timeline { display: grid; gap: 0; margin-top: 28px; border: 1px solid var(--line); border-radius: 20px; overflow: hidden }
+.timeline .row { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--line); align-items: center }
+.timeline .row:last-child { border-bottom: 0 }
+.timeline .t { font: 700 22px var(--mono); color: var(--mint) }
+.timeline .bar { height: 6px; border-radius: 6px; background: linear-gradient(90deg, var(--mint), color-mix(in srgb, var(--mint) 25%, transparent)); margin-top: 8px }
+.flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 28px }
+@media (max-width: 860px) { .flow { grid-template-columns: 1fr 1fr } }
+@media (max-width: 520px) { .flow { grid-template-columns: 1fr } }
+.flow div { border: 1px solid var(--line); border-radius: 18px; padding: 18px; position: relative }
+.flow div b { display: block; font-size: 16px; margin-bottom: 6px } .flow div span { color: var(--muted); font-size: 14px }
+.flow div.on { border-color: color-mix(in srgb, var(--mint) 55%, transparent) }
+.flow div .tag { position: absolute; top: -10px; right: 14px; font: 600 10px var(--mono); letter-spacing: .1em; padding: 3px 8px; border-radius: 999px; background: var(--ink); border: 1px solid var(--line); color: var(--muted) }
+.flow div.on .tag { color: var(--mint); border-color: var(--mint) }
+</style>
+
+<header class="tk-hero"><div class="wrap">
+  <a class="crumb" href="index.html">← VITALKICK</a>
+  <span class="k-label">Technology</span>
+  <h1>How a selfie becomes <em>your vital signs.</em></h1>
+  <p class="lede">Every heartbeat changes the colour of your skin by a tiny amount. VitalKick's camera engine reads that change for 60 seconds, on your phone, and turns it into twelve readings. Here is how, and what we built around it.</p>
+  <div class="btns"><a class="btn primary" href="book.html">Book a call</a><a class="btn ghost" href="validation.html">See the validation</a></div>
+</div></header>
+
+<section class="tk-sec"><div class="wrap tk-two">
+  <div>
+    <span class="k-label">01 · The signal</span>
+    <h2 style="margin-top:12px">Your pulse is <em>visible</em> to a camera.</h2>
+    <p class="lede">With each beat, a little more blood flows into the skin of your face. Blood absorbs green light strongly, so your skin turns very slightly darker and lighter in time with your heart.</p>
+    <p>The change is far too small for your eyes. A phone camera records 30 or more frames a second, and averaging thousands of skin pixels per frame brings the pulse out of the noise. The method is called remote photoplethysmography, or rPPG: measuring blood flow with light, without touching you.</p>
+  </div>
+  <svg class="wave" viewBox="0 0 560 300" role="img" aria-label="A noisy colour signal from the skin, and the clean pulse wave the engine extracts from it">
+    <g class="grid"><line x1="0" y1="75" x2="560" y2="75"/><line x1="0" y1="150" x2="560" y2="150"/><line x1="0" y1="225" x2="560" y2="225"/></g>
+    <text x="20" y="34">RAW SKIN COLOUR, GREEN CHANNEL</text>
+    <path class="raw" d="M20 92 l10 -6 8 9 9 -12 7 15 10 -9 8 4 9 -13 8 16 10 -10 7 6 10 -14 9 17 8 -11 10 7 8 -12 9 14 8 -9 10 5 8 -15 9 16 9 -8 8 3 10 -13 8 15 9 -11 9 8 8 -14 10 13 8 -7 9 4 9 -12 8 16 10 -10 8 6 9 -15 8 14 10 -9 8 5 9 -13 9 15 8 -10 10 7 8 -12 9 14 8 -8 10 4 8 -14 9 16 9 -9 8 6 10 -13 8 15 9 -11 9 7 8 -12"/>
+    <text x="20" y="184">PULSE WAVE AFTER FILTERING</text>
+    <path class="sig" d="M20 250 C40 250 45 205 60 205 S80 245 95 240 S110 232 120 250 C140 250 145 205 160 205 S180 245 195 240 S210 232 220 250 C240 250 245 205 260 205 S280 245 295 240 S310 232 320 250 C340 250 345 205 360 205 S380 245 395 240 S410 232 420 250 C440 250 445 205 460 205 S480 245 495 240 S510 232 520 250 L540 250"/>
+  </svg>
+</div></section>
+
+<section class="tk-sec"><div class="wrap">
+  <span class="k-label">02 · Step by step</span>
+  <h2 style="margin-top:12px">What happens during <em>the scan.</em></h2>
+  <div class="tk-cards">
+    <div class="tk-card"><span class="n">STEP 1</span><h3>Find the skin</h3><p>Each frame, the engine locates your forehead and cheeks, where blood flow shows best. It uses their position in that frame only and never stores the shape of your face.</p></div>
+    <div class="tk-card"><span class="n">STEP 2</span><h3>Read the colour</h3><p>It averages the colour of those skin areas, frame after frame, building a signal that rises and falls with every heartbeat.</p></div>
+    <div class="tk-card"><span class="n">STEP 3</span><h3>Check the quality</h3><p>Light, movement and talking all add noise. Every reading carries a confidence score, and a poor scan is flagged so you can try again in better light.</p></div>
+    <div class="tk-card"><span class="n">STEP 4</span><h3>Compute the readings</h3><p>From the clean pulse wave the engine works out your pulse, the timing between beats, breathing, oxygen and blood pressure, plus two clearly labelled estimates.</p></div>
+  </div>
+</div></section>
+
+<section class="tk-sec"><div class="wrap tk-two" style="align-items:start">
+  <div>
+    <span class="k-label">03 · Why 60 seconds</span>
+    <h2 style="margin-top:12px">Each reading needs <em>its own amount</em> of signal.</h2>
+    <p class="lede">A pulse rate is ready early. Heart rate variability needs about 50 seconds of heartbeats before the number means anything physiologically. One full minute gives every reading enough data, from a single scan.</p>
+  </div>
+  <div class="timeline">
+    <div class="row"><span class="t">20 s</span><div>Pulse rate<div class="bar" style="width:33%"></div></div></div>
+    <div class="row"><span class="t">35 s</span><div>Blood pressure, oxygen saturation<div class="bar" style="width:58%"></div></div></div>
+    <div class="row"><span class="t">37 s</span><div>Breathing rate, pulse-respiration quotient<div class="bar" style="width:62%"></div></div></div>
+    <div class="row"><span class="t">50 s</span><div>Heart rate variability, stress level, nervous-system balance<div class="bar" style="width:83%"></div></div></div>
+    <div class="row"><span class="t">60 s</span><div>Scan complete, results saved<div class="bar" style="width:100%"></div></div></div>
+  </div>
+</div></section>
+
+<section class="tk-sec"><div class="wrap">
+  <span class="k-label">04 · On your phone</span>
+  <h2 style="margin-top:12px">The video <em>never leaves</em> your phone.</h2>
+  <p class="lede">The engine runs on the phone itself, in real time. Nothing about the scan depends on sending video to a server.</p>
+  <div class="flow">
+    <div class="on"><span class="tag">ON PHONE</span><b>Camera frames</b><span>Held in memory during the scan only</span></div>
+    <div class="on"><span class="tag">ON PHONE</span><b>rPPG engine</b><span>Turns frames into a pulse wave and readings</span></div>
+    <div class="on"><span class="tag">ON PHONE</span><b>Frames destroyed</b><span>Discarded when the scan ends, within seconds</span></div>
+    <div><span class="tag">SAVED</span><b>Numbers only</b><span>Readings saved to your account, encrypted, every access logged</span></div>
+  </div>
+  <p style="margin-top:22px;color:var(--muted)">No face images, face geometry or face templates are ever stored. Read the <a href="privacy-policy.html" style="color:var(--mint)">Privacy policy</a> for the full detail.</p>
+</div></section>
+
+<section class="tk-sec"><div class="wrap">
+  <span class="k-label">05 · Built around the engine</span>
+  <h2 style="margin-top:12px">What VitalKick adds <em>on top</em> of the signal.</h2>
+  <div class="tk-cards">
+    <div class="tk-card"><span class="n">ENGINE-NEUTRAL</span><h3>Not tied to one supplier</h3><p>VitalKick licenses its rPPG engine through a single internal layer. The rest of the app never talks to the engine directly, so a qualified alternative can be switched in without rebuilding the product.</p></div>
+    <div class="tk-card"><span class="n">CITED RANGES</span><h3>Every range names its source</h3><p>Normal ranges live in data, not in code, and each one cites the published source it came from. A physician can change a range without an app release.</p></div>
+    <div class="tk-card"><span class="n">RULES FIRST</span><h3>Rules decide what to flag</h3><p>Fixed, physician-reviewed rules choose the two or three numbers worth your attention. AI may only reword an approved message more warmly, and its wording is checked before you see it.</p></div>
+    <div class="tk-card"><span class="n">ALWAYS ON</span><h3>A same-day prompt that cannot be hidden</h3><p>If one reading crosses an urgent level, a calm prompt to get checked today appears before anything else. No setting, paywall or dismissed state can turn it off.</p></div>
+  </div>
+</div></section>
+
+<section class="tk-sec"><div class="wrap tk-two" style="align-items:start">
+  <div>
+    <span class="k-label">06 · The phone you already own</span>
+    <h2 style="margin-top:12px">Nothing to wear, <em>nothing to charge.</em></h2>
+    <p class="lede">VitalKick runs on iPhone and Android phones with a front camera. There is no cuff, clip, strap or extra device.</p>
+  </div>
+  <div class="tk-cards" style="margin-top:0">
+    <div class="tk-card"><h3>Even light on your face</h3><p>Face a window or a lamp. Avoid bright light behind you.</p></div>
+    <div class="tk-card"><h3>Still and quiet</h3><p>Rest for 5 minutes first, then keep still and do not talk.</p></div>
+    <div class="tk-card"><h3>Forehead and cheeks clear</h3><p>Move hair, hats or glasses that cover them.</p></div>
+    <div class="tk-card"><h3>Same time each day</h3><p>Your trend compares like with like.</p></div>
+  </div>
+</div></section>
+
+<section class="tk-sec"><div class="wrap">
+  <div class="shortv" style="max-width:960px"><h2>See it for your patients, members or study.</h2><p style="margin:0">Book 30 minutes with the founder, or see how the engine was tested.</p><div class="btns"><a class="btn primary" href="book.html">Book a call</a><a class="btn ghost" href="validation.html">Validation</a><a class="btn ghost" href="biomarkers.html">All biomarkers</a></div></div>
+</div></section>

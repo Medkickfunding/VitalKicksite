@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VitalKick for Research</title>
+<meta name="description" content="Find consenting participants who match your pilot or clinical trial target population.">
+<meta property="og:title" content="VitalKick for Research"><meta property="og:description" content="Find consenting participants who match your pilot or clinical trial target population."><meta property="og:image" content="assets/poster.jpg">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout concept: an instrument panel. Hairline grid ground, mono labels that carry real units, one framed "screen" per page. */
+:root {
+  --ink: #05090a;        /* page ground */
+  --panel: #0b1314;      /* raised surfaces */
+  --line: rgba(205, 240, 232, .11);
+  --text: #e8f1ef;
+  --muted: #93a6a2;
+  --mint: #62e6cf;       /* VitalKick brand, sampled from the logo */
+  --mint-ink: #04201b;
+  --amber: #f2b84b;      /* estimates only */
+  --coral: #ff6b5c;
+  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --wrap: 1180px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box }
+html { scroll-behavior: smooth }
+body { margin: 0; background: var(--ink); color: var(--text); font: 400 17px/1.6 var(--body); -webkit-font-smoothing: antialiased }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px; mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 75%); opacity: .55 }
+a { color: inherit }
+img, video { max-width: 100%; display: block }
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: 24px }
+@media (max-width: 520px) { .wrap { padding-inline: 16px } }
+:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; border-radius: 6px }
+
+/* nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--ink) 78%, transparent); border-bottom: 1px solid var(--line) }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 68px }
+.brand { display: block; width: 132px; height: 34px; background: var(--mint); -webkit-mask: url(assets/wordmark.png) left center / contain no-repeat; mask: url(assets/wordmark.png) left center / contain no-repeat }
+.nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 15px; color: var(--muted) }
+.nav ul a { text-decoration: none } .nav ul a:hover, .nav ul a[aria-current] { color: var(--text) }
+@media (max-width: 860px) { .nav ul { display: none } }
+
+/* type */
+.eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .22em; text-transform: uppercase; color: var(--mint) }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 800; letter-spacing: -.025em }
+h1 { font-size: clamp(42px, 6.4vw, 82px); line-height: .98 }
+h2 { font-size: clamp(32px, 4.2vw, 52px); line-height: 1.04 }
+h3 { font-size: 21px; line-height: 1.25; letter-spacing: -.01em }
+h1 em, h2 em { font: 400 1.08em/1 var(--display); font-style: italic; color: var(--mint); letter-spacing: -.01em }
+.lede { font-size: 19px; color: var(--muted); max-width: 58ch }
+p { margin: 0 }
+.mono { font-family: var(--mono); font-size: 13px; letter-spacing: .06em }
+
+/* buttons */
+.btns { display: flex; flex-wrap: wrap; gap: 12px }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; font: 600 15px var(--body); text-decoration: none; border: 1px solid transparent; cursor: pointer }
+.btn.primary { background: var(--mint); color: var(--mint-ink) }
+.btn.primary:hover { filter: brightness(1.08) }
+.btn.ghost { border-color: color-mix(in srgb, var(--text) 24%, transparent); color: var(--text); background: transparent }
+.btn.ghost:hover { border-color: var(--mint) }
+
+/* sections */
+section { padding-block: clamp(64px, 9vw, 120px) }
+.sec-head { display: grid; gap: 18px; margin-bottom: 48px; max-width: 760px }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0 }
+
+/* framed screen with crop marks, echoing the reel HUD */
+.frame { position: relative; padding: 14px }
+.frame::before, .frame::after, .frame > .cm::before, .frame > .cm::after { content: ""; position: absolute; width: 18px; height: 18px; border-color: color-mix(in srgb, var(--text) 45%, transparent); border-style: solid; border-width: 0 }
+.frame::before { top: 0; left: 0; border-top-width: 1.5px; border-left-width: 1.5px }
+.frame::after { top: 0; right: 0; border-top-width: 1.5px; border-right-width: 1.5px }
+.frame > .cm::before { bottom: 0; left: 0; border-bottom-width: 1.5px; border-left-width: 1.5px }
+.frame > .cm::after { bottom: 0; right: 0; border-bottom-width: 1.5px; border-right-width: 1.5px }
+
+/* steps (a real sequence) */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line) }
+.steps.three { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+.step { padding: 28px 28px 8px 0; display: grid; gap: 12px; align-content: start; min-width: 0 }
+.step + .step { padding-left: 28px; border-left: 1px solid var(--line) }
+.step .n { font: 600 13px var(--mono); color: var(--mint); letter-spacing: .1em }
+.step p { color: var(--muted); font-size: 16px }
+@media (max-width: 900px) { .steps, .steps.three { grid-template-columns: 1fr } .step + .step { padding-left: 0; border-left: 0; border-top: 1px solid var(--line) } }
+
+.foot { border-top: 1px solid var(--line); padding-block: 40px; color: var(--muted); font-size: 14px }
+.foot .wrap { display: flex; flex-wrap: wrap; gap: 16px 40px; justify-content: space-between; align-items: center }
+.foot .mono { color: color-mix(in srgb, var(--muted) 80%, transparent) }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } * { animation: none !important; transition: none !important } }
+
+/* site footer */
+.sfoot { border-top: 1px solid var(--line); padding-block: 64px 32px; background: color-mix(in srgb, var(--ink) 92%, #000) }
+.sfoot .cols { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(5, minmax(0, 1fr)); gap: 32px 24px }
+@media (max-width: 1000px) { .sfoot .cols { grid-template-columns: repeat(3, minmax(0, 1fr)) } .sfoot .brandcol { grid-column: 1 / -1 } }
+@media (max-width: 560px) { .sfoot .cols { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+.sfoot h4 { margin: 0 0 14px; font: 600 11px var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--muted) }
+.sfoot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+.sfoot ul a { color: color-mix(in srgb, var(--text) 85%, var(--muted)); text-decoration: none; font-size: 15px } .sfoot ul a:hover { color: var(--mint) }
+.brandcol { display: grid; gap: 16px; align-content: start }
+.brandcol p { color: var(--muted); font-size: 15px; max-width: 34ch }
+.tel { font: 700 20px var(--body); color: var(--text); text-decoration: none } .tel:hover { color: var(--mint) }
+.sfoot .bottom { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; color: var(--muted); font-size: 13px }
+
+/* simple content pages */
+.page { padding-block: clamp(110px, 12vw, 160px) 80px }
+.page .wrap { max-width: 860px; display: grid; gap: 22px }
+.page h2 { font-size: clamp(26px, 3vw, 34px); margin-top: 26px }
+.page p, .page li { color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 68ch }
+.page ul { display: grid; gap: 8px; padding-left: 20px; margin: 0 }
+.page table { width: 100%; border-collapse: collapse; font-size: 15px }
+.page th, .page td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line) }
+.page th { font: 600 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+.tablewrap { overflow-x: auto }
+.crumb { font: 600 12px var(--mono); letter-spacing: .14em; color: var(--muted); text-decoration: none }
+
+/* Legal pages: sticky contents list beside numbered sections */
+.k-label { display: block; font: 600 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--mint) }
+.legal { padding-block: clamp(110px, 12vw, 160px) 90px }
+.legal .head { display: grid; gap: 18px; max-width: 860px; margin-bottom: 44px }
+.legal .meta { display: flex; flex-wrap: wrap; gap: 10px }
+.legal .meta span { font: 600 12px var(--mono); letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px }
+.legal .cols { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: start }
+@media (max-width: 900px) { .legal .cols { grid-template-columns: 1fr } }
+.toc { position: sticky; top: 96px; display: grid; gap: 2px; max-height: calc(100vh - 120px); overflow-y: auto; padding-right: 6px }
+.toc b { font: 600 11px var(--mono); letter-spacing: .16em; color: var(--muted); text-transform: uppercase; margin-bottom: 10px }
+.toc a { display: flex; gap: 10px; color: var(--muted); text-decoration: none; font-size: 14px; line-height: 1.35; padding: 7px 10px; border-left: 2px solid var(--line); min-height: 34px; align-items: center }
+.toc a span { font: 600 11px var(--mono); color: color-mix(in srgb, var(--mint) 70%, var(--muted)) }
+.toc a:hover, .toc a.on { color: var(--text); border-left-color: var(--mint) }
+@media (max-width: 900px) { .toc { position: relative; top: 0; max-height: none; border: 1px solid var(--line); border-radius: 18px; padding: 18px } }
+.legal article { display: grid; gap: 16px; min-width: 0 }
+.legal article h2 { font-size: clamp(24px, 2.6vw, 30px); margin: 34px 0 0; scroll-margin-top: 96px; display: flex; gap: 14px; align-items: baseline }
+.legal article h2 .n { font: 600 13px var(--mono); color: var(--mint) }
+.legal article h3 { font-size: 18px; margin: 10px 0 0 }
+.legal article p, .legal article li { color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 72ch; margin: 0 }
+.legal article ul { display: grid; gap: 9px; padding-left: 20px; margin: 0 }
+.legal article a { color: var(--mint) }
+.legal .tablewrap table { width: 100%; border-collapse: collapse; font-size: 15px }
+.legal .tablewrap th, .legal .tablewrap td { text-align: left; vertical-align: top; padding: 12px 10px; border-bottom: 1px solid var(--line) }
+.legal .tablewrap th { font: 600 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+.shortv { border: 1px solid color-mix(in srgb, var(--mint) 35%, transparent); border-radius: 22px; padding: clamp(20px, 3vw, 30px); background: linear-gradient(160deg, color-mix(in srgb, var(--mint) 8%, var(--panel)), var(--panel) 60%); display: grid; gap: 14px }
+.shortv h2 { margin: 0 !important; font-size: 22px !important }
+.shortv ul { list-style: none; padding: 0 !important }
+.shortv li { padding-left: 28px; position: relative }
+.shortv li::before { content: ""; position: absolute; left: 4px; top: .55em; width: 10px; height: 10px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 8px var(--mint) }
+.callout { border-left: 3px solid var(--amber); padding: 4px 0 4px 18px }
+
+/* FAQ accordion: one answer open at a time */
+.faq-cats { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px }
+.faq-cats a { font: 600 13px var(--body); color: var(--muted); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; min-height: 40px; display: inline-flex; align-items: center }
+.faq-cats a:hover { color: var(--text); border-color: var(--mint) }
+.faq-group { display: grid; gap: 12px; scroll-margin-top: 96px }
+.faq-group + .faq-group { margin-top: 34px }
+.faq-group > h2 { font-size: clamp(22px, 2.4vw, 28px); margin: 0 0 6px; display: flex; gap: 12px; align-items: center }
+.faq-group > h2 .n { font: 600 12px var(--mono); color: var(--mint) }
+.qa { border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--panel) 75%, transparent); transition: border-color .25s, background .25s }
+.qa.open { border-color: color-mix(in srgb, var(--mint) 45%, transparent); background: linear-gradient(160deg, color-mix(in srgb, var(--mint) 7%, var(--panel)), var(--panel) 70%) }
+.qa h3 { margin: 0; font-size: inherit }
+.qa button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 18px; text-align: left; background: none; border: 0; color: var(--text); font: 600 clamp(16px, 1.6vw, 18px)/1.4 var(--body); padding: 20px 22px; min-height: 64px; cursor: pointer; border-radius: 18px }
+.qa .pm { flex: none; width: 32px; height: 32px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--mint) 40%, transparent); position: relative; transition: transform .3s, background .3s }
+.qa .pm::before, .qa .pm::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; margin: -1px 0 0 -6px; background: var(--mint); border-radius: 2px; transition: transform .3s }
+.qa .pm::after { transform: rotate(90deg) }
+.qa.open .pm { background: var(--mint); transform: rotate(180deg) }
+.qa.open .pm::before { background: var(--mint-ink) } .qa.open .pm::after { transform: rotate(0); background: var(--mint-ink) }
+.qa .ans { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease }
+.qa.open .ans { grid-template-rows: 1fr }
+.qa .ans > div { overflow: hidden }
+.qa .ans .in { padding: 0 22px 22px; display: grid; gap: 10px; color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 76ch }
+.qa .ans p { margin: 0 } .qa .ans ul { margin: 0; padding-left: 20px; display: grid; gap: 6px } .qa .ans a { color: var(--mint) }
+
+</style>
+</head>
+<body>
+<style>
+.r-hero { padding-block: clamp(56px, 8vw, 110px) clamp(40px, 5vw, 64px) }
+.r-hero .wrap { display: grid; gap: 26px; max-width: 980px }
+.r-hero .lede { font-size: 20px; max-width: 64ch }
+.who { display: flex; flex-wrap: wrap; gap: 10px 26px; color: var(--muted) }
+.who span::before { content: "→ "; color: var(--mint) }
+
+/* cohort builder */
+.builder { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: var(--panel) }
+@media (max-width: 940px) { .builder { grid-template-columns: 1fr } }
+.controls { padding: 28px; display: grid; gap: 22px; align-content: start; border-right: 1px solid var(--line); min-width: 0 }
+@media (max-width: 940px) { .controls { border-right: 0; border-bottom: 1px solid var(--line) } }
+.presets { display: flex; flex-wrap: wrap; gap: 8px }
+.chip { font: 600 13px var(--body); padding: 9px 14px; min-height: 40px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer }
+.chip[aria-pressed="true"] { background: color-mix(in srgb, var(--mint) 16%, transparent); border-color: var(--mint); color: var(--text) }
+.field { display: grid; gap: 10px }
+.field label, .field .lab { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--muted) }
+.field output { font: 600 14px var(--mono); color: var(--text); font-variant-numeric: tabular-nums }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+input[type=range] { width: 100%; accent-color: var(--mint); min-height: 28px }
+.toggle { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted) }
+.toggle input { width: 20px; height: 20px; accent-color: var(--mint) }
+.results { padding: 28px; display: grid; gap: 22px; align-content: start; min-width: 0 }
+.demo { font: 600 11px var(--mono); letter-spacing: .14em; color: var(--amber); border: 1px solid color-mix(in srgb, var(--amber) 45%, transparent); padding: 6px 10px; border-radius: 6px; justify-self: start }
+.big { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px }
+.big b { font: 800 clamp(44px, 6vw, 72px)/1 var(--body); letter-spacing: -.03em; font-variant-numeric: tabular-nums }
+.big span { color: var(--muted) }
+.funnel { display: grid; gap: 12px }
+.fr { display: grid; grid-template-columns: minmax(0, 210px) minmax(0, 1fr) 76px; gap: 14px; align-items: center; font-size: 14px }
+.fr .bar { height: 12px; border-radius: 6px; background: color-mix(in srgb, var(--text) 8%, transparent); overflow: hidden }
+.fr .bar i { display: block; height: 100%; border-radius: 6px; background: color-mix(in srgb, var(--mint) 55%, transparent); transition: width .45s cubic-bezier(.2, .8, .2, 1) }
+.fr:last-child .bar i { background: var(--mint) }
+.fr .c { font: 600 14px var(--mono); text-align: right; font-variant-numeric: tabular-nums }
+.fr .l { color: var(--muted) }
+@media (max-width: 560px) { .fr { grid-template-columns: 1fr 70px } .fr .bar { grid-column: 1 / -1; grid-row: 2 } }
+.hist { display: grid; gap: 8px }
+.hist svg { width: 100%; height: auto; display: block }
+.fine { color: var(--muted); font-size: 13px }
+
+.pops { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px }
+@media (max-width: 860px) { .pops { grid-template-columns: 1fr } }
+.pop { border-top: 1px solid var(--line); padding-top: 22px; display: grid; gap: 12px; align-content: start; min-width: 0 }
+.pop dl { margin: 0; display: grid; gap: 8px; font-size: 15px }
+.pop dl div { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 14px }
+.pop dt { font: 600 12px/1.7 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted) }
+.pop dd { margin: 0 }
+.src { font: 400 12px var(--mono); color: var(--muted) }
+
+.guard { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; border-top: 1px solid var(--line) }
+.guard div { padding: 22px 24px 22px 0; border-bottom: 1px solid var(--line); display: grid; gap: 6px; min-width: 0 }
+.guard div:nth-child(even) { padding-left: 24px; border-left: 1px solid var(--line) }
+.guard b { font-weight: 700 } .guard p { color: var(--muted); font-size: 15px }
+@media (max-width: 760px) { .guard { grid-template-columns: 1fr } .guard div:nth-child(even) { padding-left: 0; border-left: 0 } }
+
+.contact { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 72px); align-items: start }
+@media (max-width: 900px) { .contact { grid-template-columns: 1fr } }
+form { display: grid; gap: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: clamp(20px, 3vw, 32px); min-width: 0 }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px }
+@media (max-width: 560px) { .row2 { grid-template-columns: 1fr } }
+form label { display: grid; gap: 8px; font-size: 14px; color: var(--muted) }
+form input, form select, form textarea { font: 400 16px var(--body); color: var(--text); background: var(--ink); border: 1px solid color-mix(in srgb, var(--text) 18%, transparent); border-radius: 10px; padding: 12px 14px; min-height: 48px; width: 100% }
+form textarea { min-height: 120px; resize: vertical }
+form input:focus, form select:focus, form textarea:focus { outline: 2px solid var(--mint); outline-offset: 1px; border-color: transparent }
+.sent { color: var(--mint); font-size: 15px }
+</style>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="VitalKick home"></a>
+    <ul>
+      <li><a href="index.html">Product</a></li>
+      <li><a href="#how">How matching works</a></li>
+      <li><a href="#builder">Cohort builder</a></li>
+      <li><a href="#guardrails">Guardrails</a></li>
+    </ul>
+    <a class="btn primary" href="#contact">Plan a pilot</a>
+  </div>
+</nav>
+
+<header class="r-hero">
+  <div class="wrap">
+    <span class="eyebrow">VitalKick for research</span>
+    <h1>Find the people your study <em>is looking for.</em></h1>
+    <p class="lede">VitalKick users scan their vitals at home, often every day. With their permission, we match that history against your pilot's or trial's target population and invite the people who fit. Your site then does the confirmatory screening.</p>
+    <div class="btns"><a class="btn primary" href="#builder">Try the cohort builder</a><a class="btn ghost" href="#contact">Plan a pilot</a></div>
+    <div class="who mono"><span>Pharma &amp; biotech sponsors</span><span>CROs</span><span>Health systems &amp; AMCs</span><span>Payers &amp; employers running pilots</span></div>
+  </div>
+</header>
+
+<section id="how" style="padding-top:24px">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">How matching works</span>
+      <h2>From protocol criteria to a referred participant in four steps.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">01 · DEFINE</span><h3>You set the population</h3><p>Age, region, scan-based ranges (for example average systolic BP over two weeks) and self-reported details such as medications or conditions.</p></div>
+      <div class="step"><span class="n">02 · MATCH</span><h3>We search consented users</h3><p>Only people who opted in to research contact are searched. Repeated scans are averaged, so one odd reading does not decide anything.</p></div>
+      <div class="step"><span class="n">03 · INVITE</span><h3>They choose to take part</h3><p>Matched users get a plain-language invitation and give study-specific consent in the app. Nobody is shared with you before that.</p></div>
+      <div class="step"><span class="n">04 · REFER</span><h3>Your site confirms</h3><p>Consenting participants are referred to your site, which runs the protocol's own screening: cuff BP, lab A1c, physician review.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="builder">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Cohort builder</span>
+      <h2>Shape a target population and watch the funnel narrow.</h2>
+      <p class="lede">Pick an example study or set your own criteria. The counts come from a simulated population so you can see how the matching behaves; they are not VitalKick users.</p>
+    </div>
+    <div class="builder">
+      <div class="controls">
+        <div class="field"><span class="lab">Example studies</span>
+          <div class="presets" role="group" aria-label="Example studies">
+            <button class="chip" type="button" data-p="bp" aria-pressed="true">Elevated BP pilot</button>
+            <button class="chip" type="button" data-p="cm" aria-pressed="false">Cardiometabolic risk</button>
+            <button class="chip" type="button" data-p="old" aria-pressed="false">Older adults, remote</button>
+            <button class="chip" type="button" data-p="hrv" aria-pressed="false">Stress &amp; recovery</button>
+          </div>
+        </div>
+        <div class="field"><label for="ageMin">Age <output id="ageOut"></output></label>
+          <div class="pair"><input type="range" id="ageMin" min="18" max="90" aria-label="Minimum age"><input type="range" id="ageMax" min="18" max="90" aria-label="Maximum age"></div></div>
+        <div class="field"><label for="sbpMin">Average systolic BP, 14 days <output id="sbpOut"></output></label>
+          <div class="pair"><input type="range" id="sbpMin" min="90" max="180" aria-label="Minimum systolic"><input type="range" id="sbpMax" min="90" max="180" aria-label="Maximum systolic"></div></div>
+        <div class="field"><label for="scans">Scans in last 14 days, at least <output id="scansOut"></output></label><input type="range" id="scans" min="1" max="14"></div>
+        <div class="field"><label class="toggle" for="a1cOn"><input type="checkbox" id="a1cOn"> HbA1c estimate at or above <output id="a1cOut"></output></label><input type="range" id="a1c" min="50" max="70" aria-label="HbA1c estimate threshold, tenths of a percent"></div>
+        <div class="field"><label class="toggle" for="hrvOn"><input type="checkbox" id="hrvOn"> HRV below the person's own 30-day baseline</label></div>
+      </div>
+      <div class="results" aria-live="polite">
+        <span class="demo">DEMO · 10,000 SIMULATED PROFILES · NOT REAL USERS</span>
+        <div class="big"><b id="final">0</b><span>people to invite, from those who opted in to research contact</span></div>
+        <div class="funnel" id="funnel"></div>
+        <div class="hist"><span class="mono" style="color:var(--muted)">AVERAGE SYSTOLIC OF MATCHES · mmHg</span><svg id="hist" viewBox="0 0 640 150" role="img" aria-label="Histogram of average systolic blood pressure among matched profiles"></svg></div>
+        <p class="fine">Groups under 20 people are shown as "under 20" and never broken down further. Real counts are reported to sponsors only in this aggregate, de-identified form.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="populations" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Example target populations</span>
+      <h2>Four studies VitalKick could recruit for.</h2>
+      <p class="lede">Illustrations, not active studies. Each threshold names its published source, and your protocol's own criteria always win.</p>
+    </div>
+    <div class="pops">
+      <article class="pop"><h3>Elevated blood pressure pilot</h3>
+        <dl><div><dt>Who</dt><dd>Adults 45–70</dd></div><div><dt>Signal</dt><dd>Average camera systolic 130–159 mmHg across at least 3 scans in 14 days</dd></div><div><dt>Then</dt><dd>Site confirms with a validated cuff before enrolment</dd></div></dl>
+        <span class="src">Range: ACC/AHA 2017, Stage 1 (130–139) and Stage 2 (≥140)</span></article>
+      <article class="pop"><h3>Cardiometabolic risk study</h3>
+        <dl><div><dt>Who</dt><dd>Adults 35–65, BMI 25 or above from self-reported height and weight</dd></div><div><dt>Signal</dt><dd>HbA1c estimate of 5.7% or above, flagged as an estimate</dd></div><div><dt>Then</dt><dd>Lab A1c at the site decides eligibility</dd></div></dl>
+        <span class="src">Threshold: American Diabetes Association, A1C 5.7–6.4%</span></article>
+      <article class="pop"><h3>Remote monitoring, older adults</h3>
+        <dl><div><dt>Who</dt><dd>Adults 65 and over with a smartphone</dd></div><div><dt>Signal</dt><dd>Completed at least 8 scans in 14 days, showing they can keep up with a decentralised protocol</dd></div><div><dt>Then</dt><dd>Feasibility interview with the study coordinator</dd></div></dl>
+        <span class="src">Adherence measured from scan history, no clinical threshold used</span></article>
+      <article class="pop"><h3>Stress &amp; recovery intervention</h3>
+        <dl><div><dt>Who</dt><dd>Adults 25–55</dd></div><div><dt>Signal</dt><dd>HRV (RMSSD) below their own 30-day baseline for most of the last two weeks</dd></div><div><dt>Then</dt><dd>Validated questionnaires at baseline visit</dd></div></dl>
+        <span class="src">Personal baseline only; no population cut-off is claimed</span></article>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="guardrails">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Guardrails</span>
+      <h2>What VitalKick does, <em>and what it never does.</em></h2>
+    </div>
+    <div class="guard">
+      <div><b>Consent comes first</b><p>Only people who opted in to research contact are searched, and each study needs its own consent. Withdrawing is one tap.</p></div>
+      <div><b>No identification by face</b><p>VitalKick stores no face images or face geometry. Matching uses scan readings and what people tell us, never facial recognition.</p></div>
+      <div><b>No eligibility calls from a camera</b><p>Readings are wellness signals. Your site confirms every criterion with its own instruments before anyone is enrolled.</p></div>
+      <div><b>Aggregate counts only</b><p>Before consent, sponsors see de-identified counts, with any group under 20 suppressed. Never names, never individual readings.</p></div>
+      <div><b>Your protocol, your IRB</b><p>Recruitment runs under your IRB-approved protocol and materials, with a business associate agreement where health data is involved.</p></div>
+      <div><b>Video never leaves the phone</b><p>The camera signal is processed on the device. Only the computed numbers are stored, and every access is logged.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="padding-top:0">
+  <div class="wrap contact">
+    <div class="sec-head" style="margin:0">
+      <span class="eyebrow">Plan a pilot</span>
+      <h2>Tell us who you need to reach.</h2>
+      <p class="lede">Share the population and timeline. We will come back with a feasibility count and what a pilot would look like.</p>
+    </div>
+    <form id="pilot" name="pilot-request" novalidate>
+      <div class="row2">
+        <label for="f-name">Your name<input id="f-name" name="name" autocomplete="name" required></label>
+        <label for="f-org">Organisation<input id="f-org" name="organisation" autocomplete="organization" required></label>
+      </div>
+      <div class="row2">
+        <label for="f-email">Work email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
+        <label for="f-type">Study type<select id="f-type" name="study-type"><option>Pilot study</option><option>Phase II–III trial</option><option>Decentralised or hybrid trial</option><option>Health system program</option><option>Other</option></select></label>
+      </div>
+      <label for="f-pop">Target population<textarea id="f-pop" name="population" placeholder="e.g. adults 45–70 with average systolic 130–159 mmHg, within 50 miles of our sites"></textarea></label>
+      <p class="fine">Please do not include any patient information. Sending opens a text message to (305) 753-4452 with your request filled in.</p>
+      <div class="btns"><button class="btn primary" type="submit">Send by text message</button><a class="btn ghost" href="tel:+13057534452">Call (305) 753-4452</a></div>
+      <p class="sent" id="sent" hidden></p>
+    </form>
+  </div>
+</section>
+
+<footer class="sfoot">
+  <div class="wrap">
+    <div class="cols">
+      <div class="brandcol"><a class="brand" href="index.html" aria-label="VitalKick home"></a><p>Vital signs from a 60-second selfie, processed on the phone.</p><a class="tel" href="tel:+13057534452">(305) 753-4452</a></div>
+      <div><h4>Product</h4><ul><li><a href="index.html#scan">The 60-second scan</a></li><li><a href="technology.html">How it works</a></li><li><a href="biomarkers.html">Biomarkers</a></li><li><a href="validation.html">Validation</a></li><li><a href="index.html#edge">Privacy &amp; security</a></li></ul></div>
+      <div><h4>Solutions</h4><ul><li><a href="solutions-telehealth.html">Telehealth</a></li><li><a href="solutions-checkins.html">Between-visit check-ins</a></li><li><a href="solutions-value-based-care.html">Value-based care</a></li><li><a href="solutions-senior-living.html">Senior living</a></li><li><a href="solutions-employers.html">Employers &amp; wellness</a></li><li><a href="research.html">Research &amp; trials</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="book.html">Book a call</a></li><li><a href="contact.html">Contact</a></li><li><a href="careers.html">Careers</a></li><li><a href="press.html">Press</a></li></ul></div>
+      <div><h4>Resources</h4><ul><li><a href="faq.html">FAQ</a></li><li><a href="blog.html">Blog</a></li><li><a href="help.html">Help center</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="privacy-policy.html">Privacy policy</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="accessibility.html">Accessibility</a></li></ul></div>
+    </div>
+    <div class="bottom"><span>© 2026 VitalKick. All rights reserved.</span><span>VitalKick is a general wellness product. Readings support your own wellness and do not replace care from your clinician.</span></div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // ---------- simulated population (demo only) ----------
+  let s = 20261003; const r = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+  const nrm = () => { let u = 0, v = 0; while (!u) u = r(); v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  const P = [];
+  for (let i = 0; i < 10000; i++) {
+    const age = Math.round(Math.min(90, Math.max(18, 44 + nrm() * 16)));
+    const sbp = 112 + .42 * (age - 40) + nrm() * 13;
+    const a1c = 5.25 + .012 * (age - 40) + Math.max(0, nrm()) * .45 + nrm() * .15;
+    const engaged = r();
+    const scans = Math.min(14, Math.max(0, Math.round(engaged * engaged * 16 + nrm() * 1.5)));
+    P.push({ age, sbp, a1c, scans, lowHrv: r() < .22, optIn: r() < .38 });
+  }
+  const PRESETS = {
+    bp: { ageMin: 45, ageMax: 70, sbpMin: 130, sbpMax: 159, scans: 3, a1cOn: false, a1c: 57, hrvOn: false },
+    cm: { ageMin: 35, ageMax: 65, sbpMin: 90, sbpMax: 180, scans: 2, a1cOn: true, a1c: 57, hrvOn: false },
+    old: { ageMin: 65, ageMax: 90, sbpMin: 90, sbpMax: 180, scans: 8, a1cOn: false, a1c: 57, hrvOn: false },
+    hrv: { ageMin: 25, ageMax: 55, sbpMin: 90, sbpMax: 180, scans: 6, a1cOn: false, a1c: 57, hrvOn: true },
+  };
+  const $ = id => document.getElementById(id);
+  const ids = ['ageMin', 'ageMax', 'sbpMin', 'sbpMax', 'scans', 'a1c'];
+  const set = p => { ids.forEach(k => $(k).value = p[k]); $('a1cOn').checked = p.a1cOn; $('hrvOn').checked = p.hrvOn; run(); };
+  const fmt = n => n < 20 && n > 0 ? 'under 20' : n.toLocaleString('en-US');
+  function run() {
+    let [a0, a1] = [+$('ageMin').value, +$('ageMax').value]; if (a0 > a1) [a0, a1] = [a1, a0];
+    let [b0, b1] = [+$('sbpMin').value, +$('sbpMax').value]; if (b0 > b1) [b0, b1] = [b1, b0];
+    const sc = +$('scans').value, a1cT = +$('a1c').value / 10, a1cOn = $('a1cOn').checked, hrvOn = $('hrvOn').checked;
+    $('ageOut').textContent = `${a0}–${a1}`; $('sbpOut').textContent = `${b0}–${b1} mmHg`; $('scansOut').textContent = sc; $('a1cOut').textContent = a1cT.toFixed(1) + '%';
+    const s1 = P.filter(p => p.age >= a0 && p.age <= a1);
+    const s2 = s1.filter(p => p.scans >= sc);
+    const s3 = s2.filter(p => p.sbp >= b0 && p.sbp <= b1 + .999 && (!a1cOn || p.a1c >= a1cT) && (!hrvOn || p.lowHrv));
+    const s4 = s3.filter(p => p.optIn);
+    const rows = [['Simulated profiles', P.length], ['In the age range', s1.length], ['Enough scans to judge', s2.length], ['Readings match criteria', s3.length], ['Opted in to research contact', s4.length]];
+    $('funnel').innerHTML = rows.map(([l, n]) => `<div class="fr"><span class="l">${l}</span><span class="bar"><i style="width:${(n / P.length * 100).toFixed(2)}%"></i></span><span class="c">${fmt(n)}</span></div>`).join('');
+    $('final').textContent = fmt(s4.length);
+    // histogram of systolic for s3
+    const bins = Array(18).fill(0); s3.forEach(p => { const k = Math.floor((p.sbp - 90) / 5); if (k >= 0 && k < 18) bins[k]++; });
+    const mx = Math.max(1, ...bins), W = 640, H = 150, bw = (W - 20) / 18;
+    let svg = '';
+    const band = [[90, 120, 'Normal'], [120, 130, 'Elevated'], [130, 140, 'Stage 1'], [140, 180, 'Stage 2']];
+    band.forEach(([lo, hi, lab]) => { const x = 10 + (lo - 90) / 5 * bw; svg += `<text x="${x + 4}" y="12" fill="var(--muted)" font-size="11" font-family="JetBrains Mono, monospace">${lab}</text><line x1="${x}" x2="${x}" y1="0" y2="${H - 22}" stroke="var(--line)"/>`; });
+    bins.forEach((n, i) => { const h = (n / mx) * (H - 44); svg += `<rect x="${10 + i * bw + 2}" y="${H - 22 - h}" width="${bw - 4}" height="${Math.max(h, n ? 1 : 0)}" rx="3" fill="var(--mint)" opacity="${.35 + .65 * (n / mx)}"/>`; });
+    [90, 120, 130, 140, 160, 180].forEach(v => { const x = 10 + (v - 90) / 5 * bw; svg += `<text x="${x}" y="${H - 6}" fill="var(--muted)" font-size="11" text-anchor="middle" font-family="JetBrains Mono, monospace">${v}</text>`; });
+    $('hist').innerHTML = svg;
+  }
+  ids.forEach(k => $(k).addEventListener('input', () => { clearPreset(); run(); }));
+  ['a1cOn', 'hrvOn'].forEach(k => $(k).addEventListener('change', () => { clearPreset(); run(); }));
+  const chips = [...document.querySelectorAll('.chip')];
+  function clearPreset() { chips.forEach(c => c.setAttribute('aria-pressed', 'false')); }
+  chips.forEach(c => c.addEventListener('click', () => { chips.forEach(x => x.setAttribute('aria-pressed', String(x === c))); set(PRESETS[c.dataset.p]); }));
+  set(PRESETS.bp);
+
+  // ---------- form ----------
+  // On Netlify the form posts normally. In a preview frame it has nowhere to go, so say so.
+  const f = $('pilot');
+  // No inbox yet: the request goes out as a pre-filled text message to the founder's phone.
+  // When an email or form service exists, replace this handler (see DEPLOY.md).
+  f.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!f.reportValidity()) return;
+    const v = id => ($(id).value || '').trim();
+    const msg = `VitalKick pilot request\nName: ${v('f-name')}\nOrganisation: ${v('f-org')}\nEmail: ${v('f-email')}\nStudy type: ${v('f-type')}\nPopulation: ${v('f-pop')}`;
+    const out = $('sent'); out.hidden = false;
+    out.textContent = 'Opening your messages app. If nothing opens, text or call (305) 753-4452 and paste your request.';
+    navigator.clipboard?.writeText(msg).catch(() => {});
+    location.href = 'sms:+13057534452?&body=' + encodeURIComponent(msg);
+  });
+})();
+</script>
+
+</body>
+</html>

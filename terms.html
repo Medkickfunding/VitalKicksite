@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terms of use · VitalKick</title>
+<meta name="description" content="The terms for using the VitalKick website and app.">
+<meta property="og:title" content="Terms of use · VitalKick"><meta property="og:description" content="The terms for using the VitalKick website and app."><meta property="og:image" content="assets/poster.jpg">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout concept: an instrument panel. Hairline grid ground, mono labels that carry real units, one framed "screen" per page. */
+:root {
+  --ink: #05090a;        /* page ground */
+  --panel: #0b1314;      /* raised surfaces */
+  --line: rgba(205, 240, 232, .11);
+  --text: #e8f1ef;
+  --muted: #93a6a2;
+  --mint: #62e6cf;       /* VitalKick brand, sampled from the logo */
+  --mint-ink: #04201b;
+  --amber: #f2b84b;      /* estimates only */
+  --coral: #ff6b5c;
+  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --wrap: 1180px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box }
+html { scroll-behavior: smooth }
+body { margin: 0; background: var(--ink); color: var(--text); font: 400 17px/1.6 var(--body); -webkit-font-smoothing: antialiased }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px; mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 75%); opacity: .55 }
+a { color: inherit }
+img, video { max-width: 100%; display: block }
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: 24px }
+@media (max-width: 520px) { .wrap { padding-inline: 16px } }
+:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; border-radius: 6px }
+
+/* nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--ink) 78%, transparent); border-bottom: 1px solid var(--line) }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 68px }
+.brand { display: block; width: 132px; height: 34px; background: var(--mint); -webkit-mask: url(assets/wordmark.png) left center / contain no-repeat; mask: url(assets/wordmark.png) left center / contain no-repeat }
+.nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 15px; color: var(--muted) }
+.nav ul a { text-decoration: none } .nav ul a:hover, .nav ul a[aria-current] { color: var(--text) }
+@media (max-width: 860px) { .nav ul { display: none } }
+
+/* type */
+.eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .22em; text-transform: uppercase; color: var(--mint) }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 800; letter-spacing: -.025em }
+h1 { font-size: clamp(42px, 6.4vw, 82px); line-height: .98 }
+h2 { font-size: clamp(32px, 4.2vw, 52px); line-height: 1.04 }
+h3 { font-size: 21px; line-height: 1.25; letter-spacing: -.01em }
+h1 em, h2 em { font: 400 1.08em/1 var(--display); font-style: italic; color: var(--mint); letter-spacing: -.01em }
+.lede { font-size: 19px; color: var(--muted); max-width: 58ch }
+p { margin: 0 }
+.mono { font-family: var(--mono); font-size: 13px; letter-spacing: .06em }
+
+/* buttons */
+.btns { display: flex; flex-wrap: wrap; gap: 12px }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; font: 600 15px var(--body); text-decoration: none; border: 1px solid transparent; cursor: pointer }
+.btn.primary { background: var(--mint); color: var(--mint-ink) }
+.btn.primary:hover { filter: brightness(1.08) }
+.btn.ghost { border-color: color-mix(in srgb, var(--text) 24%, transparent); color: var(--text); background: transparent }
+.btn.ghost:hover { border-color: var(--mint) }
+
+/* sections */
+section { padding-block: clamp(64px, 9vw, 120px) }
+.sec-head { display: grid; gap: 18px; margin-bottom: 48px; max-width: 760px }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0 }
+
+/* framed screen with crop marks, echoing the reel HUD */
+.frame { position: relative; padding: 14px }
+.frame::before, .frame::after, .frame > .cm::before, .frame > .cm::after { content: ""; position: absolute; width: 18px; height: 18px; border-color: color-mix(in srgb, var(--text) 45%, transparent); border-style: solid; border-width: 0 }
+.frame::before { top: 0; left: 0; border-top-width: 1.5px; border-left-width: 1.5px }
+.frame::after { top: 0; right: 0; border-top-width: 1.5px; border-right-width: 1.5px }
+.frame > .cm::before { bottom: 0; left: 0; border-bottom-width: 1.5px; border-left-width: 1.5px }
+.frame > .cm::after { bottom: 0; right: 0; border-bottom-width: 1.5px; border-right-width: 1.5px }
+
+/* steps (a real sequence) */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line) }
+.steps.three { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+.step { padding: 28px 28px 8px 0; display: grid; gap: 12px; align-content: start; min-width: 0 }
+.step + .step { padding-left: 28px; border-left: 1px solid var(--line) }
+.step .n { font: 600 13px var(--mono); color: var(--mint); letter-spacing: .1em }
+.step p { color: var(--muted); font-size: 16px }
+@media (max-width: 900px) { .steps, .steps.three { grid-template-columns: 1fr } .step + .step { padding-left: 0; border-left: 0; border-top: 1px solid var(--line) } }
+
+.foot { border-top: 1px solid var(--line); padding-block: 40px; color: var(--muted); font-size: 14px }
+.foot .wrap { display: flex; flex-wrap: wrap; gap: 16px 40px; justify-content: space-between; align-items: center }
+.foot .mono { color: color-mix(in srgb, var(--muted) 80%, transparent) }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } * { animation: none !important; transition: none !important } }
+
+/* site footer */
+.sfoot { border-top: 1px solid var(--line); padding-block: 64px 32px; background: color-mix(in srgb, var(--ink) 92%, #000) }
+.sfoot .cols { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(5, minmax(0, 1fr)); gap: 32px 24px }
+@media (max-width: 1000px) { .sfoot .cols { grid-template-columns: repeat(3, minmax(0, 1fr)) } .sfoot .brandcol { grid-column: 1 / -1 } }
+@media (max-width: 560px) { .sfoot .cols { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+.sfoot h4 { margin: 0 0 14px; font: 600 11px var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--muted) }
+.sfoot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+.sfoot ul a { color: color-mix(in srgb, var(--text) 85%, var(--muted)); text-decoration: none; font-size: 15px } .sfoot ul a:hover { color: var(--mint) }
+.brandcol { display: grid; gap: 16px; align-content: start }
+.brandcol p { color: var(--muted); font-size: 15px; max-width: 34ch }
+.tel { font: 700 20px var(--body); color: var(--text); text-decoration: none } .tel:hover { color: var(--mint) }
+.sfoot .bottom { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; color: var(--muted); font-size: 13px }
+
+/* simple content pages */
+.page { padding-block: clamp(110px, 12vw, 160px) 80px }
+.page .wrap { max-width: 860px; display: grid; gap: 22px }
+.page h2 { font-size: clamp(26px, 3vw, 34px); margin-top: 26px }
+.page p, .page li { color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 68ch }
+.page ul { display: grid; gap: 8px; padding-left: 20px; margin: 0 }
+.page table { width: 100%; border-collapse: collapse; font-size: 15px }
+.page th, .page td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line) }
+.page th { font: 600 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+.tablewrap { overflow-x: auto }
+.crumb { font: 600 12px var(--mono); letter-spacing: .14em; color: var(--muted); text-decoration: none }
+
+/* Legal pages: sticky contents list beside numbered sections */
+.k-label { display: block; font: 600 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--mint) }
+.legal { padding-block: clamp(110px, 12vw, 160px) 90px }
+.legal .head { display: grid; gap: 18px; max-width: 860px; margin-bottom: 44px }
+.legal .meta { display: flex; flex-wrap: wrap; gap: 10px }
+.legal .meta span { font: 600 12px var(--mono); letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px }
+.legal .cols { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: start }
+@media (max-width: 900px) { .legal .cols { grid-template-columns: 1fr } }
+.toc { position: sticky; top: 96px; display: grid; gap: 2px; max-height: calc(100vh - 120px); overflow-y: auto; padding-right: 6px }
+.toc b { font: 600 11px var(--mono); letter-spacing: .16em; color: var(--muted); text-transform: uppercase; margin-bottom: 10px }
+.toc a { display: flex; gap: 10px; color: var(--muted); text-decoration: none; font-size: 14px; line-height: 1.35; padding: 7px 10px; border-left: 2px solid var(--line); min-height: 34px; align-items: center }
+.toc a span { font: 600 11px var(--mono); color: color-mix(in srgb, var(--mint) 70%, var(--muted)) }
+.toc a:hover, .toc a.on { color: var(--text); border-left-color: var(--mint) }
+@media (max-width: 900px) { .toc { position: relative; top: 0; max-height: none; border: 1px solid var(--line); border-radius: 18px; padding: 18px } }
+.legal article { display: grid; gap: 16px; min-width: 0 }
+.legal article h2 { font-size: clamp(24px, 2.6vw, 30px); margin: 34px 0 0; scroll-margin-top: 96px; display: flex; gap: 14px; align-items: baseline }
+.legal article h2 .n { font: 600 13px var(--mono); color: var(--mint) }
+.legal article h3 { font-size: 18px; margin: 10px 0 0 }
+.legal article p, .legal article li { color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 72ch; margin: 0 }
+.legal article ul { display: grid; gap: 9px; padding-left: 20px; margin: 0 }
+.legal article a { color: var(--mint) }
+.legal .tablewrap table { width: 100%; border-collapse: collapse; font-size: 15px }
+.legal .tablewrap th, .legal .tablewrap td { text-align: left; vertical-align: top; padding: 12px 10px; border-bottom: 1px solid var(--line) }
+.legal .tablewrap th { font: 600 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+.shortv { border: 1px solid color-mix(in srgb, var(--mint) 35%, transparent); border-radius: 22px; padding: clamp(20px, 3vw, 30px); background: linear-gradient(160deg, color-mix(in srgb, var(--mint) 8%, var(--panel)), var(--panel) 60%); display: grid; gap: 14px }
+.shortv h2 { margin: 0 !important; font-size: 22px !important }
+.shortv ul { list-style: none; padding: 0 !important }
+.shortv li { padding-left: 28px; position: relative }
+.shortv li::before { content: ""; position: absolute; left: 4px; top: .55em; width: 10px; height: 10px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 8px var(--mint) }
+.callout { border-left: 3px solid var(--amber); padding: 4px 0 4px 18px }
+
+/* FAQ accordion: one answer open at a time */
+.faq-cats { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px }
+.faq-cats a { font: 600 13px var(--body); color: var(--muted); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; min-height: 40px; display: inline-flex; align-items: center }
+.faq-cats a:hover { color: var(--text); border-color: var(--mint) }
+.faq-group { display: grid; gap: 12px; scroll-margin-top: 96px }
+.faq-group + .faq-group { margin-top: 34px }
+.faq-group > h2 { font-size: clamp(22px, 2.4vw, 28px); margin: 0 0 6px; display: flex; gap: 12px; align-items: center }
+.faq-group > h2 .n { font: 600 12px var(--mono); color: var(--mint) }
+.qa { border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--panel) 75%, transparent); transition: border-color .25s, background .25s }
+.qa.open { border-color: color-mix(in srgb, var(--mint) 45%, transparent); background: linear-gradient(160deg, color-mix(in srgb, var(--mint) 7%, var(--panel)), var(--panel) 70%) }
+.qa h3 { margin: 0; font-size: inherit }
+.qa button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 18px; text-align: left; background: none; border: 0; color: var(--text); font: 600 clamp(16px, 1.6vw, 18px)/1.4 var(--body); padding: 20px 22px; min-height: 64px; cursor: pointer; border-radius: 18px }
+.qa .pm { flex: none; width: 32px; height: 32px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--mint) 40%, transparent); position: relative; transition: transform .3s, background .3s }
+.qa .pm::before, .qa .pm::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; margin: -1px 0 0 -6px; background: var(--mint); border-radius: 2px; transition: transform .3s }
+.qa .pm::after { transform: rotate(90deg) }
+.qa.open .pm { background: var(--mint); transform: rotate(180deg) }
+.qa.open .pm::before { background: var(--mint-ink) } .qa.open .pm::after { transform: rotate(0); background: var(--mint-ink) }
+.qa .ans { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease }
+.qa.open .ans { grid-template-rows: 1fr }
+.qa .ans > div { overflow: hidden }
+.qa .ans .in { padding: 0 22px 22px; display: grid; gap: 10px; color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 76ch }
+.qa .ans p { margin: 0 } .qa .ans ul { margin: 0; padding-left: 20px; display: grid; gap: 6px } .qa .ans a { color: var(--mint) }
+
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main"><div class="wrap"><a class="brand" href="index.html" aria-label="VitalKick home"></a><ul><li><a href="technology.html">How it works</a></li><li><a href="biomarkers.html">Biomarkers</a></li><li><a href="validation.html">Validation</a></li><li><a href="research.html">For research</a></li><li><a href="contact.html">Contact</a></li></ul><a class="btn primary" href="book.html">Book a call</a></div></nav>
+<main class="legal"><div class="wrap">
+<div class="head"><a class="crumb" href="index.html">← VITALKICK</a><span class="k-label">Terms of use</span><h1>Terms of <em>use</em></h1><p class="lede">The agreement between you and VitalKick for this website and the app, in plain language where the law allows.</p>
+<div class="meta"><span>Effective October 9, 2026</span><span>Last updated October 9, 2026</span></div></div>
+<div class="cols"><nav class="toc" aria-label="On this page"><b>On this page</b><a href="#agreeing-to-these-terms"><span>01</span>Agreeing to these terms</a><a href="#a-wellness-product-not-medical-care"><span>02</span>A wellness product, not medical care</a><a href="#who-can-use-vitalkick"><span>03</span>Who can use VitalKick</a><a href="#your-account"><span>04</span>Your account</a><a href="#acceptable-use"><span>05</span>Acceptable use</a><a href="#your-data"><span>06</span>Your data</a><a href="#our-technology-and-content"><span>07</span>Our technology and content</a><a href="#feedback"><span>08</span>Feedback</a><a href="#other-services"><span>09</span>Other services</a><a href="#changes-and-availability"><span>10</span>Changes and availability</a><a href="#ending-your-use"><span>11</span>Ending your use</a><a href="#disclaimers"><span>12</span>Disclaimers</a><a href="#limits-of-liability"><span>13</span>Limits of liability</a><a href="#indemnity"><span>14</span>Indemnity</a><a href="#governing-law-and-disputes"><span>15</span>Governing law and disputes</a><a href="#contact-us"><span>16</span>Contact us</a></nav>
+<article><div class="shortv"><h2>The short version</h2>
+<ul>
+  <li>VitalKick is a general wellness product. It does not replace care from your clinician.</li>
+  <li>Readings come from a camera and can be off. Confirm anything important with your clinician or your own device.</li>
+  <li>In an emergency, call 911. Do not wait for a scan.</li>
+  <li>You must be 18 or older to use the app.</li>
+  <li>Your data stays yours. How we handle it is in the <a href="privacy-policy.html">Privacy policy</a>.</li>
+</ul>
+</div>
+
+<h2 id="agreeing-to-these-terms"><span class="n">01</span>Agreeing to these terms</h2>
+<p>These terms are an agreement between you and VitalKick ("VitalKick", "we", "us"). They apply to this website and to the VitalKick app (together, "VitalKick"). By using VitalKick you agree to them. If you do not agree, please do not use VitalKick.</p>
+<p>Organisations that run pilots, studies or programs with VitalKick sign a separate written agreement. Where that agreement and these terms differ, the written agreement wins for that organisation.</p>
+
+<h2 id="a-wellness-product-not-medical-care"><span class="n">02</span>A wellness product, not medical care</h2>
+<p class="callout">VitalKick is a general wellness product. It helps you understand and follow your own readings and build healthier habits. It does not replace a visit, an examination or advice from a qualified clinician, and nothing in VitalKick is medical advice.</p>
+<ul>
+  <li>Readings are estimates from a camera. Light, movement, talking, makeup, skin conditions and your phone's camera can all affect them.</li>
+  <li>Hemoglobin and HbA1c are labelled as estimates. Only a blood test can confirm them.</li>
+  <li>VitalKick never tells you to begin, end or alter a medicine or a dose. Those decisions belong to you and your clinician.</li>
+  <li>If a reading crosses an urgent level, VitalKick suggests getting checked the same day. Please take that seriously.</li>
+  <li><b>If you think you are having an emergency, call 911</b> or go to the nearest emergency department. Do not rely on VitalKick in an emergency.</li>
+</ul>
+<p>Using VitalKick does not create a doctor-patient relationship with VitalKick or with Dr. Bizanti.</p>
+
+<h2 id="who-can-use-vitalkick"><span class="n">03</span>Who can use VitalKick</h2>
+<p>You must be at least 18 years old and live in the United States to use the app. If you use VitalKick for an organisation, you confirm you are allowed to accept these terms for it.</p>
+
+<h2 id="your-account"><span class="n">04</span>Your account</h2>
+<ul>
+  <li>Give accurate details and keep them up to date.</li>
+  <li>Keep your sign-in details private. You are responsible for activity on your account.</li>
+  <li>Tell us straight away if you think someone else has used your account.</li>
+  <li>Scan only your own face, or someone else's with their permission.</li>
+</ul>
+
+<h2 id="acceptable-use"><span class="n">05</span>Acceptable use</h2>
+<p>Please do not:</p>
+<ul>
+  <li>use VitalKick for anything unlawful, or to harm or mislead anyone</li>
+  <li>copy, take apart, reverse engineer or try to extract the source code or the rPPG engine, except where the law allows it</li>
+  <li>try to get around security, consent checks or usage limits, or access data that is not yours</li>
+  <li>use bots or scrapers on VitalKick, or overload it</li>
+  <li>use VitalKick to make decisions about someone's eligibility for employment, insurance, credit or housing</li>
+  <li>resell VitalKick or offer it to others without a written agreement with us</li>
+</ul>
+
+<h2 id="your-data"><span class="n">06</span>Your data</h2>
+<p>You own your health data. You give us permission to store and process it only to run VitalKick for you, in the ways described in the <a href="privacy-policy.html">Privacy policy</a>. Research use is a separate, optional consent and is never a condition of using VitalKick. You can export or delete your data at any time from the app's settings.</p>
+
+<h2 id="our-technology-and-content"><span class="n">07</span>Our technology and content</h2>
+<p>VitalKick, its software, design, text, graphics, logo and name belong to VitalKick or the companies that license them to us. The rPPG engine is licensed from our technology partner. We give you a personal, non-transferable, revocable right to use VitalKick for your own wellness, as these terms allow. All other rights are reserved.</p>
+<p>Health information in VitalKick names its published source. It is general information, not advice for your situation.</p>
+
+<h2 id="feedback"><span class="n">08</span>Feedback</h2>
+<p>If you send us ideas or suggestions, we may use them without owing you anything. We will not identify you publicly without asking.</p>
+
+<h2 id="other-services"><span class="n">09</span>Other services</h2>
+<p>VitalKick may link to or work with services we do not run, such as app stores, Google Calendar and your phone's text messaging. Their own terms and privacy policies apply to them, and we are not responsible for them.</p>
+<p>If you downloaded the app from the Apple App Store or Google Play, their usage rules also apply. Apple and Google are not responsible for the app or for supporting it.</p>
+
+<h2 id="changes-and-availability"><span class="n">10</span>Changes and availability</h2>
+<p>We improve VitalKick often, and features may change or end. We may pause VitalKick for maintenance. When we change these terms in a way that matters, we will update the date at the top and tell you in the app before the change applies. Continuing to use VitalKick after that means you accept the new terms.</p>
+
+<h2 id="ending-your-use"><span class="n">11</span>Ending your use</h2>
+<p>You can stop using VitalKick and delete your account at any time. We may suspend or close an account that breaks these terms or puts others at risk, and we will tell you why unless the law or safety prevents it. Sections that by their nature should continue, such as ownership, disclaimers and limits of liability, survive.</p>
+
+<h2 id="disclaimers"><span class="n">12</span>Disclaimers</h2>
+<p>VitalKick is provided "as is" and "as available". To the fullest extent the law allows, we make no warranties of any kind, express or implied, including warranties of merchantability, fitness for a particular purpose, accuracy and non-infringement. We do not promise that VitalKick will be uninterrupted or error-free, or that any reading will be accurate for you.</p>
+
+<h2 id="limits-of-liability"><span class="n">13</span>Limits of liability</h2>
+<p>To the fullest extent the law allows, VitalKick and its team will not be liable for indirect, incidental, special, consequential or punitive damages, or for lost data, profits or goodwill, arising from your use of VitalKick or reliance on any reading. Our total liability for any claim about VitalKick is limited to the greater of the amount you paid us in the 12 months before the claim, or one hundred US dollars.</p>
+<p>Some states do not allow these limits, so some may not apply to you.</p>
+
+<h2 id="indemnity"><span class="n">14</span>Indemnity</h2>
+<p>If you break these terms or the law while using VitalKick and someone makes a claim against us because of it, you agree to cover our reasonable costs of that claim, to the extent the law allows.</p>
+
+<h2 id="governing-law-and-disputes"><span class="n">15</span>Governing law and disputes</h2>
+<p>These terms are governed by the laws of the United States and of the state where VitalKick has its principal office, without regard to conflict-of-law rules. Before going to court, please call or text us so we can try to resolve the problem informally. Any court case must be brought in the state or federal courts of that state, unless the law where you live gives you the right to bring it there.</p>
+
+<h2 id="contact-us"><span class="n">16</span>Contact us</h2>
+<p>Questions about these terms: call or text <a href="tel:+13057534452">(305) 753-4452</a>, or <a href="book.html">book a call</a>.</p>
+</article></div>
+</div></main>
+<script>(() => { const L = [...document.querySelectorAll('.toc a')]; const H = L.map(a => document.querySelector(a.getAttribute('href')));
+addEventListener('scroll', () => { let k = 0; H.forEach((h, i) => { if (h.getBoundingClientRect().top < 140) k = i; }); L.forEach((a, i) => a.classList.toggle('on', i === k)); }, { passive: true }); })();</script>
+<footer class="sfoot">
+  <div class="wrap">
+    <div class="cols">
+      <div class="brandcol"><a class="brand" href="index.html" aria-label="VitalKick home"></a><p>Vital signs from a 60-second selfie, processed on the phone.</p><a class="tel" href="tel:+13057534452">(305) 753-4452</a></div>
+      <div><h4>Product</h4><ul><li><a href="index.html#scan">The 60-second scan</a></li><li><a href="technology.html">How it works</a></li><li><a href="biomarkers.html">Biomarkers</a></li><li><a href="validation.html">Validation</a></li><li><a href="index.html#edge">Privacy &amp; security</a></li></ul></div>
+      <div><h4>Solutions</h4><ul><li><a href="solutions-telehealth.html">Telehealth</a></li><li><a href="solutions-checkins.html">Between-visit check-ins</a></li><li><a href="solutions-value-based-care.html">Value-based care</a></li><li><a href="solutions-senior-living.html">Senior living</a></li><li><a href="solutions-employers.html">Employers &amp; wellness</a></li><li><a href="research.html">Research &amp; trials</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="book.html">Book a call</a></li><li><a href="contact.html">Contact</a></li><li><a href="careers.html">Careers</a></li><li><a href="press.html">Press</a></li></ul></div>
+      <div><h4>Resources</h4><ul><li><a href="faq.html">FAQ</a></li><li><a href="blog.html">Blog</a></li><li><a href="help.html">Help center</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="privacy-policy.html">Privacy policy</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="accessibility.html">Accessibility</a></li></ul></div>
+    </div>
+    <div class="bottom"><span>© 2026 VitalKick. All rights reserved.</span><span>VitalKick is a general wellness product. Readings support your own wellness and do not replace care from your clinician.</span></div>
+  </div>
+</footer>
+</body>
+</html>

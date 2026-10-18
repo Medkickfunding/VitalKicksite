@@ -1,0 +1,746 @@
+<style>
+/* ---------- scroll scenes ---------- */
+.scene { position: relative }
+.stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: grid }
+.stage .wrap { width: 100% }
+.nav { position: fixed; inset: 0 0 auto 0; top: 0; padding-top: env(safe-area-inset-top, 0px) }
+.k-label { font: 600 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--mint) }
+
+/* hero */
+#hero { height: 260vh }
+#hero .stage { align-items: center }
+#hero .copy { position: relative; z-index: 2; display: grid; gap: 24px; max-width: 520px; padding-top: 68px }
+#hero .lede { font-size: 19px; max-width: 44ch }
+#reelBox { position: absolute; z-index: 1; overflow: hidden; border-radius: 16px; background: #000; box-shadow: 0 40px 140px -30px color-mix(in srgb, var(--mint) 35%, transparent) }
+#reelBox video { width: 100%; height: 100%; object-fit: cover }
+#reelShade { position: absolute; inset: 0; background: linear-gradient(90deg, var(--ink) 0%, transparent 60%); opacity: 0; pointer-events: none }
+#sound { position: absolute; right: 18px; bottom: 18px; min-height: 40px; padding: 0 16px; font-size: 13px; background: color-mix(in srgb, var(--ink) 70%, transparent); backdrop-filter: blur(8px); z-index: 3 }
+.scroll-cue { position: absolute; left: 50%; bottom: 28px; translate: -50% 0; color: var(--muted); font: 600 11px var(--mono); letter-spacing: .2em; z-index: 2 }
+.scroll-cue::after { content: ""; display: block; width: 1px; height: 36px; margin: 10px auto 0; background: linear-gradient(var(--mint), transparent); animation: cue 1.8s ease-in-out infinite }
+@keyframes cue { 0% { transform: scaleY(0); transform-origin: top } 50% { transform: scaleY(1); transform-origin: top } 51% { transform-origin: bottom } 100% { transform: scaleY(0); transform-origin: bottom } }
+@media (max-width: 860px) { #hero .copy { align-self: start; padding-top: 88px; gap: 16px } #hero h1 { font-size: 40px } #hero .lede { font-size: 16px } .scroll-cue { display: none } }
+
+/* problem */
+#problem { height: 320vh }
+#problem .stage { align-items: center }
+.prob { display: grid; gap: 40px }
+.prob h2 { max-width: 16ch }
+.fr-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px }
+@media (max-width: 760px) { .fr-grid { grid-template-columns: 1fr 1fr } }
+.fric { position: relative; border: 1px solid var(--line); border-radius: 16px; padding: 20px; background: var(--panel); display: grid; gap: 6px; min-width: 0 }
+.fric b { font-size: 18px } .fric span { color: var(--muted); font-size: 14px }
+.fric::after { content: ""; position: absolute; left: 14px; right: 14px; top: 50%; height: 2px; background: var(--coral); transform: scaleX(var(--strike, 0)); transform-origin: left }
+.answer { font: 400 clamp(40px, 6vw, 84px)/1 var(--display); font-style: italic; color: var(--mint) }
+
+/* light (sequence) */
+#light, #scan, #face { height: 380vh }
+#face { height: 260vh }
+.seq { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover }
+canvas.seq { display: block }
+.side { position: relative; z-index: 2; align-self: center; display: grid; gap: 22px; max-width: 520px }
+.side::before { content: ""; position: absolute; inset: -60px -80px -60px -200px; z-index: -1; background: radial-gradient(closest-side, color-mix(in srgb, var(--ink) 85%, transparent), transparent) }
+.steps-txt { position: relative; min-height: 210px }
+.steps-txt p { position: absolute; inset: 0 0 auto 0; font: 700 clamp(26px, 3vw, 38px)/1.18 var(--body); letter-spacing: -.02em; opacity: 0; transform: translateY(24px); transition: opacity .35s, transform .45s }
+.steps-txt p.on { opacity: 1; transform: none }
+.steps-txt p em { font: 400 1.1em var(--display); font-style: italic; color: var(--mint) }
+.ppg { width: 100%; height: 70px }
+.dots { display: flex; gap: 8px } .dots i { width: 22px; height: 3px; border-radius: 2px; background: var(--line) } .dots i.on { background: var(--mint) }
+
+/* scan timeline */
+#scan .stage .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; height: 100% }
+@media (max-width: 860px) { #scan .stage .wrap { grid-template-columns: 1fr; align-content: end; padding-bottom: 24px } }
+.tl { position: relative; z-index: 2; display: grid; gap: 18px; background: color-mix(in srgb, var(--ink) 82%, transparent); border: 1px solid var(--line); border-radius: 20px; padding: 24px; backdrop-filter: blur(10px); grid-column: 1 }
+@media (max-width: 860px) { .tl { grid-column: 1; padding: 16px; gap: 10px } .tl .why { display: none } #scan canvas.seq { height: 58% } }
+.clock { display: flex; align-items: baseline; gap: 10px } .clock b { font: 800 56px/1 var(--body); letter-spacing: -.03em; font-variant-numeric: tabular-nums } .clock span { color: var(--muted) }
+.track { position: relative; height: 6px; border-radius: 3px; background: var(--line) } .track i { position: absolute; inset: 0 auto 0 0; border-radius: 3px; background: var(--mint); width: 0 }
+.track u { position: absolute; top: -5px; width: 2px; height: 16px; background: color-mix(in srgb, var(--text) 35%, transparent) }
+.rlist { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px }
+.rlist li { display: flex; justify-content: space-between; gap: 10px; font-size: 15px; color: color-mix(in srgb, var(--muted) 70%, transparent); padding-block: 4px; border-bottom: 1px solid var(--line); transition: color .3s }
+.rlist li span:last-child { font: 400 12px var(--mono) }
+.rlist li.on { color: var(--text) } .rlist li.on span:last-child { color: var(--mint) }
+.rlist li.est.on { color: var(--text) } .rlist li.est.on span:last-child { color: var(--amber) }
+@media (max-width: 860px) { .rlist li { font-size: 13px } }
+.why { color: var(--muted); font-size: 14px }
+
+/* edge */
+#edge { height: 300vh }
+#edge .stage { align-items: center }
+.edge { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: center }
+@media (max-width: 900px) { .edge { grid-template-columns: 1fr; gap: 24px } }
+.edge svg { width: 100%; height: auto }
+.ed-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line) }
+.ed-list li { padding-block: 14px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; color: var(--muted); transition: color .3s }
+.ed-list li::before { content: "✓"; color: var(--mint) }
+.ed-list li.on { color: var(--text) }
+
+/* history (horizontal) */
+#history { height: 420vh }
+#history .stage { align-content: center; gap: 40px }
+.htrack { display: flex; gap: 22px; padding-inline: max(24px, calc((100vw - var(--wrap)) / 2 + 24px)); will-change: transform }
+.hcard { flex: 0 0 min(340px, 78vw); border: 1px solid var(--line); border-radius: 20px; padding: 26px; background: var(--panel); display: grid; gap: 14px; align-content: start; min-height: 300px }
+.hcard .yr { font: 400 64px/1 var(--display); color: var(--mint) }
+.hcard p { color: var(--muted); font-size: 15px }
+.hcard.now { background: radial-gradient(400px 260px at 100% 0%, color-mix(in srgb, var(--mint) 22%, transparent), transparent 70%), var(--panel); border-color: color-mix(in srgb, var(--mint) 45%, transparent) }
+.hline { height: 2px; background: var(--line); margin-inline: max(24px, calc((100vw - var(--wrap)) / 2 + 24px)); position: relative } .hline i { position: absolute; inset: 0 auto 0 0; background: var(--mint); width: 0 }
+
+/* use cases + generic scroll zoom */
+.uses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px }
+@media (max-width: 900px) { .uses { grid-template-columns: 1fr } }
+.use { border: 1px solid var(--line); border-radius: 20px; padding: 28px; display: grid; gap: 12px; align-content: start; background: var(--panel); min-width: 0 }
+.use .k-label { color: var(--muted) }
+.use p { color: var(--muted); font-size: 15px }
+.use a { color: var(--mint); font-weight: 600; text-decoration: none; font-size: 15px }
+[data-zoom] { will-change: transform, opacity }
+
+/* readings (from v1) */
+.readings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px }
+@media (max-width: 900px) { .readings { grid-template-columns: 1fr } }
+.group { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 26px; display: grid; gap: 18px; align-content: start; min-width: 0 }
+.group.est { background: transparent; border: 1.5px dashed color-mix(in srgb, var(--amber) 55%, transparent) }
+.group header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px }
+.group header .mono { color: var(--muted) }
+.group ul { list-style: none; margin: 0; padding: 0; display: grid }
+.group li { display: flex; justify-content: space-between; gap: 16px; padding-block: 11px; border-top: 1px solid var(--line); font-size: 16px }
+.group li span:last-child { font: 400 13px var(--mono); color: var(--muted); white-space: nowrap }
+.badge { display: inline-block; font: 600 12px var(--mono); letter-spacing: .04em; color: var(--amber); border: 1px solid color-mix(in srgb, var(--amber) 50%, transparent); border-radius: 999px; padding: 5px 10px; justify-self: start }
+.note { color: var(--muted); font-size: 15px }
+.facts { display: grid; border-top: 1px solid var(--line) }
+.facts div { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 20px; padding-block: 20px; border-bottom: 1px solid var(--line) }
+.facts dt { font: 600 12px/1.6 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--mint) }
+.facts dd { margin: 0; color: var(--muted) }
+@media (max-width: 520px) { .facts div { grid-template-columns: 1fr; gap: 6px } }
+.privacy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: start }
+@media (max-width: 860px) { .privacy { grid-template-columns: 1fr } }
+.founder { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 6vw, 96px); align-items: end }
+@media (max-width: 860px) { .founder { grid-template-columns: 1fr } }
+.quote { font: 400 clamp(30px, 3.6vw, 46px)/1.15 var(--display); font-style: italic; margin: 0; text-wrap: balance }
+.quote::before { content: "\201C"; color: var(--mint) }
+.quote::after { content: "\201D"; color: var(--mint) }
+.who-card { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 18px }
+.who-card b { font-size: 18px } .who-card span { color: var(--muted); font-size: 15px }
+
+
+/* skin cross-section */
+#light .lightwrap { display: grid; align-items: center; height: 100% }
+@media (max-width: 860px) { #light .lightwrap { align-items: end; padding-bottom: 36px } #light .steps-txt { min-height: 150px } #light .steps-txt p { font-size: 22px } #light .side::before { inset: -40px -40px -40px -40px } #light .side { align-self: end } }
+
+#face .facewrap { display: grid; align-items: center; height: 100% }
+@media (max-width: 860px) { #face .facewrap { align-items: end; padding-bottom: 36px } #face .side { align-self: end } #face .steps-txt p { font-size: 22px } #face .steps-txt { min-height: 150px } }
+#skin3d { pointer-events: none }
+
+/* biomarker explorer: list left, panel right; the page never moves when you switch */
+.bx { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 24px; align-items: start }
+.bx-list { display: grid; gap: 4px; border: 1px solid var(--line); border-radius: 20px; padding: 10px; background: var(--panel) }
+.bx-group { font: 600 11px var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); padding: 14px 12px 6px }
+.bx-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid transparent; border-radius: 12px; background: transparent; color: var(--text); font: 500 16px var(--body); text-align: left; cursor: pointer }
+.bx-item span:last-child { font: 400 12px var(--mono); color: var(--muted); white-space: nowrap }
+.bx-item:hover { background: color-mix(in srgb, var(--text) 5%, transparent) }
+.bx-item[aria-selected="true"] { background: color-mix(in srgb, var(--mint) 12%, transparent); border-color: color-mix(in srgb, var(--mint) 55%, transparent) }
+.bx-item[aria-selected="true"] span:last-child { color: var(--mint) }
+.bx-item.est span:last-child { color: var(--amber) }
+.bx-panel { position: sticky; top: 92px; border: 1px solid var(--line); border-radius: 22px; padding: clamp(20px, 3vw, 32px); background: radial-gradient(500px 260px at 100% 0%, color-mix(in srgb, var(--mint) 9%, transparent), transparent 70%), var(--panel); display: grid; gap: 22px; min-height: 620px; align-content: start }
+.bx-panel.est { background: var(--panel); border: 1.5px dashed color-mix(in srgb, var(--amber) 55%, transparent) }
+.bx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px }
+.bx-head h3 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -.02em }
+.bx-val { display: flex; align-items: baseline; gap: 8px } .bx-val b { font: 800 44px/1 var(--body); letter-spacing: -.03em; font-variant-numeric: tabular-nums } .bx-val span { color: var(--muted); font-size: 14px }
+.bx-val small { display: block; font: 600 11px var(--mono); letter-spacing: .14em; color: var(--muted); margin-bottom: 6px }
+.bx-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px }
+.bx-card { border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 8px; align-content: start; min-width: 0 }
+.bx-card.wide { grid-column: 1 / -1 }
+.bx-card h4 { margin: 0; font: 600 11px var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--mint) }
+.bx-card p, .bx-card li { color: color-mix(in srgb, var(--text) 82%, var(--muted)); font-size: 15px; line-height: 1.55 }
+.bx-card ul { margin: 0; padding-left: 18px; display: grid; gap: 6px }
+.rbar { display: flex; gap: 3px; height: 10px; margin-top: 4px }
+.rbar i { border-radius: 4px }
+.rbar .ok { background: var(--mint) } .rbar .good { background: color-mix(in srgb, var(--mint) 60%, #fff) } .rbar .warn { background: var(--amber) } .rbar .low { background: #4c7df0 } .rbar .high { background: #f08a4b } .rbar .urgent { background: var(--coral) }
+.rlab { display: flex; gap: 3px; font: 400 11px var(--mono); color: var(--muted) } .rlab span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.bx-src { font: 400 12px var(--mono); color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px }
+.bx-fade { animation: bxin .35s ease both } @keyframes bxin { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+@media (max-width: 900px) {
+  .bx { grid-template-columns: 1fr; gap: 14px }
+  .bx-list { display: flex; overflow-x: auto; padding: 8px; gap: 6px; scrollbar-width: none; position: sticky; top: 72px; z-index: 3 }
+  .bx-group { display: none }
+  .bx-item { flex: 0 0 auto; width: auto; min-height: 44px; font-size: 14px; border-color: var(--line) }
+  .bx-item span:last-child { display: none }
+  .bx-panel { position: static; min-height: 0 }
+  .bx-cards { grid-template-columns: 1fr }
+}
+
+/* validation */
+.vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px }
+@media (max-width: 900px) { .vgrid { grid-template-columns: 1fr } }
+.vcard { border: 1px solid var(--line); border-radius: 20px; padding: 26px; background: var(--panel); display: grid; gap: 16px; align-content: start; min-width: 0 }
+.vlist { list-style: none; margin: 0; padding: 0; display: grid }
+.vlist li { padding-block: 10px; border-top: 1px solid var(--line); font-size: 15px; display: flex; justify-content: space-between; gap: 12px }
+.vlist.dev li { display: grid; gap: 2px } .vlist.dev span { color: var(--muted); font: 400 12px var(--mono) }
+.vstats { display: grid; gap: 0 } .vstats div { display: grid; gap: 4px; padding-block: 14px; border-top: 1px solid var(--line) }
+.vstats b { font: 800 40px/1 var(--body); letter-spacing: -.03em; color: var(--mint) } .vstats span { color: var(--muted); font-size: 14px }
+.vfoot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-top: 28px }
+.vfoot .note { max-width: 70ch }
+
+/* outro */
+#outro { height: 300vh }
+#outro .stage { align-items: end }
+#outro .end { position: relative; z-index: 2; display: grid; gap: 20px; justify-items: center; text-align: center; padding-bottom: 9vh; opacity: 0 }
+
+@media (prefers-reduced-motion: reduce) {
+  #hero, #problem, #light, #scan, #face, #edge, #history, #outro { height: auto }
+  .stage { position: relative; height: auto; min-height: 100vh }
+  .htrack { flex-wrap: wrap; transform: none !important }
+  .steps-txt p { position: static; opacity: 1; transform: none; margin-bottom: 12px }
+  .steps-txt { min-height: 0 }
+}
+</style>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="VitalKick home"></a>
+    <ul>
+      <li><a href="#light">How it works</a></li>
+      <li><a href="biomarkers.html">Biomarkers</a></li>
+      <li><a href="#validation">Validation</a></li>
+      <li><a href="#uses">Who it's for</a></li>
+      <li><a href="research.html">For research</a></li>
+    </ul>
+    <a class="btn primary" href="book.html">Book a call</a>
+  </div>
+</nav>
+
+<!-- 1 HERO: reel card zooms to full screen as you scroll -->
+<section class="scene" id="hero">
+  <div class="stage">
+    <div id="reelBox"><video id="reel" src="assets/vitalkick-reel.mp4" poster="assets/poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="VitalKick motion reel, 60 seconds"></video><div id="reelShade"></div><button class="btn ghost" id="sound" type="button">Play with sound</button></div>
+    <div class="wrap"><div class="copy" id="heroCopy">
+      <span class="k-label">Camera-based wellness check</span>
+      <h1>Your vitals from a <em>60-second</em> selfie.</h1>
+      <p class="lede">VitalKick reads the tiny colour changes each heartbeat makes in your face, using the front camera you already carry. One minute, 12 readings, nothing to wear.</p>
+      <div class="btns"><a class="btn primary" href="book.html">Book a call</a><a class="btn ghost" href="#light">See how it works</a></div>
+    </div></div>
+    <span class="scroll-cue" id="cue">SCROLL</span>
+  </div>
+</section>
+
+<!-- 5 SCAN: phone sequence + 60 s timeline -->
+<section class="scene" id="scan">
+  <div class="stage">
+    <canvas class="seq" data-seq="phone" data-n="100"></canvas>
+    <div class="wrap">
+      <div class="tl">
+        <span class="k-label">One scan, second by second</span>
+        <div class="clock"><b id="sec">0</b><span>of 60 seconds</span></div>
+        <div class="track" id="track"><i></i><u style="left:33.3%"></u><u style="left:58.3%"></u><u style="left:61.7%"></u><u style="left:83.3%"></u></div>
+        <ul class="rlist" id="rlist">
+          <li data-at="20"><span>Pulse rate</span><span>20 s</span></li>
+          <li data-at="35"><span>Blood pressure</span><span>35 s</span></li>
+          <li data-at="35"><span>Oxygen saturation</span><span>35 s</span></li>
+          <li data-at="37"><span>Breathing rate</span><span>37 s</span></li>
+          <li data-at="37"><span>Pulse-respiration quotient</span><span>37 s</span></li>
+          <li data-at="50"><span>HRV (RMSSD, SDNN)</span><span>50 s</span></li>
+          <li data-at="50"><span>Stress level</span><span>50 s</span></li>
+          <li data-at="50"><span>Sympathetic / parasympathetic</span><span>50 s</span></li>
+          <li data-at="60" class="est"><span>Hemoglobin (est.)</span><span>60 s</span></li>
+          <li data-at="60" class="est"><span>HbA1c (est.)</span><span>60 s</span></li>
+        </ul>
+        <p class="why">Best results come from one scan each morning, in the same place and good light. Why a full minute: heart-rate variability needs about 50 seconds of heartbeats before the numbers mean anything physiologically. Estimates carry their own badge in the app.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 PROBLEM -->
+<section class="scene" id="problem">
+  <div class="stage"><div class="wrap prob">
+    <span class="k-label">The problem</span>
+    <h2>Checking your vitals today still means <em>hardware, labs and waiting.</em></h2>
+    <div class="fr-grid" id="frics">
+      <div class="fric"><b>Devices to buy</b><span>Cuffs, clips and sensors, each with its own cost and upkeep</span></div>
+      <div class="fric"><b>Logistics</b><span>Shipping, calibration and recalls</span></div>
+      <div class="fric"><b>Trained operator</b><span>Instructions that are hard to follow at home</span></div>
+      <div class="fric"><b>Needles</b><span>Blood draws and the fear that keeps people away</span></div>
+      <div class="fric"><b>Days to results</b><span>Lab work that comes back long after the visit</span></div>
+      <div class="fric"><b>Siloed data</b><span>Numbers stuck on separate devices, taken one at a time</span></div>
+    </div>
+    <p class="answer" id="answer" style="opacity:0">Less hardware. More insight.</p>
+  </div></div>
+</section>
+
+<!-- 4 FACE: photoscanned head with scan sweep -->
+<section class="scene" id="face">
+  <div class="stage">
+    <canvas id="faceCv" class="seq" aria-hidden="true"></canvas>
+    <div class="wrap facewrap"><div class="side">
+      <span class="k-label">Where it looks</span>
+      <div class="steps-txt" data-steps style="min-height:170px">
+        <p>First the face is found and followed, <em>frame by frame.</em></p>
+        <p>Only three patches matter: the forehead and both cheeks, where thin skin covers dense small vessels.</p>
+        <p>Then the picture is thrown away. No face image or face geometry is stored. <em>Only numbers.</em></p>
+      </div>
+      <div class="dots" data-dots><i></i><i></i><i></i></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- LIGHT: animated skin cross-section, how rPPG works -->
+<section class="scene" id="light">
+  <div class="stage">
+    <canvas id="skin3d" class="seq" aria-hidden="true"></canvas>
+    <canvas id="skin" class="seq" aria-hidden="true"></canvas>
+    <div class="wrap lightwrap"><div class="side">
+      <span class="k-label">How it works · rPPG</span>
+      <div class="steps-txt" data-steps>
+        <p>Every heartbeat pushes a little more blood into the tiny vessels under your skin.</p>
+        <p>Blood soaks up green light, so a little less light bounces back with each beat.</p>
+        <p>The camera records that change. It is <em>far too small</em> for your eyes to see.</p>
+        <p>Filtering turns it into a clean pulse wave. That is <em>rPPG:</em> your heartbeat, read from light.</p>
+      </div>
+      <div class="dots" data-dots><i></i><i></i><i></i><i></i></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- BIOMARKERS: click a marker on the left, details swap on the right -->
+<section id="biomarkers">
+  <div class="wrap">
+    <div class="sec-head"><span class="k-label">Biomarkers</span><h2>What each reading shows, <em>and why it matters.</em></h2><p class="lede">Pick a reading to see what it measures, the typical range, and what VitalKick suggests when a number sits outside it.</p></div>
+    <div class="bx">
+      <div class="bx-list" id="bxList" role="tablist" aria-label="Biomarkers"></div>
+      <div class="bx-panel" id="bxPanel" role="tabpanel" aria-live="polite"></div>
+    </div>
+    <div class="btns" style="margin-top:28px"><a class="btn ghost" href="biomarkers.html">See every biomarker in detail →</a><a class="btn primary" href="book.html">Book a call</a></div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- VALIDATION -->
+<section id="validation">
+  <div class="wrap">
+    <div class="sec-head" data-zoom><span class="k-label">Validation</span><h2>Tested against <em>reference devices.</em></h2><p class="lede">The rPPG engine inside VitalKick was tested by our technology partner against established measuring devices, in a controlled lab and in real-world pilots.</p></div>
+    <div class="vgrid">
+      <article class="vcard" data-zoom><span class="k-label">Who it was tested on</span>
+        <ul class="vlist"><li>Fitzpatrick skin types II to VI</li><li>Body mass index from 19 to 48</li><li>Women and men</li><li>Multiple ethnicities</li><li>People living with a wide range of health conditions</li><li>Lab and everyday conditions</li></ul></article>
+      <article class="vcard" data-zoom><span class="k-label">Compared against</span>
+        <ul class="vlist dev"><li><b>Polar H10</b><span>chest strap · pulse, HRV</span></li><li><b>Covidien Nellcor</b><span>pulse oximeter · oxygen</span></li><li><b>Withings BPM Connect</b><span>arm cuff · blood pressure</span></li><li><b>Vernier Go Direct</b><span>respiration belt · breathing</span></li><li><b>Lab blood draws</b><span>reference for estimates</span></li></ul>
+        <p class="note">Lab sessions ran in a fixed-light room, with clinicians checking setup and conditions for each measurement.</p></article>
+      <article class="vcard" data-zoom><span class="k-label">Real-world pilot · insurer in Asia</span>
+        <div class="vstats"><div><b>66%</b><span>of users active each week, against a 35% target</span></div><div><b>83%</b><span>satisfied, against a 60% target</span></div><div><b>2×</b><span>scans a week across all ages, 4× for ages 20 to 25</span></div></div></article>
+    </div>
+    <div class="vfoot" data-zoom><p class="note">Validation data courtesy of our rPPG technology partner. Results describe the partner's testing of the engine, not a medical claim about any one reading.</p><a class="btn ghost" href="validation.html">Read the validation summary</a></div>
+  </div>
+</section>
+
+<!-- 6 EDGE -->
+<section class="scene" id="edge">
+  <div class="stage"><div class="wrap edge">
+    <div style="display:grid;gap:22px">
+      <span class="k-label">Runs on the phone, not in the cloud</span>
+      <h2>Your video <em>never leaves</em> the device.</h2>
+      <ul class="ed-list" id="edList">
+        <li>Works without an internet connection, then syncs later</li>
+        <li>Only computed numbers are stored, and only with consent</li>
+        <li>No face images or face geometry are kept anywhere</li>
+        <li>Organisations keep full ownership of their data</li>
+        <li>No per-scan cloud computing cost at large volumes</li>
+      </ul>
+    </div>
+    <svg id="edgeSvg" viewBox="0 0 560 420" role="img" aria-label="Diagram: video stays on the phone; only numbers go to the cloud, with consent">
+      <rect x="40" y="90" width="150" height="260" rx="26" fill="var(--panel)" stroke="var(--text)" stroke-opacity=".5" stroke-width="2"/>
+      <rect x="86" y="104" width="58" height="10" rx="5" fill="var(--ink)"/>
+      <text x="115" y="378" fill="var(--muted)" font-size="13" text-anchor="middle" font-family="JetBrains Mono, monospace">PHONE</text>
+      <g id="faceIcon"><circle cx="115" cy="190" r="34" fill="none" stroke="var(--mint)" stroke-width="2"/><circle cx="103" cy="184" r="3" fill="var(--mint)"/><circle cx="127" cy="184" r="3" fill="var(--mint)"/><path d="M101 202 q14 10 28 0" fill="none" stroke="var(--mint)" stroke-width="2"/></g>
+      <text id="numTxt" x="115" y="290" fill="var(--text)" font-size="22" text-anchor="middle" font-weight="800" font-family="Inter, sans-serif" opacity="0">72 · 118/76</text>
+      <path d="M392 150 a42 42 0 0 1 80 -10 a32 32 0 0 1 20 62 h-104 a30 30 0 0 1 4 -52z" fill="var(--panel)" stroke="var(--text)" stroke-opacity=".5" stroke-width="2"/>
+      <text x="440" y="236" fill="var(--muted)" font-size="13" text-anchor="middle" font-family="JetBrains Mono, monospace">CLOUD</text>
+      <path id="vidPath" d="M190 180 C 280 150, 330 150, 395 165" fill="none" stroke="var(--coral)" stroke-width="2" stroke-dasharray="6 7" opacity=".7"/>
+      <g id="block" opacity="0"><circle cx="292" cy="158" r="18" fill="var(--ink)" stroke="var(--coral)" stroke-width="2"/><path d="M284 150 l16 16 M300 150 l-16 16" stroke="var(--coral)" stroke-width="2.5"/></g>
+      <text id="vidLbl" x="290" y="132" fill="var(--coral)" font-size="12" text-anchor="middle" font-family="JetBrains Mono, monospace">VIDEO</text>
+      <path id="numPath" d="M190 290 C 290 320, 360 300, 430 210" fill="none" stroke="var(--mint)" stroke-width="2.5" stroke-dasharray="300" stroke-dashoffset="300"/>
+      <text id="numLbl" x="330" y="330" fill="var(--mint)" font-size="12" text-anchor="middle" font-family="JetBrains Mono, monospace" opacity="0">NUMBERS ONLY · WITH CONSENT</text>
+      <circle id="pkt" r="6" fill="var(--coral)" cx="190" cy="180"/>
+    </svg>
+  </div></div>
+</section>
+
+<!-- 7 HISTORY: horizontal scroll -->
+<section class="scene" id="history">
+  <div class="stage">
+    <div class="wrap" style="display:grid;gap:14px"><span class="k-label">An 80-year-old idea, now in your camera</span><h2>Pulse oximeters have used light to read the blood <em>since the 1940s.</em></h2></div>
+    <div class="htrack" id="htrack">
+      <article class="hcard"><span class="yr">1940s</span><h3>The first oximeter</h3><p>Glen Millikan builds a portable ear oximeter to protect pilots from oxygen loss at altitude during the Second World War.</p></article>
+      <article class="hcard"><span class="yr">1975</span><h3>Pulse oximetry is born</h3><p>Nihon Kohden's OLV-5100 ear oximeter uses the pulse in the light signal, the principle every pulse oximeter still uses.</p></article>
+      <article class="hcard"><span class="yr">1977</span><h3>The finger clip</h3><p>Minolta's OXIMET MET-1471 moves the sensor to the fingertip.</p></article>
+      <article class="hcard"><span class="yr">1980s</span><h3>Into US hospitals</h3><p>Biox brings pulse oximeters to the US market. Within a decade they are standard in recovery rooms and ICUs.</p></article>
+      <article class="hcard"><span class="yr">2000s</span><h3>Beyond oxygen</h3><p>Light-based sensors start to estimate hemoglobin without a needle.</p></article>
+      <article class="hcard"><span class="yr">2019</span><h3>Blood pressure from light</h3><p>A wearable PPG sensor reaches the market for cuffless blood pressure monitoring.</p></article>
+      <article class="hcard now"><span class="yr">Today</span><h3>No sensor at all</h3><p>VitalKick reads the same pulse signal from video of your face. The sensor is the camera you already own.</p></article>
+    </div>
+    <div class="hline"><i id="hline"></i></div>
+  </div>
+</section>
+
+<!-- 8 USE CASES -->
+<section id="uses">
+  <div class="wrap">
+    <div class="sec-head" data-zoom><span class="k-label">Who it's for</span><h2>One scan, <em>many settings.</em></h2><p class="lede">A link or an app on a phone, tablet or laptop is all a patient, member or employee needs.</p></div>
+    <div class="uses">
+      <article class="use" data-zoom><span class="k-label">Telehealth</span><h3>Vitals before, during and after the visit</h3><p>Patients scan in the virtual waiting room, so the clinician opens the session with numbers instead of guesses.</p></article>
+      <article class="use" data-zoom><span class="k-label">Between visits</span><h3>Daily check-ins without shipping devices</h3><p>Send a reminder, collect the scan, and follow trends between visits, including recovery at home after discharge.</p></article>
+      <article class="use" data-zoom><span class="k-label">Value-based care</span><h3>Digital vitals for every member</h3><p>Capitated groups and health plans get regular readings across a whole panel, without buying and shipping hardware for each patient.</p></article>
+      <article class="use" data-zoom><span class="k-label">Senior living</span><h3>Ageing in place, checked often</h3><p>Frequent, quick checks at home or in a facility, without staff time spent on cuffs and clips.</p></article>
+      <article class="use" data-zoom><span class="k-label">Employers &amp; wellness</span><h3>A wellness check people actually repeat</h3><p>A one-minute scan with a clear score and trends gives wellness programs something to engage with every week.</p></article>
+      <article class="use" data-zoom><span class="k-label">Research &amp; trials</span><h3>Find the people a study needs</h3><p>Match consenting users to a pilot's or trial's target population, then refer them for screening.</p><a href="research.html">Explore research matching →</a></article>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="privacy">
+  <div class="wrap privacy">
+    <div class="sec-head" style="margin:0" data-zoom><span class="k-label">Privacy by construction</span><h2>Rules written <em>into the product.</em></h2><p class="lede">Enforced in code and in the database, not left to policy.</p></div>
+    <dl class="facts" data-zoom>
+      <div><dt>Video</dt><dd>Processed on the device and never uploaded, logged or saved unencrypted.</dd></div>
+      <div><dt>Face data</dt><dd>No face images and no face geometry are stored. VitalKick cannot recognise who you are from your face.</dd></div>
+      <div><dt>Consent</dt><dd>Every health-data write checks consent in the database. Withdrawing is recorded as a new entry, never by editing history.</dd></div>
+      <div><dt>Access log</dt><dd>Every read and write of health data records who, what, when and from where.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="team">
+  <div class="wrap founder">
+    <div style="display:grid;gap:22px" data-zoom>
+      <span class="k-label">Built by clinicians</span>
+      <h2>Designed by a physician who has checked vitals <em>the hardware way.</em></h2>
+    </div>
+    <div class="who-card" data-zoom>
+      <b>Sadik Bizanti, MD</b>
+      <span>Founder and CEO. A physician who has built and run care programs that check on patients at home between visits, and the person who signs off every clinical threshold in the app.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 9 OUTRO: logo reveal sequence -->
+<!--FAQ-->
+
+<section class="scene" id="outro">
+  <div class="stage">
+    <canvas class="seq" data-seq="logo" data-n="100"></canvas>
+    <div class="wrap"><div class="end" id="end"><h2>Ready to see it on <em>your</em> population?</h2><div class="btns" style="justify-content:center"><a class="btn primary" href="book.html">Book a call with the founder</a><a class="btn ghost" href="research.html#contact">Plan a pilot</a></div></div></div>
+  </div>
+</section>
+
+<!--FOOTER-->
+
+<script src="assets/biomarkers.js"></script>
+<script type="module" src="assets/skin3d.js"></script>
+<script>
+(() => {
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const inv = (a, b, x) => clamp((x - a) / (b - a));
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+  const vh = () => innerHeight;
+  const prog = el => { const r = el.getBoundingClientRect(); return clamp(-r.top / Math.max(1, r.height - vh())); };
+
+  // ---------- image sequences ----------
+  const seqs = [...document.querySelectorAll('canvas[data-seq]')].map(cv => {
+    const name = cv.dataset.seq, n = +cv.dataset.n, imgs = new Array(n), ctx = cv.getContext('2d');
+    // each sequence ships as one file (concatenated WebP frames) plus a .json index of [offset, length]
+    let urls = null, loading = null;
+    const fetchPack = () => loading || (loading = Promise.all([fetch(`assets/seq/${name}.json`).then(r => r.json()), fetch(`assets/seq/${name}-frames.webp`).then(r => r.arrayBuffer())])
+      .then(([idx, buf]) => { urls = idx.map(([o, l]) => URL.createObjectURL(new Blob([buf.slice(o, o + l)], { type: 'image/webp' }))); seqObj.preload(); })
+      .catch(() => {}));
+    const load = i => { if (imgs[i] || !urls) return; const im = new Image(); im.decoding = 'async'; im.src = urls[i]; imgs[i] = im; im.onload = () => { if (i === seqObj.want || seqObj.last < 0) seqObj.draw(seqObj.want); }; };
+    const seqObj = { cv, n, want: 0, last: -1,
+      preload() { if (!urls) { fetchPack(); return; } for (let s = 8; s >= 1; s = s >> 1) for (let i = 0; i < n; i += s) load(i); },
+      draw(i) {
+        let k = i; while (k >= 0 && !(imgs[k] && imgs[k].complete && imgs[k].naturalWidth)) k--;
+        if (k < 0) return; const im = imgs[k];
+        const W = cv.clientWidth, H = cv.clientHeight, dpr = Math.min(devicePixelRatio || 1, 2);
+        if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+        const s = Math.max(cv.width / im.naturalWidth, cv.height / im.naturalHeight);
+        const w = im.naturalWidth * s, h = im.naturalHeight * s;
+        ctx.drawImage(im, (cv.width - w) * cv.__fx, (cv.height - h) / 2, w, h); seqObj.last = k;
+      },
+      set(p) { const i = Math.round(clamp(p) * (n - 1)); this.want = i; load(i); this.draw(i); } };
+    cv.__fx = .5;
+    return seqObj;
+  });
+  const S = Object.fromEntries(seqs.map(s => [s.cv.dataset.seq, s]));
+  // start loading sequences when they get near the viewport
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { const s = seqs.find(x => x.cv.closest('.scene') === e.target); s && s.preload(); io.unobserve(e.target); } }), { rootMargin: '150% 0px' });
+  seqs.forEach(s => io.observe(s.cv.closest('.scene')));
+
+
+  // ---------- skin cross-section (procedural) ----------
+  const skin = $('skin'), sctx = skin.getContext('2d'), lightSc = $('light');
+  let skinP = 0, skinOn = false;
+  const beat = t => { const k = t % .85; return Math.exp(-k * 9) + .55 * Math.exp(-Math.max(0, k - .16) * 11) * (k > .16 ? 1 : 0); };
+
+  function skinOverlay(c, W, H, narrow, p, t) {
+    c.font = '600 11px "JetBrains Mono", monospace';
+    (window.__skinLabels || []).forEach(L => { if (L.a <= 0.01) return; c.globalAlpha = L.a; c.strokeStyle = 'rgba(98,230,207,.8)'; c.lineWidth = 1; const tx = Math.max(16, L.x - (narrow ? 30 : 70)); c.beginPath(); c.arc(L.x, L.y, 3, 0, 7); c.fillStyle = '#62e6cf'; c.fill(); c.beginPath(); c.moveTo(L.x, L.y); c.lineTo(tx, L.y); c.stroke(); c.fillStyle = '#e8f1ef'; c.textAlign = 'left'; const tw = c.measureText(L.t).width; c.fillText(L.t, Math.max(16, tx - tw + (narrow ? tw : 0)), L.y - 7); });
+    const Lt = window.__skinLight; if (Lt && Lt.a > .01) { c.globalAlpha = Lt.a * .9; c.fillStyle = 'rgba(232,241,239,.75)'; c.fillText('LIGHT', Lt.light.x - 18, Lt.light.y - 12); c.fillText('CAMERA', Lt.cam.x - 22, Lt.cam.y - 12); }
+    c.globalAlpha = 1;
+    const ks = inv(.45, .58, p), kf = inv(.72, .85, p);
+    if (ks > 0) {
+      const gw = narrow ? W - 32 : Math.min(460, W * .32), gh = narrow ? 86 : 110, gx = narrow ? 16 : W - gw - Math.max(24, (W - 1180) / 2 + 24), gy = narrow ? 80 : H * .13;
+      c.globalAlpha = ks; c.fillStyle = 'rgba(5,9,10,.78)'; c.beginPath(); c.roundRect(gx, gy, gw, gh, 14); c.fill(); c.strokeStyle = 'rgba(98,230,207,.25)'; c.stroke();
+      c.fillStyle = kf > .5 ? '#62e6cf' : 'rgba(232,241,239,.65)'; c.fillText(kf > .5 ? 'FILTERED PULSE WAVE' : 'RAW GREEN SIGNAL', gx + 14, gy + 20);
+      c.beginPath(); c.lineWidth = 2; c.strokeStyle = kf > .5 ? '#62e6cf' : 'rgba(120,255,170,.85)';
+      for (let x = 0; x <= gw - 28; x += 3) { const tt = t * 1.2 + x / 70; const clean = Math.pow(Math.max(0, Math.sin(tt * Math.PI * 2)), 3) - .35 * Math.max(0, Math.sin(tt * Math.PI * 2 - 1.8)); const noise = Math.sin(x * .9 + t * 7) * .35 + Math.sin(x * .37 - t * 3) * .45 + Math.sin(x * .13 + t) * .5; const v = lerp(clean * .5 + noise * .5, clean, kf); const y = gy + gh * .64 - v * gh * .3; x ? c.lineTo(gx + 14 + x, y) : c.moveTo(gx + 14 + x, y); }
+      c.stroke();
+      if (kf > 0) { c.globalAlpha = kf * ks; c.fillStyle = '#e8f1ef'; c.font = '800 26px Inter, sans-serif'; c.textAlign = 'right'; c.fillText('72 bpm', gx + gw - 14, gy + 30); c.textAlign = 'left'; }
+      c.globalAlpha = 1;
+    }
+  }
+  function drawSkin(t) {
+    const dpr = Math.min(devicePixelRatio || 1, 2), W = skin.clientWidth, H = skin.clientHeight;
+    if (skin.width !== Math.round(W * dpr)) { skin.width = Math.round(W * dpr); skin.height = Math.round(H * dpr); }
+    const c = sctx; c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
+    const narrow = W < 860, p = skinP;
+    if (window.__skin3d) { skinOverlay(c, W, H, narrow, p, t); return; }
+    const rx = narrow ? 16 : Math.max(W * .5, (W - 1180) / 2 + 600), ry = narrow ? 76 : H * .14, rw = narrow ? W - 32 : W - Math.max(W * .5, (W - 1180) / 2 + 600) - Math.max(24, (W - 1180) / 2), rh = narrow ? H * .44 : H * .74;
+    const z = .82 + .18 * ease(inv(0, .2, p));
+    c.save(); c.translate(rx + rw / 2, ry + rh / 2); c.scale(z, z); c.translate(-(rx + rw / 2), -(ry + rh / 2));
+    // layers
+    const top = ry + rh * .26, epi = rh * .1, der = rh * .34;
+    const lay = (y, h, a, b, lab) => { const g = c.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, a); g.addColorStop(1, b); c.fillStyle = g; c.beginPath(); c.roundRect(rx, y, rw, h, 4); c.fill(); c.fillStyle = 'rgba(232,241,239,.55)'; c.font = '600 11px "JetBrains Mono", monospace'; c.fillText(lab, rx + 12, y + 18); };
+    c.save(); c.beginPath(); c.roundRect(rx, top, rw, rh * .74, 18); c.clip();
+    lay(top, epi, '#caa08c', '#b58773', 'EPIDERMIS');
+    lay(top + epi, der, '#8f5a52', '#6e4440', 'DERMIS');
+    lay(top + epi + der, rh * .3, '#c9a86f', '#a88a57', 'FAT');
+    // capillary loops, width pulses with the heartbeat
+    const pb = beat(t), n = 6;
+    for (let i = 0; i < n; i++) {
+      const x = rx + rw * (.12 + i * .15), y0 = top + epi + der * .92, y1 = top + epi + der * (.25 + (i % 2) * .08), w = 10 + 7 * pb * inv(.15, .3, p + .15);
+      c.strokeStyle = `rgba(214,46,62,${.85})`; c.lineWidth = w; c.lineCap = 'round';
+      c.beginPath(); c.moveTo(x - 14, y0); c.bezierCurveTo(x - 14, y1, x + 14, y1, x + 14, y0); c.stroke();
+      c.strokeStyle = 'rgba(255,140,150,.35)'; c.lineWidth = w * .35; c.stroke();
+    }
+    c.restore();
+    // light rays from the screen / ambient light, reflected to the camera
+    const kr = inv(.18, .32, p);
+    if (kr > 0) {
+      const lx = rx + rw * .08, ly = ry + 8, cx = rx + rw * .9, cy = ry + 12;
+      c.fillStyle = 'rgba(232,241,239,.75)'; c.font = '600 11px "JetBrains Mono", monospace'; c.fillText('LIGHT', lx - 6, ly - 4 + 20); c.fillText('CAMERA', cx - 34, cy + 16);
+      c.strokeStyle = 'rgba(232,241,239,.7)'; c.lineWidth = 1.5; c.strokeRect(cx - 18, cy + 24, 36, 22); c.beginPath(); c.arc(cx, cy + 35, 6, 0, 7); c.stroke();
+      for (let i = 0; i < 7; i++) {
+        const ph = ((t * .55 + i / 7) % 1), hx = rx + rw * (.15 + i * .1), hy = top + epi + der * .45;
+        const absorbed = i % 3 === 1;
+        let x, y;
+        if (ph < .5) { const k = ph / .5; x = lerp(lx + 10, hx, k); y = lerp(ly + 34, hy, k); }
+        else if (absorbed) { const k = (ph - .5) / .5; x = hx; y = hy; c.globalAlpha = (1 - k) * kr; c.fillStyle = '#5bff9e'; c.beginPath(); c.arc(x, y, 5 * (1 - k), 0, 7); c.fill(); c.globalAlpha = 1; continue; }
+        else { const k = (ph - .5) / .5; x = lerp(hx, cx, k); y = lerp(hy, cy + 50, k); }
+        c.strokeStyle = `rgba(91,255,158,${.25 * kr})`; c.lineWidth = 1.5; c.beginPath(); c.moveTo(lx + 10, ly + 34); c.lineTo(hx, hy); if (!absorbed) c.lineTo(cx, cy + 50); c.stroke();
+        c.fillStyle = `rgba(120,255,170,${.95 * kr})`; c.beginPath(); c.arc(x, y, 4, 0, 7); c.fill();
+      }
+    }
+    c.restore();
+    // signal panel: raw, then filtered
+    const ks = inv(.45, .58, p), kf = inv(.72, .85, p);
+    if (ks > 0) {
+      const gx = rx + 10, gy = ry + rh * .02, gw = rw - 20, gh = rh * .2;
+      c.globalAlpha = ks; c.fillStyle = 'rgba(5,9,10,.82)'; c.beginPath(); c.roundRect(gx, gy, gw, gh, 12); c.fill(); c.strokeStyle = 'rgba(205,240,232,.15)'; c.stroke();
+      c.font = '600 11px "JetBrains Mono", monospace'; c.fillStyle = kf > .5 ? '#62e6cf' : 'rgba(232,241,239,.65)'; c.fillText(kf > .5 ? 'FILTERED PULSE WAVE' : 'RAW GREEN SIGNAL', gx + 12, gy + 18);
+      c.beginPath(); c.lineWidth = 2; c.strokeStyle = kf > .5 ? '#62e6cf' : 'rgba(120,255,170,.85)';
+      for (let x = 0; x <= gw - 24; x += 3) {
+        const tt = t * 1.2 + x / 70; const clean = Math.pow(Math.max(0, Math.sin(tt * Math.PI * 2 / 1.0)), 3) - .35 * Math.max(0, Math.sin(tt * Math.PI * 2 - 1.8));
+        const noise = Math.sin(x * .9 + t * 7) * .35 + Math.sin(x * .37 - t * 3) * .45 + Math.sin(x * .13 + t) * .5;
+        const v = lerp(clean * .5 + noise * .5, clean, kf);
+        const y = gy + gh * .62 - v * gh * .32; x ? c.lineTo(gx + 12 + x, y) : c.moveTo(gx + 12 + x, y);
+      }
+      c.stroke();
+      if (kf > 0) { c.globalAlpha = kf * ks; c.fillStyle = '#e8f1ef'; c.font = '800 28px Inter, sans-serif'; c.textAlign = 'right'; c.fillText('72 bpm', gx + gw - 12, gy + 34); c.textAlign = 'left'; }
+      c.globalAlpha = 1;
+    }
+  }
+  const skinLoop = now => { if (skinOn) { drawSkin(now / 1000); requestAnimationFrame(skinLoop); } };
+  new IntersectionObserver(es => es.forEach(e => { const was = skinOn; skinOn = e.isIntersecting; if (skinOn && !was) requestAnimationFrame(skinLoop); })).observe(lightSc);
+
+
+  // ---------- face scan (portrait + landmark mesh) ----------
+  const fcv = $('faceCv'), fctx = fcv.getContext('2d'), faceSc = $('face');
+  let faceP = 0, faceOn = false, FM = null; const fimg = new Image(); fimg.decoding = 'async'; fimg.src = 'assets/face-portrait.webp';
+  fetch('assets/face-mesh.json').then(r => r.json()).then(j => { FM = j; }).catch(() => {});
+  const hull = pts => { pts = pts.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]); const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]); const lo = [], up = []; for (const p of pts) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); } for (const p of pts.slice().reverse()) { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); } return lo.slice(0, -1).concat(up.slice(0, -1)); };
+  const ROI = [['FOREHEAD', [10, 338, 297, 299, 9, 69, 67, 109, 151, 108, 337]], ['CHEEK', [50, 101, 118, 117, 123, 147, 187, 205, 36]], ['CHEEK', [280, 330, 347, 346, 352, 376, 411, 425, 266]]];
+  function drawFace(t) {
+    const dpr = Math.min(devicePixelRatio || 1, 2), W = fcv.clientWidth, H = fcv.clientHeight;
+    if (fcv.width !== Math.round(W * dpr)) { fcv.width = Math.round(W * dpr); fcv.height = Math.round(H * dpr); }
+    const c = fctx; c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
+    if (!fimg.complete || !fimg.naturalWidth) return;
+    const p = faceP, narrow = W < 860, iw = fimg.naturalWidth, ih = fimg.naturalHeight;
+    // region and focal point (face sits at ~73% x, 35% y of the photo)
+    const rh = narrow ? H * .62 : H, z = lerp(1.0, 1.14, ease(inv(0, .7, p)));
+    const s = Math.max(W / iw, rh / ih) * z, fx = .73, fy = .36;
+    let ox = narrow ? W / 2 - fx * iw * s : Math.min(0, Math.max(W - iw * s, W * .68 - fx * iw * s)), oy = narrow ? rh * .46 - fy * ih * s : Math.min(0, Math.max(H - ih * s, H * .45 - fy * ih * s));
+    const fade = 1 - .82 * ease(inv(.68, .85, p));
+    c.save(); c.globalAlpha = fade; if (p > .68) c.filter = `blur(${inv(.68, .85, p) * 8}px)`; c.drawImage(fimg, ox, oy, iw * s, ih * s); c.restore();
+    if (narrow) { const g = c.createLinearGradient(0, rh * .7, 0, rh); g.addColorStop(0, 'rgba(5,9,10,0)'); g.addColorStop(1, 'rgba(5,9,10,1)'); c.fillStyle = g; c.fillRect(0, rh * .7, W, rh * .3 + 2); c.fillStyle = '#05090a'; c.fillRect(0, rh, W, H - rh); }
+    else { const g = c.createLinearGradient(0, 0, W * .55, 0); g.addColorStop(0, 'rgba(5,9,10,.85)'); g.addColorStop(1, 'rgba(5,9,10,0)'); c.fillStyle = g; c.fillRect(0, 0, W * .55, H); }
+    if (!FM) return;
+    const P = FM.p.map(([x, y]) => [ox + x * iw * s, oy + y * ih * s]);
+    let y0 = 1e9, y1 = -1e9; P.forEach(q => { y0 = Math.min(y0, q[1]); y1 = Math.max(y1, q[1]); });
+    const scanY = lerp(y0 - 10, y1 + 10, ease(inv(.02, .3, p)));
+    const meshA = (p < .33 ? 1 : lerp(1, .22, inv(.33, .45, p))) * (1 - inv(.62, .72, p));
+    if (meshA > .01) {
+      c.lineWidth = narrow ? .6 : .8; c.strokeStyle = `rgba(98,230,207,${.55 * meshA})`; c.beginPath();
+      for (const [a, b] of FM.e) { const A = P[a], B = P[b]; if (A[1] > scanY || B[1] > scanY) continue; c.moveTo(A[0], A[1]); c.lineTo(B[0], B[1]); }
+      c.stroke();
+      c.fillStyle = `rgba(200,255,240,${.8 * meshA})`; for (let i = 0; i < P.length; i += 3) { if (P[i][1] <= scanY) c.fillRect(P[i][0] - .9, P[i][1] - .9, 1.8, 1.8); }
+      if (p < .33) { const sl = c.createLinearGradient(0, scanY - 40, 0, scanY); sl.addColorStop(0, 'rgba(98,230,207,0)'); sl.addColorStop(1, 'rgba(98,230,207,.35)'); c.fillStyle = sl; c.fillRect(P[234][0] - 40, scanY - 40, P[454][0] - P[234][0] + 80, 40); c.fillStyle = '#9ff5e6'; c.fillRect(P[234][0] - 40, scanY - 1, P[454][0] - P[234][0] + 80, 2); }
+    }
+    // regions of interest pulse with the heartbeat
+    const kr = inv(.33, .42, p) * (1 - inv(.66, .74, p));
+    if (kr > 0) {
+      const b = beat(t);
+      ROI.forEach(([lab, ids]) => { const h = hull(ids.map(i => P[i])); c.beginPath(); h.forEach((q, i) => i ? c.lineTo(q[0], q[1]) : c.moveTo(q[0], q[1])); c.closePath();
+        c.fillStyle = `rgba(98,230,207,${(.14 + .22 * b) * kr})`; c.fill(); c.strokeStyle = `rgba(98,230,207,${.9 * kr})`; c.lineWidth = 1.5; c.stroke();
+        const cx = h.reduce((a, q) => a + q[0], 0) / h.length, cy = Math.min(...h.map(q => q[1]));
+        c.globalAlpha = kr; c.fillStyle = '#e8f1ef'; c.font = '600 10px "JetBrains Mono", monospace'; c.textAlign = 'center'; c.fillText(lab, cx, cy - 8); c.textAlign = 'left'; c.globalAlpha = 1; });
+    }
+    // dissolve: points collapse into the numbers
+    const kd = inv(.68, .92, p);
+    if (kd > 0) {
+      const cx = (P[234][0] + P[454][0]) / 2, cy = (P[10][1] + P[152][1]) / 2;
+      c.fillStyle = `rgba(98,230,207,${.8 * (1 - kd)})`;
+      for (let i = 0; i < P.length; i += 2) { const k = ease(clamp(kd * 1.3 - (i % 7) * .03)); c.fillRect(lerp(P[i][0], cx, k) - 1, lerp(P[i][1], cy, k) - 1, 2, 2); }
+      const kt = inv(.8, .95, p); if (kt > 0) { c.globalAlpha = kt; c.fillStyle = '#62e6cf'; c.font = `800 ${narrow ? 26 : 40}px Inter, sans-serif`; c.textAlign = 'center'; c.fillText('72 · 118/76 · 98%', cx, cy + 12); c.font = '600 11px "JetBrains Mono", monospace'; c.fillStyle = 'rgba(232,241,239,.7)'; c.fillText('PULSE · BLOOD PRESSURE · OXYGEN', cx, cy + (narrow ? 38 : 46)); c.textAlign = 'left'; c.globalAlpha = 1; }
+    }
+  }
+  const faceLoop = now => { if (faceOn) { drawFace(now / 1000); requestAnimationFrame(faceLoop); } };
+  new IntersectionObserver(es => es.forEach(e => { const was = faceOn; faceOn = e.isIntersecting; if (faceOn && !was) requestAnimationFrame(faceLoop); }), { rootMargin: '20% 0px' }).observe(faceSc);
+
+  // ---------- biomarker explorer ----------
+  const M = window.VK_MARKERS || [], list = $('bxList'), panel = $('bxPanel');
+  let lastGroup = '';
+  M.forEach((m, i) => {
+    if (m.group !== lastGroup) { lastGroup = m.group; const h = document.createElement('div'); h.className = 'bx-group'; h.textContent = m.group; list.appendChild(h); }
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'bx-item' + (m.est ? ' est' : ''); b.id = 'bx-' + m.id; b.setAttribute('role', 'tab');
+    b.innerHTML = `<span>${m.name}${m.est ? ' (est.)' : ''}</span><span>${m.unit}</span>`;
+    b.addEventListener('click', () => show(i, true)); list.appendChild(b);
+  });
+  list.addEventListener('keydown', e => { if (!['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(e.key)) return; e.preventDefault(); const d = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1 : -1; show((cur + d + M.length) % M.length, true, true); });
+  let cur = 0;
+  function bar(r) {
+    const span = r.hi - r.lo;
+    return `<div class="rbar">${r.segs.map(([a, b, k]) => `<i class="${k}" style="flex:${(b - a) / span}"></i>`).join('')}</div><div class="rlab">${r.segs.map(([a, b, , l]) => `<span style="flex:${(b - a) / span}">${l}</span>`).join('')}</div>`;
+  }
+  function show(i, user, focus) {
+    cur = i; const m = M[i];
+    list.querySelectorAll('.bx-item').forEach((b, k) => { b.setAttribute('aria-selected', String(k === i)); b.tabIndex = k === i ? 0 : -1; });
+    const btn = $('bx-' + m.id); if (focus) btn.focus({ preventScroll: true });
+    if (user && innerWidth < 900) btn.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    panel.className = 'bx-panel' + (m.est ? ' est' : ''); panel.setAttribute('aria-labelledby', btn.id);
+    panel.innerHTML = `<div class="bx-fade" style="display:grid;gap:22px">
+      <div class="bx-head"><div style="display:grid;gap:8px"><span class="k-label" style="color:var(--muted)">${m.group}</span><h3>${m.name}${m.est ? ' (est.)' : ''}</h3>${m.est ? '<span class="badge">Estimate — not a lab result</span>' : ''}</div>
+      <div class="bx-val"><div><small>EXAMPLE READING</small><b>${m.sample}</b> <span>${m.unit}</span></div></div></div>
+      <div class="bx-cards">
+        <div class="bx-card"><h4>What it shows</h4><p>${m.what}</p></div>
+        <div class="bx-card"><h4>Why it matters</h4><p>${m.why}</p></div>
+        <div class="bx-card wide"><h4>Typical range</h4>${m.range ? `<p>${m.range.text}</p>${bar(m.range)}` : `<p>${m.rangeText}</p>`}</div>
+        <div class="bx-card wide"><h4>If it is outside the range</h4><ul>${m.act.map(a => `<li>${a}</li>`).join('')}</ul></div>
+      </div>
+      <p class="bx-src">Source: ${m.src}</p></div>`;
+  }
+  if (M.length) show(0, false);
+
+  // ---------- step text ----------
+  function steps(scene, p) {
+    const ps = scene.querySelectorAll('[data-steps] p'), ds = scene.querySelectorAll('[data-dots] i');
+    const i = Math.min(ps.length - 1, Math.floor(p * ps.length * .999));
+    ps.forEach((el, k) => el.classList.toggle('on', k === i)); ds.forEach((el, k) => el.classList.toggle('on', k <= i));
+  }
+
+  // ---------- scenes ----------
+  const hero = $('hero'), box = $('reelBox'), copy = $('heroCopy'), shade = $('reelShade');
+  function heroUpdate() {
+    const p = prog(hero), W = innerWidth, H = vh();
+    const narrow = W < 860;
+    const cw = narrow ? W - 32 : Math.min(W * .44, 700), ch = cw * 9 / 16;
+    const cx = narrow ? 16 : W - cw - Math.max(24, (W - 1180) / 2 + 24), cy = narrow ? H - ch - 24 : (H - ch) / 2 + 30;
+    const k = ease(inv(.05, .7, p));
+    // full-bleed cover rect
+    const fw = Math.max(W, H * 16 / 9), fh = fw * 9 / 16, fx = (W - fw) / 2, fy = (H - fh) / 2;
+    box.style.left = lerp(cx, fx, k) + 'px'; box.style.top = lerp(cy, fy, k) + 'px';
+    box.style.width = lerp(cw, fw, k) + 'px'; box.style.height = lerp(ch, fh, k) + 'px';
+    box.style.borderRadius = lerp(16, 0, k) + 'px';
+    copy.style.opacity = 1 - inv(.05, .4, p); copy.style.transform = `translateY(${-inv(.05, .5, p) * 80}px) scale(${1 - inv(.05, .5, p) * .06})`;
+    shade.style.opacity = 0; $('cue').style.opacity = 1 - inv(0, .1, p);
+  }
+  function problemUpdate() {
+    const sc = $('problem'), p = prog(sc), fr = [...sc.querySelectorAll('.fric')];
+    fr.forEach((el, i) => {
+      const a = inv(.04 + i * .06, .14 + i * .06, p), st = inv(.5 + i * .04, .58 + i * .04, p), out = inv(.82, .92, p);
+      el.style.opacity = a * (1 - out * .85); el.style.transform = `translateY(${(1 - a) * 40}px) scale(${lerp(.94, 1, a) - out * .04})`;
+      el.style.setProperty('--strike', st);
+    });
+    const ans = $('answer'), ka = inv(.84, .96, p); ans.style.opacity = ka; ans.style.transform = `scale(${lerp(.9, 1, ka)})`;
+  }
+  function seqScene(id, name, fx) {
+    const sc = $(id), p = prog(sc); if (fx != null) S[name].cv.__fx = fx; S[name].set(p); steps(sc, p);
+    if (id === 'light') { // PPG trace grows with progress
+      const pts = []; const N = Math.round(10 + p * 250);
+      for (let x = 0; x <= N; x += 2) { const ph = x / 62; const y = 50 - Math.pow(Math.max(0, Math.sin(ph * Math.PI * 2)), 3) * 34 - Math.max(0, Math.sin(ph * Math.PI * 2 - 1.8)) * 10; pts.push(`${x * 2},${y.toFixed(1)}`); }
+      $('ppgPath').setAttribute('d', 'M' + pts.join(' L'));
+    }
+  }
+  function scanUpdate() {
+    const sc = $('scan'), p = prog(sc); S.phone.cv.__fx = innerWidth < 860 ? .72 : .5; S.phone.set(p);
+    const sec = Math.round(inv(.05, .9, p) * 60); $('sec').textContent = sec;
+    $('track').firstElementChild.style.width = (sec / 60 * 100) + '%';
+    $('rlist').querySelectorAll('li').forEach(li => li.classList.toggle('on', sec >= +li.dataset.at));
+  }
+  function edgeUpdate() {
+    const sc = $('edge'), p = prog(sc);
+    const vid = $('vidPath'), L = vid.getTotalLength(), t = (p * 3) % 1, stop = .45;
+    const pt = vid.getPointAtLength(Math.min(t, stop) * L), pk = $('pkt');
+    pk.setAttribute('cx', pt.x); pk.setAttribute('cy', pt.y); pk.setAttribute('opacity', p < .55 ? 1 - inv(stop - .05, stop, t) * .7 : 0);
+    $('block').setAttribute('opacity', inv(.12, .2, p));
+    const kn = inv(.5, .8, p); $('numPath').setAttribute('stroke-dashoffset', 300 * (1 - kn)); $('numLbl').setAttribute('opacity', inv(.7, .8, p)); $('numTxt').setAttribute('opacity', inv(.45, .55, p));
+    $('edList').querySelectorAll('li').forEach((li, i) => li.classList.toggle('on', p > .1 + i * .15));
+  }
+  function historyUpdate() {
+    const sc = $('history'), p = prog(sc), tr = $('htrack');
+    const max = Math.max(0, tr.scrollWidth - innerWidth);
+    tr.style.transform = `translateX(${-ease(inv(.08, .92, p)) * max}px)`; $('hline').style.width = inv(.08, .92, p) * 100 + '%';
+  }
+  function outroUpdate() {
+    const sc = $('outro'), p = prog(sc); S.logo.set(inv(0, .72, p)); const ko = ease(inv(.72, .92, p)); S.logo.cv.style.transform = `translateY(${-ko * 16}%) scale(${1 - ko * .28})`;
+    const e = $('end'), k = inv(.8, .97, p); e.style.opacity = k; e.style.transform = `translateY(${(1 - k) * 30}px)`;
+  }
+  const zooms = [...document.querySelectorAll('[data-zoom]')];
+  function zoomUpdate() {
+    const H = vh();
+    zooms.forEach(el => { const r = el.getBoundingClientRect(); const k = ease(clamp((H - r.top) / (H * .45)));
+      el.style.opacity = lerp(.15, 1, k); el.style.transform = `translateY(${(1 - k) * 50}px) scale(${lerp(.92, 1, k)})`; });
+  }
+  function frame() {
+    heroUpdate(); problemUpdate(); { const p = prog($('light')); skinP = p; steps($('light'), p); } { const p = prog($('face')); faceP = p; steps($('face'), p); } window.__skinP = skinP;
+    scanUpdate(); edgeUpdate(); historyUpdate(); outroUpdate(); zoomUpdate();
+  }
+  let queued = false;
+  const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; frame(); }); } };
+  if (reduce) {
+    // static final states, no pinning
+    seqs.forEach(s => { s.preload(); s.set(1); });
+    document.querySelectorAll('.fric').forEach(f => f.style.setProperty('--strike', 1)); $('answer').style.opacity = 1; $('end').style.opacity = 1;
+    $('rlist').querySelectorAll('li').forEach(li => li.classList.add('on')); $('sec').textContent = 60; $('track').firstElementChild.style.width = '100%';
+    heroUpdate();
+  } else {
+    addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll); frame();
+    S.phone.preload();
+  }
+
+  // sound
+  const v = $('reel'), b = $('sound');
+  b.addEventListener('click', () => { v.muted = !v.muted; if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); } b.textContent = v.muted ? 'Play with sound' : 'Mute'; });
+  if (reduce) { v.removeAttribute('autoplay'); v.pause(); }
+})();
+</script>

@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How it works · VitalKick</title>
+<meta name="description" content="How VitalKick turns a 60-second selfie video into vital signs, on the phone.">
+<meta property="og:title" content="How it works · VitalKick"><meta property="og:description" content="How VitalKick turns a 60-second selfie video into vital signs, on the phone."><meta property="og:image" content="assets/poster.jpg">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout concept: an instrument panel. Hairline grid ground, mono labels that carry real units, one framed "screen" per page. */
+:root {
+  --ink: #05090a;        /* page ground */
+  --panel: #0b1314;      /* raised surfaces */
+  --line: rgba(205, 240, 232, .11);
+  --text: #e8f1ef;
+  --muted: #93a6a2;
+  --mint: #62e6cf;       /* VitalKick brand, sampled from the logo */
+  --mint-ink: #04201b;
+  --amber: #f2b84b;      /* estimates only */
+  --coral: #ff6b5c;
+  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --wrap: 1180px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box }
+html { scroll-behavior: smooth }
+body { margin: 0; background: var(--ink); color: var(--text); font: 400 17px/1.6 var(--body); -webkit-font-smoothing: antialiased }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px; mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 75%); opacity: .55 }
+a { color: inherit }
+img, video { max-width: 100%; display: block }
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: 24px }
+@media (max-width: 520px) { .wrap { padding-inline: 16px } }
+:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; border-radius: 6px }
+
+/* nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--ink) 78%, transparent); border-bottom: 1px solid var(--line) }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 68px }
+.brand { display: block; width: 132px; height: 34px; background: var(--mint); -webkit-mask: url(assets/wordmark.png) left center / contain no-repeat; mask: url(assets/wordmark.png) left center / contain no-repeat }
+.nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 15px; color: var(--muted) }
+.nav ul a { text-decoration: none } .nav ul a:hover, .nav ul a[aria-current] { color: var(--text) }
+@media (max-width: 860px) { .nav ul { display: none } }
+
+/* type */
+.eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .22em; text-transform: uppercase; color: var(--mint) }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 800; letter-spacing: -.025em }
+h1 { font-size: clamp(42px, 6.4vw, 82px); line-height: .98 }
+h2 { font-size: clamp(32px, 4.2vw, 52px); line-height: 1.04 }
+h3 { font-size: 21px; line-height: 1.25; letter-spacing: -.01em }
+h1 em, h2 em { font: 400 1.08em/1 var(--display); font-style: italic; color: var(--mint); letter-spacing: -.01em }
+.lede { font-size: 19px; color: var(--muted); max-width: 58ch }
+p { margin: 0 }
+.mono { font-family: var(--mono); font-size: 13px; letter-spacing: .06em }
+
+/* buttons */
+.btns { display: flex; flex-wrap: wrap; gap: 12px }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; font: 600 15px var(--body); text-decoration: none; border: 1px solid transparent; cursor: pointer }
+.btn.primary { background: var(--mint); color: var(--mint-ink) }
+.btn.primary:hover { filter: brightness(1.08) }
+.btn.ghost { border-color: color-mix(in srgb, var(--text) 24%, transparent); color: var(--text); background: transparent }
+.btn.ghost:hover { border-color: var(--mint) }
+
+/* sections */
+section { padding-block: clamp(64px, 9vw, 120px) }
+.sec-head { display: grid; gap: 18px; margin-bottom: 48px; max-width: 760px }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0 }
+
+/* framed screen with crop marks, echoing the reel HUD */
+.frame { position: relative; padding: 14px }
+.frame::before, .frame::after, .frame > .cm::before, .frame > .cm::after { content: ""; position: absolute; width: 18px; height: 18px; border-color: color-mix(in srgb, var(--text) 45%, transparent); border-style: solid; border-width: 0 }
+.frame::before { top: 0; left: 0; border-top-width: 1.5px; border-left-width: 1.5px }
+.frame::after { top: 0; right: 0; border-top-width: 1.5px; border-right-width: 1.5px }
+.frame > .cm::before { bottom: 0; left: 0; border-bottom-width: 1.5px; border-left-width: 1.5px }
+.frame > .cm::after { bottom: 0; right: 0; border-bottom-width: 1.5px; border-right-width: 1.5px }
+
+/* steps (a real sequence) */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line) }
+.steps.three { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+.step { padding: 28px 28px 8px 0; display: grid; gap: 12px; align-content: start; min-width: 0 }
+.step + .step { padding-left: 28px; border-left: 1px solid var(--line) }
+.step .n { font: 600 13px var(--mono); color: var(--mint); letter-spacing: .1em }
+.step p { color: var(--muted); font-size: 16px }
+@media (max-width: 900px) { .steps, .steps.three { grid-template-columns: 1fr } .step + .step { padding-left: 0; border-left: 0; border-top: 1px solid var(--line) } }
+
+.foot { border-top: 1px solid var(--line); padding-block: 40px; color: var(--muted); font-size: 14px }
+.foot .wrap { display: flex; flex-wrap: wrap; gap: 16px 40px; justify-content: space-between; align-items: center }
+.foot .mono { color: color-mix(in srgb, var(--muted) 80%, transparent) }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } * { animation: none !important; transition: none !important } }
+
+/* site footer */
+.sfoot { border-top: 1px solid var(--line); padding-block: 64px 32px; background: color-mix(in srgb, var(--ink) 92%, #000) }
+.sfoot .cols { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(5, minmax(0, 1fr)); gap: 32px 24px }
+@media (max-width: 1000px) { .sfoot .cols { grid-template-columns: repeat(3, minmax(0, 1fr)) } .sfoot .brandcol { grid-column: 1 / -1 } }
+@media (max-width: 560px) { .sfoot .cols { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+.sfoot h4 { margin: 0 0 14px; font: 600 11px var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--muted) }
+.sfoot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+.sfoot ul a { color: color-mix(in srgb, var(--text) 85%, var(--muted)); text-decoration: none; font-size: 15px } .sfoot ul a:hover { color: var(--mint) }
+.brandcol { display: grid; gap: 16px; align-content: start }
+.brandcol p { color: var(--muted); font-size: 15px; max-width: 34ch }
+.tel { font: 700 20px var(--body); color: var(--text); text-decoration: none } .tel:hover { color: var(--mint) }
+.sfoot .bottom { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; color: var(--muted); font-size: 13px }
+
+/* simple content pages */
+.page { padding-block: clamp(110px, 12vw, 160px) 80px }
+.page .wrap { max-width: 860px; display: grid; gap: 22px }
+.page h2 { font-size: clamp(26px, 3vw, 34px); margin-top: 26px }
+.page p, .page li { color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 68ch }
+.page ul { display: grid; gap: 8px; padding-left: 20px; margin: 0 }
+.page table { width: 100%; border-collapse: collapse; font-size: 15px }
+.page th, .page td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line) }
+.page th { font: 600 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+.tablewrap { overflow-x: auto }
+.crumb { font: 600 12px var(--mono); letter-spacing: .14em; color: var(--muted); text-decoration: none }
+
+/* Legal pages: sticky contents list beside numbered sections */
+.k-label { display: block; font: 600 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--mint) }
+.legal { padding-block: clamp(110px, 12vw, 160px) 90px }
+.legal .head { display: grid; gap: 18px; max-width: 860px; margin-bottom: 44px }
+.legal .meta { display: flex; flex-wrap: wrap; gap: 10px }
+.legal .meta span { font: 600 12px var(--mono); letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px }
+.legal .cols { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: start }
+@media (max-width: 900px) { .legal .cols { grid-template-columns: 1fr } }
+.toc { position: sticky; top: 96px; display: grid; gap: 2px; max-height: calc(100vh - 120px); overflow-y: auto; padding-right: 6px }
+.toc b { font: 600 11px var(--mono); letter-spacing: .16em; color: var(--muted); text-transform: uppercase; margin-bottom: 10px }
+.toc a { display: flex; gap: 10px; color: var(--muted); text-decoration: none; font-size: 14px; line-height: 1.35; padding: 7px 10px; border-left: 2px solid var(--line); min-height: 34px; align-items: center }
+.toc a span { font: 600 11px var(--mono); color: color-mix(in srgb, var(--mint) 70%, var(--muted)) }
+.toc a:hover, .toc a.on { color: var(--text); border-left-color: var(--mint) }
+@media (max-width: 900px) { .toc { position: relative; top: 0; max-height: none; border: 1px solid var(--line); border-radius: 18px; padding: 18px } }
+.legal article { display: grid; gap: 16px; min-width: 0 }
+.legal article h2 { font-size: clamp(24px, 2.6vw, 30px); margin: 34px 0 0; scroll-margin-top: 96px; display: flex; gap: 14px; align-items: baseline }
+.legal article h2 .n { font: 600 13px var(--mono); color: var(--mint) }
+.legal article h3 { font-size: 18px; margin: 10px 0 0 }
+.legal article p, .legal article li { color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 72ch; margin: 0 }
+.legal article ul { display: grid; gap: 9px; padding-left: 20px; margin: 0 }
+.legal article a { color: var(--mint) }
+.legal .tablewrap table { width: 100%; border-collapse: collapse; font-size: 15px }
+.legal .tablewrap th, .legal .tablewrap td { text-align: left; vertical-align: top; padding: 12px 10px; border-bottom: 1px solid var(--line) }
+.legal .tablewrap th { font: 600 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+.shortv { border: 1px solid color-mix(in srgb, var(--mint) 35%, transparent); border-radius: 22px; padding: clamp(20px, 3vw, 30px); background: linear-gradient(160deg, color-mix(in srgb, var(--mint) 8%, var(--panel)), var(--panel) 60%); display: grid; gap: 14px }
+.shortv h2 { margin: 0 !important; font-size: 22px !important }
+.shortv ul { list-style: none; padding: 0 !important }
+.shortv li { padding-left: 28px; position: relative }
+.shortv li::before { content: ""; position: absolute; left: 4px; top: .55em; width: 10px; height: 10px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 8px var(--mint) }
+.callout { border-left: 3px solid var(--amber); padding: 4px 0 4px 18px }
+
+/* FAQ accordion: one answer open at a time */
+.faq-cats { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px }
+.faq-cats a { font: 600 13px var(--body); color: var(--muted); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; min-height: 40px; display: inline-flex; align-items: center }
+.faq-cats a:hover { color: var(--text); border-color: var(--mint) }
+.faq-group { display: grid; gap: 12px; scroll-margin-top: 96px }
+.faq-group + .faq-group { margin-top: 34px }
+.faq-group > h2 { font-size: clamp(22px, 2.4vw, 28px); margin: 0 0 6px; display: flex; gap: 12px; align-items: center }
+.faq-group > h2 .n { font: 600 12px var(--mono); color: var(--mint) }
+.qa { border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--panel) 75%, transparent); transition: border-color .25s, background .25s }
+.qa.open { border-color: color-mix(in srgb, var(--mint) 45%, transparent); background: linear-gradient(160deg, color-mix(in srgb, var(--mint) 7%, var(--panel)), var(--panel) 70%) }
+.qa h3 { margin: 0; font-size: inherit }
+.qa button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 18px; text-align: left; background: none; border: 0; color: var(--text); font: 600 clamp(16px, 1.6vw, 18px)/1.4 var(--body); padding: 20px 22px; min-height: 64px; cursor: pointer; border-radius: 18px }
+.qa .pm { flex: none; width: 32px; height: 32px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--mint) 40%, transparent); position: relative; transition: transform .3s, background .3s }
+.qa .pm::before, .qa .pm::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; margin: -1px 0 0 -6px; background: var(--mint); border-radius: 2px; transition: transform .3s }
+.qa .pm::after { transform: rotate(90deg) }
+.qa.open .pm { background: var(--mint); transform: rotate(180deg) }
+.qa.open .pm::before { background: var(--mint-ink) } .qa.open .pm::after { transform: rotate(0); background: var(--mint-ink) }
+.qa .ans { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease }
+.qa.open .ans { grid-template-rows: 1fr }
+.qa .ans > div { overflow: hidden }
+.qa .ans .in { padding: 0 22px 22px; display: grid; gap: 10px; color: color-mix(in srgb, var(--text) 85%, var(--muted)); max-width: 76ch }
+.qa .ans p { margin: 0 } .qa .ans ul { margin: 0; padding-left: 20px; display: grid; gap: 6px } .qa .ans a { color: var(--mint) }
+
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main"><div class="wrap"><a class="brand" href="index.html" aria-label="VitalKick home"></a><ul><li><a href="technology.html">How it works</a></li><li><a href="biomarkers.html">Biomarkers</a></li><li><a href="validation.html">Validation</a></li><li><a href="research.html">For research</a></li><li><a href="contact.html">Contact</a></li></ul><a class="btn primary" href="book.html">Book a call</a></div></nav>
+<style>
+.tk-hero { padding-block: clamp(110px, 12vw, 150px) 30px }
+.tk-hero .wrap { display: grid; gap: 20px } .tk-hero .wrap > * { max-width: 860px }
+.tk-sec { padding-block: clamp(48px, 7vw, 90px); border-top: 1px solid var(--line) }
+.tk-sec .lede { max-width: 720px }
+.tk-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: center }
+@media (max-width: 860px) { .tk-two { grid-template-columns: 1fr } }
+.tk-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 28px }
+.tk-card { border: 1px solid var(--line); border-radius: 20px; padding: 22px; background: linear-gradient(160deg, color-mix(in srgb, var(--mint) 6%, var(--panel)), var(--panel) 60%); display: grid; gap: 10px; align-content: start }
+.tk-card .n { font: 600 12px var(--mono); color: var(--mint); letter-spacing: .12em }
+.tk-card h3 { font-size: 19px; margin: 0 } .tk-card p { margin: 0; color: var(--muted); font-size: 15px }
+.wave { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 22px; background: var(--panel) }
+.wave .grid line { stroke: var(--line) }
+.wave .sig { fill: none; stroke: var(--mint); stroke-width: 2.4; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--mint) 70%, transparent)); stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: draw 4s ease-out forwards }
+.wave .raw { fill: none; stroke: var(--muted); stroke-opacity: .5; stroke-width: 1.2 }
+.wave text { font: 600 11px var(--mono); fill: var(--muted); letter-spacing: .08em }
+@keyframes draw { to { stroke-dashoffset: 0 } }
+.timeline { display: grid; gap: 0; margin-top: 28px; border: 1px solid var(--line); border-radius: 20px; overflow: hidden }
+.timeline .row { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--line); align-items: center }
+.timeline .row:last-child { border-bottom: 0 }
+.timeline .t { font: 700 22px var(--mono); color: var(--mint) }
+.timeline .bar { height: 6px; border-radius: 6px; background: linear-gradient(90deg, var(--mint), color-mix(in srgb, var(--mint) 25%, transparent)); margin-top: 8px }
+.flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 28px }
+@media (max-width: 860px) { .flow { grid-template-columns: 1fr 1fr } }
+@media (max-width: 520px) { .flow { grid-template-columns: 1fr } }
+.flow div { border: 1px solid var(--line); border-radius: 18px; padding: 18px; position: relative }
+.flow div b { display: block; font-size: 16px; margin-bottom: 6px } .flow div span { color: var(--muted); font-size: 14px }
+.flow div.on { border-color: color-mix(in srgb, var(--mint) 55%, transparent) }
+.flow div .tag { position: absolute; top: -10px; right: 14px; font: 600 10px var(--mono); letter-spacing: .1em; padding: 3px 8px; border-radius: 999px; background: var(--ink); border: 1px solid var(--line); color: var(--muted) }
+.flow div.on .tag { color: var(--mint); border-color: var(--mint) }
+</style>
+
+<header class="tk-hero"><div class="wrap">
+  <a class="crumb" href="index.html">← VITALKICK</a>
+  <span class="k-label">Technology</span>
+  <h1>How a selfie becomes <em>your vital signs.</em></h1>
+  <p class="lede">Every heartbeat changes the colour of your skin by a tiny amount. VitalKick's camera engine reads that change for 60 seconds, on your phone, and turns it into twelve readings. Here is how, and what we built around it.</p>
+  <div class="btns"><a class="btn primary" href="book.html">Book a call</a><a class="btn ghost" href="validation.html">See the validation</a></div>
+</div></header>
+
+<section class="tk-sec"><div class="wrap tk-two">
+  <div>
+    <span class="k-label">01 · The signal</span>
+    <h2 style="margin-top:12px">Your pulse is <em>visible</em> to a camera.</h2>
+    <p class="lede">With each beat, a little more blood flows into the skin of your face. Blood absorbs green light strongly, so your skin turns very slightly darker and lighter in time with your heart.</p>
+    <p>The change is far too small for your eyes. A phone camera records 30 or more frames a second, and averaging thousands of skin pixels per frame brings the pulse out of the noise. The method is called remote photoplethysmography, or rPPG: measuring blood flow with light, without touching you.</p>
+  </div>
+  <svg class="wave" viewBox="0 0 560 300" role="img" aria-label="A noisy colour signal from the skin, and the clean pulse wave the engine extracts from it">
+    <g class="grid"><line x1="0" y1="75" x2="560" y2="75"/><line x1="0" y1="150" x2="560" y2="150"/><line x1="0" y1="225" x2="560" y2="225"/></g>
+    <text x="20" y="34">RAW SKIN COLOUR, GREEN CHANNEL</text>
+    <path class="raw" d="M20 92 l10 -6 8 9 9 -12 7 15 10 -9 8 4 9 -13 8 16 10 -10 7 6 10 -14 9 17 8 -11 10 7 8 -12 9 14 8 -9 10 5 8 -15 9 16 9 -8 8 3 10 -13 8 15 9 -11 9 8 8 -14 10 13 8 -7 9 4 9 -12 8 16 10 -10 8 6 9 -15 8 14 10 -9 8 5 9 -13 9 15 8 -10 10 7 8 -12 9 14 8 -8 10 4 8 -14 9 16 9 -9 8 6 10 -13 8 15 9 -11 9 7 8 -12"/>
+    <text x="20" y="184">PULSE WAVE AFTER FILTERING</text>
+    <path class="sig" d="M20 250 C40 250 45 205 60 205 S80 245 95 240 S110 232 120 250 C140 250 145 205 160 205 S180 245 195 240 S210 232 220 250 C240 250 245 205 260 205 S280 245 295 240 S310 232 320 250 C340 250 345 205 360 205 S380 245 395 240 S410 232 420 250 C440 250 445 205 460 205 S480 245 495 240 S510 232 520 250 L540 250"/>
+  </svg>
+</div></section>
+
+<section class="tk-sec"><div class="wrap">
+  <span class="k-label">02 · Step by step</span>
+  <h2 style="margin-top:12px">What happens during <em>the scan.</em></h2>
+  <div class="tk-cards">
+    <div class="tk-card"><span class="n">STEP 1</span><h3>Find the skin</h3><p>Each frame, the engine locates your forehead and cheeks, where blood flow shows best. It uses their position in that frame only and never stores the shape of your face.</p></div>
+    <div class="tk-card"><span class="n">STEP 2</span><h3>Read the colour</h3><p>It averages the colour of those skin areas, frame after frame, building a signal that rises and falls with every heartbeat.</p></div>
+    <div class="tk-card"><span class="n">STEP 3</span><h3>Check the quality</h3><p>Light, movement and talking all add noise. Every reading carries a confidence score, and a poor scan is flagged so you can try again in better light.</p></div>
+    <div class="tk-card"><span class="n">STEP 4</span><h3>Compute the readings</h3><p>From the clean pulse wave the engine works out your pulse, the timing between beats, breathing, oxygen and blood pressure, plus two clearly labelled estimates.</p></div>
+  </div>
+</div></section>
+
+<section class="tk-sec"><div class="wrap tk-two" style="align-items:start">
+  <div>
+    <span class="k-label">03 · Why 60 seconds</span>
+    <h2 style="margin-top:12px">Each reading needs <em>its own amount</em> of signal.</h2>
+    <p class="lede">A pulse rate is ready early. Heart rate variability needs about 50 seconds of heartbeats before the number means anything physiologically. One full minute gives every reading enough data, from a single scan.</p>
+  </div>
+  <div class="timeline">
+    <div class="row"><span class="t">20 s</span><div>Pulse rate<div class="bar" style="width:33%"></div></div></div>
+    <div class="row"><span class="t">35 s</span><div>Blood pressure, oxygen saturation<div class="bar" style="width:58%"></div></div></div>
+    <div class="row"><span class="t">37 s</span><div>Breathing rate, pulse-respiration quotient<div class="bar" style="width:62%"></div></div></div>
+    <div class="row"><span class="t">50 s</span><div>Heart rate variability, stress level, nervous-system balance<div class="bar" style="width:83%"></div></div></div>
+    <div class="row"><span class="t">60 s</span><div>Scan complete, results saved<div class="bar" style="width:100%"></div></div></div>
+  </div>
+</div></section>
+
+<section class="tk-sec"><div class="wrap">
+  <span class="k-label">04 · On your phone</span>
+  <h2 style="margin-top:12px">The video <em>never leaves</em> your phone.</h2>
+  <p class="lede">The engine runs on the phone itself, in real time. Nothing about the scan depends on sending video to a server.</p>
+  <div class="flow">
+    <div class="on"><span class="tag">ON PHONE</span><b>Camera frames</b><span>Held in memory during the scan only</span></div>
+    <div class="on"><span class="tag">ON PHONE</span><b>rPPG engine</b><span>Turns frames into a pulse wave and readings</span></div>
+    <div class="on"><span class="tag">ON PHONE</span><b>Frames destroyed</b><span>Discarded when the scan ends, within seconds</span></div>
+    <div><span class="tag">SAVED</span><b>Numbers only</b><span>Readings saved to your account, encrypted, every access logged</span></div>
+  </div>
+  <p style="margin-top:22px;color:var(--muted)">No face images, face geometry or face templates are ever stored. Read the <a href="privacy-policy.html" style="color:var(--mint)">Privacy policy</a> for the full detail.</p>
+</div></section>
+
+<section class="tk-sec"><div class="wrap">
+  <span class="k-label">05 · Built around the engine</span>
+  <h2 style="margin-top:12px">What VitalKick adds <em>on top</em> of the signal.</h2>
+  <div class="tk-cards">
+    <div class="tk-card"><span class="n">ENGINE-NEUTRAL</span><h3>Not tied to one supplier</h3><p>VitalKick licenses its rPPG engine through a single internal layer. The rest of the app never talks to the engine directly, so a qualified alternative can be switched in without rebuilding the product.</p></div>
+    <div class="tk-card"><span class="n">CITED RANGES</span><h3>Every range names its source</h3><p>Normal ranges live in data, not in code, and each one cites the published source it came from. A physician can change a range without an app release.</p></div>
+    <div class="tk-card"><span class="n">RULES FIRST</span><h3>Rules decide what to flag</h3><p>Fixed, physician-reviewed rules choose the two or three numbers worth your attention. AI may only reword an approved message more warmly, and its wording is checked before you see it.</p></div>
+    <div class="tk-card"><span class="n">ALWAYS ON</span><h3>A same-day prompt that cannot be hidden</h3><p>If one reading crosses an urgent level, a calm prompt to get checked today appears before anything else. No setting, paywall or dismissed state can turn it off.</p></div>
+  </div>
+</div></section>
+
+<section class="tk-sec"><div class="wrap tk-two" style="align-items:start">
+  <div>
+    <span class="k-label">06 · The phone you already own</span>
+    <h2 style="margin-top:12px">Nothing to wear, <em>nothing to charge.</em></h2>
+    <p class="lede">VitalKick runs on iPhone and Android phones with a front camera. There is no cuff, clip, strap or extra device.</p>
+  </div>
+  <div class="tk-cards" style="margin-top:0">
+    <div class="tk-card"><h3>Even light on your face</h3><p>Face a window or a lamp. Avoid bright light behind you.</p></div>
+    <div class="tk-card"><h3>Still and quiet</h3><p>Rest for 5 minutes first, then keep still and do not talk.</p></div>
+    <div class="tk-card"><h3>Forehead and cheeks clear</h3><p>Move hair, hats or glasses that cover them.</p></div>
+    <div class="tk-card"><h3>Same time each day</h3><p>Your trend compares like with like.</p></div>
+  </div>
+</div></section>
+
+<section class="tk-sec"><div class="wrap">
+  <div class="shortv" style="max-width:960px"><h2>See it for your patients, members or study.</h2><p style="margin:0">Book 30 minutes with the founder, or see how the engine was tested.</p><div class="btns"><a class="btn primary" href="book.html">Book a call</a><a class="btn ghost" href="validation.html">Validation</a><a class="btn ghost" href="biomarkers.html">All biomarkers</a></div></div>
+</div></section>
+
+<footer class="sfoot">
+  <div class="wrap">
+    <div class="cols">
+      <div class="brandcol"><a class="brand" href="index.html" aria-label="VitalKick home"></a><p>Vital signs from a 60-second selfie, processed on the phone.</p><a class="tel" href="tel:+13057534452">(305) 753-4452</a></div>
+      <div><h4>Product</h4><ul><li><a href="index.html#scan">The 60-second scan</a></li><li><a href="technology.html">How it works</a></li><li><a href="biomarkers.html">Biomarkers</a></li><li><a href="validation.html">Validation</a></li><li><a href="index.html#edge">Privacy &amp; security</a></li></ul></div>
+      <div><h4>Solutions</h4><ul><li><a href="solutions-telehealth.html">Telehealth</a></li><li><a href="solutions-checkins.html">Between-visit check-ins</a></li><li><a href="solutions-value-based-care.html">Value-based care</a></li><li><a href="solutions-senior-living.html">Senior living</a></li><li><a href="solutions-employers.html">Employers &amp; wellness</a></li><li><a href="research.html">Research &amp; trials</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="book.html">Book a call</a></li><li><a href="contact.html">Contact</a></li><li><a href="careers.html">Careers</a></li><li><a href="press.html">Press</a></li></ul></div>
+      <div><h4>Resources</h4><ul><li><a href="faq.html">FAQ</a></li><li><a href="blog.html">Blog</a></li><li><a href="help.html">Help center</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="privacy-policy.html">Privacy policy</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="accessibility.html">Accessibility</a></li></ul></div>
+    </div>
+    <div class="bottom"><span>© 2026 VitalKick. All rights reserved.</span><span>VitalKick is a general wellness product. Readings support your own wellness and do not replace care from your clinician.</span></div>
+  </div>
+</footer>
+</body>
+</html>

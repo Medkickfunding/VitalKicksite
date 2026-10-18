@@ -1,0 +1,98 @@
+// Biomarker explorer content. Ranges mirror vitalkick-app/packages/clinical/src/reference-ranges.json.
+// Every entry names a source. Estimates carry no band labels (CLAUDE.md rule 3).
+window.VK_MARKERS = [
+  {
+    id: 'pulse', name: 'Pulse rate', unit: 'bpm', group: 'Vital signs', sample: '72',
+    what: 'How many times your heart beats in one minute while you sit still.',
+    why: 'A resting pulse that creeps up over weeks often follows poor sleep, stress, illness or less activity. A steady or falling trend often follows more movement and better rest.',
+    range: { lo: 30, hi: 150, segs: [[30, 40, 'urgent', 'Check today'], [40, 60, 'low', 'Low'], [60, 101, 'ok', 'Typical'], [101, 131, 'warn', 'Above typical'], [131, 150, 'urgent', 'Check today']], text: '60 to 100 beats a minute for adults at rest.' },
+    act: ['Sit quietly for 5 minutes, then scan again. Talking, coffee and moving all raise it.', 'If your resting pulse stays outside 60 to 100 for several days, share your trend with your clinician.', 'Below 40 or above 130 at rest, VitalKick shows a same-day prompt to get it checked.'],
+    src: 'American Heart Association, "All About Heart Rate"',
+  },
+  {
+    id: 'bp', name: 'Blood pressure', unit: 'mmHg', group: 'Vital signs', sample: '118/76',
+    what: 'The push of blood against your artery walls. The top number is during a heartbeat, the bottom number is between beats.',
+    why: 'Higher pressure over the years strains the heart, brain, kidneys and eyes, and usually causes no symptoms. Regular checks are how people find out.',
+    range: { lo: 80, hi: 190, segs: [[80, 91, 'low', 'Low'], [91, 120, 'ok', 'Normal'], [120, 140, 'warn', 'Above normal'], [140, 180, 'high', 'High'], [180, 190, 'urgent', 'Check today']], text: 'Top number below 120 and bottom number below 80 is normal. Bar shows the top number.' },
+    act: ['Sit with your back supported and feet flat for 5 minutes, then scan again.', 'If it stays above normal over several days, check it with a home cuff and share the trend with your clinician.', 'Less salt, more movement, enough sleep and less alcohol are the everyday habits linked to healthier blood pressure.', 'Top number 180 or more, or bottom number 120 or more: VitalKick shows a same-day prompt to get it checked.'],
+    src: 'ACC/AHA 2017 blood pressure categories; American Heart Association, "Understanding Blood Pressure Readings"',
+  },
+  {
+    id: 'spo2', name: 'Oxygen saturation', unit: '%', group: 'Vital signs', sample: '98',
+    what: 'How much of the oxygen-carrying protein in your red blood cells is carrying oxygen right now.',
+    why: 'It shows how well your lungs and blood are getting oxygen to the rest of your body.',
+    range: { lo: 85, hi: 100, segs: [[85, 90, 'urgent', 'Check today'], [90, 95, 'warn', 'Below typical'], [95, 100, 'ok', 'Typical']], text: '95% to 100% is typical at rest.' },
+    act: ['Scan again in good, even light while sitting still.', 'If it reads below 95% more than once, or you feel short of breath, talk with your clinician.', 'Below 90%, VitalKick shows a same-day prompt to get it checked.'],
+    src: 'MedlinePlus (U.S. National Library of Medicine), "Pulse Oximetry"',
+  },
+  {
+    id: 'breath', name: 'Breathing rate', unit: 'breaths/min', group: 'Vital signs', sample: '14',
+    what: 'How many breaths you take in one minute at rest.',
+    why: 'Breathing speeds up with fever, stress, and strain on the heart or lungs. A change from your usual rate is worth noticing.',
+    range: { lo: 6, hi: 30, segs: [[6, 9, 'low', 'Low'], [9, 12, 'warn', 'Slightly low'], [12, 21, 'ok', 'Typical'], [21, 25, 'warn', 'Slightly high'], [25, 30, 'high', 'High']], text: '12 to 20 breaths a minute at rest.' },
+    act: ['Sit quietly for 5 minutes and scan again. Talking or moving during a scan raises it.', 'If it stays outside 12 to 20 at rest, or you feel short of breath, contact your clinician.'],
+    src: 'Royal College of Physicians, NEWS2 resting range',
+  },
+  {
+    id: 'hrv', name: 'Heart rate variability', unit: 'ms', group: 'Heart rhythm & stress', sample: '42',
+    what: 'The tiny differences in time between one heartbeat and the next. At rest, more variation usually means your body is recovering well.',
+    why: 'It tends to drop with poor sleep, stress, illness, alcohol and hard training, and rises with rest and fitness. It often changes before you feel different.',
+    range: { lo: 0, hi: 90, segs: [[0, 12, 'high', 'Low'], [12, 27, 'warn', 'Below typical'], [27, 58, 'ok', 'Typical'], [58, 90, 'good', 'High']], text: 'About 27 to 58 ms (RMSSD) in healthy adults at rest. It falls with age, so your own trend matters more than one number.' },
+    act: ['One low day is common. Look at your 7-day trend instead.', 'If it stays below your usual for a week, look at sleep, stress and alcohol first.'],
+    src: 'Nunan, Sandercock & Brodie 2010, review of 44 studies in 21,438 healthy adults',
+  },
+  {
+    id: 'stress', name: 'Stress level', unit: '1 to 5', group: 'Heart rhythm & stress', sample: '2',
+    what: 'A score from 1 (low) to 5 (very high), worked out from your heart rhythm at rest.',
+    why: 'Ongoing stress keeps your body on alert. It shows up in your heart rhythm, sometimes before you notice it yourself.',
+    range: { lo: 1, hi: 5, segs: [[1, 2, 'ok', 'Low'], [2, 3, 'ok', 'Normal'], [3, 4, 'warn', 'Raised'], [4, 5, 'high', 'High']], text: '1 to 3 is the usual resting range.' },
+    act: ['Try a few minutes of slow breathing, a short walk or a break, then scan again.', 'If high scores continue for weeks, talking with your clinician can help.'],
+    src: 'Baevsky stress index, as implemented by our rPPG technology partner',
+  },
+  {
+    id: 'prq', name: 'Pulse-respiration quotient', unit: 'ratio', group: 'Heart rhythm & stress', sample: '4.1',
+    what: 'The number of heartbeats for each breath you take.',
+    why: 'It shows how well your heart and breathing rhythms are working together. It shifts with sleep, stress and activity.',
+    range: null, rangeText: 'About 4 heartbeats per breath is the usual resting value. VitalKick compares you with your own baseline instead of a population range.',
+    act: ['Most useful as a trend. Scan at the same time each morning so the numbers compare fairly.'],
+    src: 'Scholkmann & Wolf 2019, "The Pulse-Respiration Quotient"',
+  },
+  {
+    id: 'ans', name: 'Sympathetic / parasympathetic', unit: '%', group: 'Heart rhythm & stress', sample: '46 / 54',
+    what: 'Two sides of your nervous system, estimated from your heart rhythm: "fight or flight" (sympathetic) and "rest and digest" (parasympathetic).',
+    why: 'The balance between them shifts with stress, sleep and recovery.',
+    range: null, rangeText: 'There is no population range. VitalKick shows how your balance changes against your own baseline.',
+    act: ['Sleep, slow breathing and regular movement all tend to move the balance toward rest.'],
+    src: 'Heart rate variability analysis by our rPPG technology partner',
+  },
+  {
+    id: 'hb', name: 'Hemoglobin', unit: 'g/dL', group: 'Estimates', sample: '13.9', est: true,
+    what: 'An estimate of hemoglobin, the protein in red blood cells that carries oxygen.',
+    why: 'Low hemoglobin can leave people tired, short of breath or pale.',
+    range: null, rangeText: 'For context only: lab ranges are about 13.5 to 17.5 g/dL for men and 12.0 to 15.5 g/dL for women. No range label is shown on an estimate.',
+    act: ['An estimate cannot replace a blood test.', 'If yours looks different from usual, or you feel unusually tired, ask your clinician whether a blood test makes sense.'],
+    src: 'MedlinePlus (U.S. National Library of Medicine), "Hemoglobin Test"',
+  },
+  {
+    id: 'a1c', name: 'HbA1c', unit: '%', group: 'Estimates', sample: '5.4', est: true,
+    what: 'An estimate of your average blood sugar over the past 2 to 3 months.',
+    why: 'Higher average blood sugar over time affects blood vessels, nerves, eyes and kidneys.',
+    range: null, rangeText: 'For context only: a lab A1C below 5.7% is the usual reference point. No range label is shown on an estimate.',
+    act: ['Only a lab A1C test can confirm the number.', 'If your estimate trends up, ask your clinician about a lab test. Meals, activity and sleep all affect blood sugar.'],
+    src: 'American Diabetes Association, A1C reference points',
+  },
+];
+
+// Extra detail for the full biomarkers page (biomarkers.html).
+window.VK_MORE = {
+  pulse: { icon: 'pulse', short: 'Heartbeats per minute at rest.', how: 'Each heartbeat sends a small wave of blood into the skin of your face. The camera counts those waves over the scan.', movers: ['Caffeine', 'Stress', 'Poor sleep', 'Fever or illness', 'Fitness level', 'Some medicines'] },
+  bp: { icon: 'bp', short: 'The push of blood on your artery walls.', how: 'The engine estimates both numbers from features of the pulse wave recorded during the scan.', movers: ['Salt', 'Alcohol', 'Stress', 'Poor sleep', 'Activity level', 'Body weight'] },
+  spo2: { icon: 'spo2', short: 'How much oxygen your blood is carrying.', how: 'Blood carrying oxygen absorbs light a little differently from blood that is not. The camera compares how light changes with each beat.', movers: ['Altitude', 'Lung or breathing problems', 'Cold hands and poor light (for the scan)', 'Smoking'] },
+  breath: { icon: 'breath', short: 'Breaths per minute at rest.', how: 'Breathing gently shifts the pulse wave and the small movements of your face and shoulders. The engine counts those cycles.', movers: ['Talking during the scan', 'Stress or anxiety', 'Fever', 'Recent activity', 'Fitness level'] },
+  hrv: { icon: 'hrv', short: 'Tiny timing changes between heartbeats.', how: 'The engine measures the exact time between each pair of heartbeats, then how much those gaps vary.', movers: ['Sleep', 'Alcohol', 'Stress', 'Illness', 'Hard training', 'Age'] },
+  stress: { icon: 'stress', short: 'A 1 to 5 score from your heart rhythm.', how: 'The score comes from how evenly your heart beats at rest, using a published stress index.', movers: ['Work pressure', 'Poor sleep', 'Caffeine', 'Pain', 'Relaxation and slow breathing'] },
+  prq: { icon: 'prq', short: 'Heartbeats for each breath.', how: 'It divides your pulse rate by your breathing rate from the same scan.', movers: ['Sleep', 'Stress', 'Activity', 'Time of day'] },
+  ans: { icon: 'ans', short: 'Your "alert" and "rest" balance.', how: 'Patterns in heart rhythm show how much each side of the nervous system is in charge at the moment.', movers: ['Stress', 'Sleep', 'Exercise', 'Slow breathing', 'Illness'] },
+  hb: { icon: 'hb', short: 'An estimate of the oxygen-carrying protein in blood.', how: 'The engine estimates it from the blood-flow signal recorded during the scan. It is an estimate, not a blood test.', movers: ['Diet low in iron', 'Blood loss', 'Pregnancy', 'Altitude', 'Hydration'] },
+  a1c: { icon: 'a1c', short: 'An estimate of average blood sugar over months.', how: 'The engine estimates it from patterns in the blood-flow signal. It is an estimate, not a blood test.', movers: ['Meals and sugary drinks', 'Activity', 'Sleep', 'Body weight', 'Stress'] },
+};

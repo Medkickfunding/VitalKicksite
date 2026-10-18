@@ -1,0 +1,236 @@
+<style>
+.bk { padding-block: clamp(110px, 12vw, 150px) 80px }
+.bk .grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 56px); align-items: start }
+@media (max-width: 900px) { .bk .grid { grid-template-columns: 1fr } }
+.host { position: sticky; top: 96px; border: 1px solid var(--line); border-radius: 26px; overflow: hidden; background: var(--panel) }
+@media (max-width: 900px) { .host { position: relative; top: 0 } }
+.host .ph { position: relative; aspect-ratio: 5 / 4; overflow: hidden; background: #050b0b }
+.host .ph img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22% }
+.host .ph::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 60%, var(--panel)) }
+.host .tag { position: absolute; left: 16px; top: 16px; z-index: 1; font: 600 11px var(--mono); letter-spacing: .12em; color: var(--mint); background: rgba(4, 12, 12, .72); border: 1px solid color-mix(in srgb, var(--mint) 40%, transparent); border-radius: 999px; padding: 6px 10px; display: inline-flex; gap: 8px; align-items: center }
+.host .tag i { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 8px var(--mint); animation: blink 1.6s ease-in-out infinite }
+@keyframes blink { 50% { opacity: .25 } }
+.host .body { padding: 6px 26px 26px; display: grid; gap: 14px }
+.host h2 { font-size: clamp(26px, 2.6vw, 32px) }
+.host .role { color: var(--muted); margin: -8px 0 0 }
+.facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+.facts li { display: flex; gap: 12px; align-items: center; font-size: 15px }
+.facts svg { flex: none; width: 20px; height: 20px; stroke: var(--mint); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
+
+.flow { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; min-width: 0 }
+.bk .crumb { display: inline-block; margin-bottom: 18px }
+.bk .k-label { display: block; font: 600 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--mint) }
+.stepbox { min-width: 0; border: 1px solid var(--line); border-radius: 22px; padding: clamp(18px, 2.4vw, 26px); background: color-mix(in srgb, var(--panel) 70%, transparent) }
+.stepbox h3 { font-size: 19px; display: flex; gap: 12px; align-items: center; margin: 0 0 16px }
+.stepbox h3 .n { font: 600 12px var(--mono); color: var(--mint-ink); background: var(--mint); border-radius: 999px; width: 26px; height: 26px; display: grid; place-items: center; flex: none }
+.stepbox .hint { color: var(--muted); font-size: 14px; margin: -8px 0 14px }
+.days { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory }
+.day { flex: none; scroll-snap-align: start; min-width: 76px; min-height: 76px; display: grid; place-items: center; gap: 2px; padding: 10px 8px; border-radius: 16px; border: 1px solid var(--line); background: var(--ink); color: var(--text); cursor: pointer; font: inherit }
+.day b { font: 800 22px/1 var(--body) } .day span { font: 600 11px var(--mono); color: var(--muted); letter-spacing: .08em; text-transform: uppercase }
+.day[aria-pressed="true"] { border-color: var(--mint); background: color-mix(in srgb, var(--mint) 14%, var(--ink)); box-shadow: 0 0 0 1px var(--mint) inset }
+.day:disabled { opacity: .35; cursor: default }
+.times { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px }
+.time { min-height: 48px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--mint) 30%, transparent); background: transparent; color: var(--text); font: 600 15px var(--body); cursor: pointer; display: grid; place-items: center; line-height: 1.2; padding: 6px }
+.time small { font: 400 11px var(--mono); color: var(--muted) }
+.time:hover { border-color: var(--mint) }
+.time[aria-pressed="true"] { background: var(--mint); color: var(--mint-ink); border-color: var(--mint) } .time[aria-pressed="true"] small { color: var(--mint-ink) }
+.empty { color: var(--muted); font-size: 15px }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
+@media (max-width: 600px) { .fields { grid-template-columns: 1fr } }
+.fields .wide { grid-column: 1 / -1 }
+.fields label { display: grid; gap: 6px; font-size: 14px; color: var(--muted) }
+.fields input, .fields textarea { font: 400 16px var(--body); color: var(--text); background: var(--ink); border: 1px solid color-mix(in srgb, var(--text) 18%, transparent); border-radius: 10px; padding: 12px 14px; min-height: 48px; width: 100% }
+.fields textarea { min-height: 84px; resize: vertical }
+.fields input:focus, .fields textarea:focus { outline: 2px solid var(--mint); outline-offset: 1px; border-color: transparent }
+.fields [aria-invalid="true"] { border-color: var(--coral) }
+.opt { color: var(--muted); font-size: 12px }
+.interests { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
+@media (max-width: 700px) { .interests { grid-template-columns: 1fr } }
+.int { text-align: left; display: grid; gap: 8px; align-content: start; padding: 18px; min-height: 120px; border-radius: 18px; border: 1px solid var(--line); background: var(--ink); color: var(--text); cursor: pointer; font: inherit }
+.int svg { width: 30px; height: 30px; stroke: var(--mint); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+.int b { font-size: 16px } .int span { color: var(--muted); font-size: 13px; line-height: 1.45 }
+.int[aria-pressed="true"] { border-color: var(--mint); background: color-mix(in srgb, var(--mint) 12%, var(--ink)); box-shadow: 0 0 0 1px var(--mint) inset }
+.summary { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px }
+.summary p { margin: 0; color: var(--muted) } .summary p b { color: var(--text) }
+.err { color: var(--coral); font-size: 14px; min-height: 1.4em; margin: 0 }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden }
+button.btn[disabled] { opacity: .5; cursor: default }
+</style>
+
+<main class="bk">
+  <div class="wrap">
+    <a class="crumb" href="index.html">← VITALKICK</a>
+    <span class="k-label">Book a call</span>
+    <h1 style="margin-block:10px 8px">Book 30 minutes <em>with the founder.</em></h1>
+    <p class="lede" style="max-width:640px;margin-bottom:34px">Pick a time that suits you. It goes straight into Dr. Bizanti's calendar, and you get a confirmation page you can add to your own.</p>
+
+    <div class="grid">
+      <aside class="host" aria-label="Who you will meet">
+        <div class="ph"><span class="tag"><i></i>SCAN 00:42 · 60 S</span><img src="assets/bizanti-scan.webp" alt="Sadik Bizanti, MD, during a VitalKick face scan" width="800" height="960"></div>
+        <div class="body">
+          <h2>Sadik Bizanti, MD</h2>
+          <p class="role">Founder &amp; CEO, VitalKick</p>
+          <ul class="facts">
+            <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>30 minutes</li>
+            <li><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Phone call, or a video link by email</li>
+            <li><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Weekdays, 9 AM to 5 PM Eastern</li>
+          </ul>
+          <p style="margin:0;color:var(--muted);font-size:15px">Questions first? Call or text <a class="tel" href="tel:+13057534452" style="font-size:inherit">(305) 753-4452</a>.</p>
+        </div>
+      </aside>
+
+      <form class="flow" id="bk" novalidate>
+        <section class="stepbox" aria-labelledby="s1">
+          <h3 id="s1"><span class="n">1</span>Pick a day</h3>
+          <div class="days" id="days" role="group" aria-label="Days"></div>
+        </section>
+        <section class="stepbox" aria-labelledby="s2">
+          <h3 id="s2"><span class="n">2</span>Pick a time</h3>
+          <p class="hint" id="tzHint"></p>
+          <div class="times" id="times" role="group" aria-label="Times"></div>
+        </section>
+        <section class="stepbox" aria-labelledby="s3">
+          <h3 id="s3"><span class="n">3</span>Your details</h3>
+          <p class="hint">A phone number or an email is enough. Both is best.</p>
+          <div class="fields">
+            <label class="wide">Your name<input id="f-name" name="name" autocomplete="name" required></label>
+            <label>Phone number<input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></label>
+            <label>Email<input id="f-email" name="email" type="email" autocomplete="email"></label>
+            <label class="wide"><span>Organisation <span class="opt">(optional)</span></span><input id="f-org" name="org" autocomplete="organization"></label>
+            <label class="wide"><span>Anything you would like to cover? <span class="opt">(optional)</span></span><textarea id="f-note" name="note" maxlength="600"></textarea></label>
+            <label class="hp" aria-hidden="true">Website<input id="f-web" name="website" tabindex="-1" autocomplete="off"></label>
+          </div>
+        </section>
+        <section class="stepbox" aria-labelledby="s4">
+          <h3 id="s4"><span class="n">4</span>What are you most interested in?</h3>
+          <div class="interests" id="ints" role="group" aria-label="Interest">
+            <button type="button" class="int" data-v="practice" aria-pressed="false"><svg viewBox="0 0 32 32"><path d="M9 4v8a6 6 0 0 0 12 0V4"/><path d="M15 18v3a6 6 0 0 0 12 0v-3"/><circle cx="27" cy="15" r="3"/></svg><b>VitalKick for my patients</b><span>Readings and trends between visits for a practice or clinic.</span></button>
+            <button type="button" class="int" data-v="research" aria-pressed="false"><svg viewBox="0 0 32 32"><path d="M12 4h8M13 4v9L6 25a2 2 0 0 0 2 3h16a2 2 0 0 0 2-3l-7-12V4"/><path d="M9 20h14"/></svg><b>Research and clinical trials</b><span>Finding and following the right participants for a pilot or study.</span></button>
+            <button type="button" class="int" data-v="wellness" aria-pressed="false"><svg viewBox="0 0 32 32"><circle cx="11" cy="10" r="4"/><circle cx="22" cy="12" r="3"/><path d="M3 26a8 8 0 0 1 16 0M18 26a6 6 0 0 1 11 0"/></svg><b>Employee or member wellness</b><span>A one-minute check people repeat, for a team or a member base.</span></button>
+          </div>
+        </section>
+        <div class="stepbox summary">
+          <p id="sum">Choose a day and a time.</p>
+          <button class="btn primary" id="go" type="submit" disabled>Confirm my call</button>
+        </div>
+        <p class="err" id="err" role="alert"></p>
+      </form>
+    </div>
+  </div>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const TZ = 'America/New_York', SLOT_MIN = 30, DAYS_AHEAD = 14, LEAD_HOURS = 4, H0 = 9, H1 = 17;
+  const LOCAL = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const sameTz = LOCAL === TZ || new Date().toLocaleString('en-US', { timeZone: LOCAL }) === new Date().toLocaleString('en-US', { timeZone: TZ });
+  const fmt = (d, o) => d.toLocaleString('en-US', o);
+  const dayKey = d => fmt(d, { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
+
+  // Same rules as api/_slots.js. Used when the calendar is not connected yet.
+  function offsetMin(date) {
+    try {
+      const s = new Intl.DateTimeFormat('en-US', { timeZone: TZ, timeZoneName: 'shortOffset' }).formatToParts(date).find(p => p.type === 'timeZoneName').value;
+      const m = s.match(/GMT([+-])(\d+)(?::(\d+))?/);
+      return m ? (m[1] === '-' ? -1 : 1) * (+m[2] * 60 + +(m[3] || 0)) : -300;
+    } catch { return -300; }
+  }
+  function localSlots(now = new Date()) {
+    const out = [], earliest = now.getTime() + LEAD_HOURS * 3600e3;
+    for (let i = 0; i <= DAYS_AHEAD; i++) {
+      const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: TZ, year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short' }).formatToParts(new Date(now.getTime() + i * 86400e3)).map(x => [x.type, x.value]));
+      if (p.weekday === 'Sat' || p.weekday === 'Sun') continue;
+      const off = offsetMin(new Date(Date.UTC(+p.year, p.month - 1, +p.day, 16)));
+      for (let t = H0 * 60; t + SLOT_MIN <= H1 * 60; t += SLOT_MIN) {
+        const ms = Date.UTC(+p.year, p.month - 1, +p.day, 0, t) - off * 60e3;
+        if (ms >= earliest && !out.includes(ms)) out.push(ms);
+      }
+    }
+    return out.map(ms => new Date(ms).toISOString());
+  }
+
+  let slots = [], live = false, day = null, slot = null, interest = null;
+
+  function drawDays() {
+    const byDay = new Map();
+    slots.forEach(s => { const k = dayKey(new Date(s)); byDay.set(k, (byDay.get(k) || 0) + 1); });
+    const now = new Date(), html = [];
+    for (let i = 0; i <= DAYS_AHEAD; i++) {
+      const d = new Date(now.getTime() + i * 86400e3), wd = fmt(d, { timeZone: TZ, weekday: 'short' });
+      if (wd === 'Sat' || wd === 'Sun') continue;
+      const k = dayKey(d), n = byDay.get(k) || 0;
+      html.push(`<button type="button" class="day" data-k="${k}" aria-pressed="${k === day}" ${n ? '' : 'disabled'} aria-label="${fmt(d, { timeZone: TZ, weekday: 'long', month: 'long', day: 'numeric' })}${n ? '' : ', fully booked'}"><span>${wd}</span><b>${fmt(d, { timeZone: TZ, day: 'numeric' })}</b><span>${fmt(d, { timeZone: TZ, month: 'short' })}</span></button>`);
+    }
+    $('days').innerHTML = html.join('');
+    if (!day) { const first = $('days').querySelector('.day:not(:disabled)'); if (first) { day = first.dataset.k; first.setAttribute('aria-pressed', 'true'); } }
+    drawTimes();
+  }
+  function drawTimes() {
+    const list = slots.filter(s => dayKey(new Date(s)) === day);
+    $('tzHint').textContent = sameTz ? 'Times are Eastern Time.' : `Times shown in your time zone (${LOCAL.replace(/_/g, ' ')}), with Eastern Time underneath.`;
+    $('times').innerHTML = list.length ? list.map(s => {
+      const d = new Date(s), loc = fmt(d, { hour: 'numeric', minute: '2-digit' });
+      return `<button type="button" class="time" data-s="${s}" aria-pressed="${s === slot}">${loc}${sameTz ? '' : `<small>${fmt(d, { timeZone: TZ, hour: 'numeric', minute: '2-digit' })} ET</small>`}</button>`;
+    }).join('') : '<p class="empty">No open times on this day. Try another.</p>';
+    update();
+  }
+  function update() {
+    const d = slot && new Date(slot);
+    $('sum').innerHTML = d ? `<b>${fmt(d, { weekday: 'long', month: 'long', day: 'numeric' })}</b> at <b>${fmt(d, { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' })}</b>` : 'Choose a day and a time.';
+    $('go').disabled = !slot;
+  }
+
+  $('days').addEventListener('click', e => { const b = e.target.closest('.day'); if (!b || b.disabled) return; day = b.dataset.k; slot = null; $('days').querySelectorAll('.day').forEach(x => x.setAttribute('aria-pressed', x === b)); drawTimes(); });
+  $('times').addEventListener('click', e => { const b = e.target.closest('.time'); if (!b) return; slot = b.dataset.s; $('times').querySelectorAll('.time').forEach(x => x.setAttribute('aria-pressed', x === b)); update(); });
+  $('ints').addEventListener('click', e => { const b = e.target.closest('.int'); if (!b) return; interest = b.dataset.v; $('ints').querySelectorAll('.int').forEach(x => x.setAttribute('aria-pressed', x === b)); });
+
+  function check() {
+    const name = $('f-name').value.trim(), phone = $('f-phone').value.trim(), email = $('f-email').value.trim();
+    const bad = [];
+    ['f-name', 'f-phone', 'f-email'].forEach(id => $(id).removeAttribute('aria-invalid'));
+    if (name.length < 2) { bad.push('your name'); $('f-name').setAttribute('aria-invalid', 'true'); }
+    const dg = phone.replace(/\D/g, '');
+    if (phone && (dg.length < 7 || dg.length > 15)) { bad.push('a valid phone number'); $('f-phone').setAttribute('aria-invalid', 'true'); }
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { bad.push('a valid email'); $('f-email').setAttribute('aria-invalid', 'true'); }
+    if (!phone && !email) { bad.push('a phone number or an email'); $('f-phone').setAttribute('aria-invalid', 'true'); }
+    if (!interest) bad.push('what you are most interested in');
+    if (!slot) bad.push('a time');
+    return bad;
+  }
+  function toThanks(pending) {
+    const name = $('f-name').value.trim();
+    const data = { s: slot, f: name.split(/\s+/)[0], n: name, i: interest, c: $('f-phone').value.trim() ? 'phone' : 'email', p: pending ? 1 : 0 };
+    if (pending) { data.e = $('f-email').value.trim(); data.o = $('f-org').value.trim(); }
+    location.href = 'thanks.html#' + encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(data)))));
+  }
+
+  $('bk').addEventListener('submit', async e => {
+    e.preventDefault();
+    const bad = check();
+    if (bad.length) { $('err').textContent = 'Please add ' + bad.join(', ') + '.'; return; }
+    $('err').textContent = '';
+    if (!live) return toThanks(true);
+    $('go').disabled = true; $('go').textContent = 'Booking…';
+    try {
+      const r = await fetch('/api/book', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({
+        start: slot, name: $('f-name').value, phone: $('f-phone').value, email: $('f-email').value,
+        org: $('f-org').value, note: $('f-note').value, interest, website: $('f-web').value }) });
+      if (r.ok) return toThanks(false);
+      if (r.status === 409) { $('err').textContent = 'Someone just took that time. Please pick another.'; slots = slots.filter(s => s !== slot); slot = null; drawDays(); }
+      else if (r.status === 503) return toThanks(true);
+      else $('err').textContent = 'That did not go through. Please try again, or call (305) 753-4452.';
+    } catch { return toThanks(true); }
+    finally { $('go').textContent = 'Confirm my call'; update(); }
+  });
+
+  (async () => {
+    try {
+      const r = await fetch('/api/availability', { cache: 'no-store' });
+      if (r.ok) { const j = await r.json(); if (Array.isArray(j.slots)) { slots = j.slots; live = true; } }
+    } catch { /* calendar not connected: fall back to a request by text */ }
+    if (!live) slots = localSlots();
+    drawDays();
+  })();
+})();
+</script>

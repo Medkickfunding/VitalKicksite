@@ -1,0 +1,6 @@
+{
+  "name": "vitalkick-website",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" }
+}
