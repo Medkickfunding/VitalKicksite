@@ -252,7 +252,7 @@ canvas.seq { display: block }
 
 /* history (horizontal) */
 #history { height: 420vh }
-#history .stage { align-content: center; gap: 40px }
+#history .stage { align-content: center; gap: 40px; grid-template-columns: minmax(0, 1fr) } /* keep the wide card track from stretching the column and pushing the heading off screen */
 .htrack { display: flex; gap: 22px; padding-inline: max(24px, calc((100vw - var(--wrap)) / 2 + 24px)); will-change: transform }
 .hcard { flex: 0 0 min(340px, 78vw); border: 1px solid var(--line); border-radius: 20px; padding: 26px; background: var(--panel); display: grid; gap: 14px; align-content: start; min-height: 300px }
 .hcard .yr { font: 400 64px/1 var(--display); color: var(--mint) }
@@ -367,6 +367,13 @@ canvas.seq { display: block }
   .steps-txt p { position: static; opacity: 1; transform: none; margin-bottom: 12px }
   .steps-txt { min-height: 0 }
 }
+/* explorer steps one reading per scroll notch on desktop */
+.bx-pin.pinned { height: var(--pinH) }
+.bx-pin.pinned .bx-stick { position: sticky; top: 84px }
+.bx-pin.pinned .bx-panel { position: static }
+.bx-hint { display: none; margin: 0 0 12px; font: 600 11px var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted) }
+.bx-hint span { color: var(--mint) }
+.bx-pin.pinned .bx-hint { display: block }
 </style>
 
 <nav class="nav" aria-label="Main">
@@ -479,10 +486,13 @@ canvas.seq { display: block }
 <section id="biomarkers">
   <div class="wrap">
     <div class="sec-head"><span class="k-label">Biomarkers</span><h2>What each reading shows, <em>and why it matters.</em></h2><p class="lede">Pick a reading to see what it measures, the typical range, and what VitalKick suggests when a number sits outside it.</p></div>
-    <div class="bx">
-      <div class="bx-list" id="bxList" role="tablist" aria-label="Biomarkers"></div>
-      <div class="bx-panel" id="bxPanel" role="tabpanel" aria-live="polite"></div>
-    </div>
+    <div class="bx-pin" id="bxPin"><div class="bx-stick">
+      <p class="bx-hint" aria-hidden="true">Scroll to step through each reading · <span id="bxCount">1 / 10</span></p>
+      <div class="bx">
+        <div class="bx-list" id="bxList" role="tablist" aria-label="Biomarkers"></div>
+        <div class="bx-panel" id="bxPanel" role="tabpanel" aria-live="polite"></div>
+      </div>
+    </div></div>
     <div class="btns" style="margin-top:28px"><a class="btn ghost" href="biomarkers.html">See every biomarker in detail →</a><a class="btn primary" href="book.html">Book a call</a></div>
   </div>
 </section>
@@ -856,6 +866,34 @@ document.querySelectorAll('[data-faq]').forEach(root => {
       <p class="bx-src">Source: ${m.src}</p></div>`;
   }
   if (M.length) show(0, false);
+
+  // on desktop, scrolling steps through the readings one at a time while the explorer stays in place
+  const pin = $('bxPin'), stick = pin.querySelector('.bx-stick'), STEP = 190, TOP = 84;
+  let pinned = false, lockUntil = 0;
+  const span = () => Math.max(1, pin.offsetHeight - stick.offsetHeight);
+  function pinStep() {
+    if (!pinned) return;
+    const i = Math.min(M.length - 1, Math.floor(clamp((TOP - pin.getBoundingClientRect().top) / span()) * M.length));
+    if (i !== cur && performance.now() > lockUntil) show(i, false);
+    $('bxCount').textContent = `${cur + 1} / ${M.length}`;
+  }
+  function pinLayout() {
+    pin.classList.remove('pinned');
+    pinned = !reduce && innerWidth >= 900 && stick.offsetHeight <= innerHeight - TOP - 24;
+    if (pinned) { pin.classList.add('pinned'); pin.style.setProperty('--pinH', (stick.offsetHeight + M.length * STEP) + 'px'); }
+    pinStep();
+  }
+  // a click moves the page to that reading's place, so scrolling continues from it
+  list.addEventListener('click', e => {
+    if (!pinned) return; const b = e.target.closest('.bx-item'); if (!b) return;
+    const i = M.findIndex(m => 'bx-' + m.id === b.id);
+    lockUntil = performance.now() + 900;
+    scrollTo({ top: pin.getBoundingClientRect().top + scrollY - TOP + (i + .5) / M.length * span(), behavior: reduce ? 'auto' : 'smooth' });
+  });
+  addEventListener('scroll', pinStep, { passive: true });
+  addEventListener('resize', pinLayout);
+  addEventListener('load', pinLayout);
+  pinLayout();
 
   // ---------- step text ----------
   function steps(scene, p) {
