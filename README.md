@@ -1,5 +1,7 @@
 # VitalKick website
 
+**Taking over this project? Read [`HANDOFF.md`](HANDOFF.md) first, then [`CLAUDE.md`](CLAUDE.md).**
+
 Static site: plain HTML, CSS and JavaScript, no build step, plus two small server functions for booking calls.
 
 - `index.html`: home page with the scroll-driven story and the biomarker explorer

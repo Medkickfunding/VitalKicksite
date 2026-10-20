@@ -1,0 +1,7 @@
+{
+  "name": "vitalkick-website-tools",
+  "private": true,
+  "type": "module",
+  "description": "Local checks only. Not deployed.",
+  "devDependencies": { "playwright-core": "1.63.0" }
+}

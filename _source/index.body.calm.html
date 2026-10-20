@@ -1,0 +1,489 @@
+<style>
+/* Calm layout: normal scrolling, no pinned scenes. Motion is limited to gentle fade-ins and one short logo reveal. */
+.k-label { font: 600 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--mint) }
+.nav { position: fixed; inset: 0 0 auto 0; top: 0; padding-top: env(safe-area-inset-top, 0px) }
+
+/* hero */
+#hero { padding-block: clamp(120px, 14vw, 170px) clamp(56px, 7vw, 96px); position: relative; overflow: hidden }
+#hero::before { content: ""; position: absolute; inset: -20% -10% auto 40%; height: 120%; background: radial-gradient(closest-side, color-mix(in srgb, var(--mint) 9%, transparent), transparent); pointer-events: none }
+.hero { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(32px, 6vw, 88px); align-items: center; position: relative }
+@media (max-width: 900px) { .hero { grid-template-columns: 1fr } }
+.hero .copy { display: grid; gap: 22px }
+.hero h1 { font-size: clamp(40px, 5.6vw, 72px) }
+.hero .lede { font-size: clamp(17px, 1.5vw, 19px); max-width: 46ch }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+.checks li { display: flex; gap: 12px; align-items: baseline; color: color-mix(in srgb, var(--text) 85%, var(--muted)) }
+.checks li::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); translate: 0 -2px }
+.filmlink { display: inline-flex; align-items: center; gap: 10px; color: var(--muted); font: 600 14px var(--body); background: none; border: 0; cursor: pointer; padding: 6px 0; min-height: 44px; justify-self: start }
+.filmlink i { width: 30px; height: 30px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--mint) 50%, transparent); display: grid; place-items: center }
+.filmlink i::after { content: ""; border-left: 8px solid var(--mint); border-block: 5px solid transparent; translate: 1px 0 }
+.filmlink:hover { color: var(--text) }
+
+/* product card */
+.device { position: relative; justify-self: center; width: min(100%, 420px); aspect-ratio: 4 / 5 }
+.phone { position: absolute; left: 50%; top: 0; translate: -50% 0; height: 100%; aspect-ratio: 9 / 18; border-radius: 34px; padding: 10px; background: linear-gradient(160deg, #1b2627, #0b1112); border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); box-shadow: 0 40px 90px -40px rgba(0, 0, 0, .9) }
+.screen { position: relative; height: 100%; border-radius: 26px; overflow: hidden; background: #000 }
+.screen img { width: 100%; height: 100%; object-fit: cover; object-position: 66% 30%; filter: grayscale(1) contrast(1.02) brightness(.92) }
+.screen svg { position: absolute; inset: 0; width: 100%; height: 100% }
+.screen .roi { fill: none; stroke: var(--mint); stroke-width: 1.2; opacity: .85 }
+.screen .oval { fill: none; stroke: var(--mint); stroke-width: 1.2; stroke-dasharray: 3 5; opacity: .9 }
+.screen .cap { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; font: 600 10px var(--mono); letter-spacing: .16em; color: color-mix(in srgb, var(--text) 80%, transparent) }
+.chip { position: absolute; display: grid; gap: 2px; min-width: 150px; padding: 12px 14px; border-radius: 14px; background: color-mix(in srgb, var(--panel) 92%, transparent); border: 1px solid var(--line); backdrop-filter: blur(10px); box-shadow: 0 18px 40px -24px rgba(0, 0, 0, .9) }
+.chip span { font: 600 10px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+.chip b { font: 800 22px/1.15 var(--body); letter-spacing: -.02em; font-variant-numeric: tabular-nums } .chip b small { font: 400 12px var(--mono); color: var(--muted) }
+.chip em { font: 600 11px var(--body); font-style: normal; color: var(--mint) }
+.chip.est { border-style: dashed; border-color: color-mix(in srgb, var(--amber) 55%, transparent) } .chip.est em { color: var(--amber) }
+.chip.c1 { left: -4%; top: 14% } .chip.c2 { right: -6%; top: 40% } .chip.c3 { left: -2%; bottom: 10% }
+@media (max-width: 520px) { .chip { min-width: 128px; padding: 10px 12px } .chip b { font-size: 18px } .chip.c1 { left: 0 } .chip.c2 { right: 0 } .chip.c3 { left: 0 } }
+
+/* stats strip */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--line) }
+@media (max-width: 760px) { .stats { grid-template-columns: 1fr 1fr } }
+.stats div { padding: 26px 22px; display: grid; gap: 6px }
+.stats div + div { border-left: 1px solid var(--line) }
+@media (max-width: 760px) { .stats div:nth-child(3) { border-left: 0 } .stats div:nth-child(n+3) { border-top: 1px solid var(--line) } }
+.stats b { font: 800 clamp(28px, 3vw, 38px)/1 var(--body); letter-spacing: -.03em } .stats span { color: var(--muted); font-size: 14px }
+
+/* cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px }
+.card { border: 1px solid var(--line); border-radius: 20px; padding: 26px; background: var(--panel); display: grid; gap: 12px; align-content: start; min-width: 0 }
+.card .n { font: 600 12px var(--mono); letter-spacing: .14em; color: var(--mint) }
+.card h3 { font-size: 20px; margin: 0 } .card p { color: var(--muted); font-size: 15px; margin: 0 }
+.card a { color: var(--mint); font-weight: 600; text-decoration: none; font-size: 15px }
+
+/* how it works */
+.how { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 6vw, 80px); align-items: center }
+@media (max-width: 900px) { .how { grid-template-columns: 1fr } }
+.howsteps { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line) }
+.howsteps li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; padding-block: 18px; border-bottom: 1px solid var(--line) }
+.howsteps li > span { font: 600 12px var(--mono); color: var(--mint); padding-top: 4px }
+.howsteps b { display: block; font-size: 17px; margin-bottom: 4px } .howsteps p { margin: 0; color: var(--muted); font-size: 15px }
+.layers { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 22px; background: var(--panel) }
+.layers text { font: 600 11px var(--mono); letter-spacing: .1em; fill: var(--muted) }
+
+/* fade-in on scroll */
+[data-zoom] { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease }
+[data-zoom].in { opacity: 1; transform: none }
+
+/* closing: the chrome logo, small */
+#closing { text-align: center }
+#closing .wrap { display: grid; justify-items: center; gap: 22px }
+.logobox { width: min(360px, 70vw); aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #000 }
+.logobox canvas { width: 100%; height: 100%; display: block }
+
+dialog.film { width: min(1100px, calc(100vw - 32px)); padding: 0; border: 1px solid var(--line); border-radius: 18px; background: #000; overflow: hidden }
+dialog.film::backdrop { background: rgba(2, 5, 6, .85) }
+dialog.film video { display: block; width: 100%; height: auto }
+dialog.film button { position: absolute; top: 10px; right: 10px; z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: rgba(0, 0, 0, .6); color: var(--text); font-size: 20px; cursor: pointer }
+
+@media (prefers-reduced-motion: reduce) { [data-zoom] { opacity: 1; transform: none; transition: none } }
+/* use cases + generic scroll zoom */
+.uses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px }
+@media (max-width: 900px) { .uses { grid-template-columns: 1fr } }
+.use { border: 1px solid var(--line); border-radius: 20px; padding: 28px; display: grid; gap: 12px; align-content: start; background: var(--panel); min-width: 0 }
+.use .k-label { color: var(--muted) }
+.use p { color: var(--muted); font-size: 15px }
+.use a { color: var(--mint); font-weight: 600; text-decoration: none; font-size: 15px }
+[data-zoom] { will-change: transform, opacity }
+
+/* readings (from v1) */
+.readings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px }
+@media (max-width: 900px) { .readings { grid-template-columns: 1fr } }
+.group { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 26px; display: grid; gap: 18px; align-content: start; min-width: 0 }
+.group.est { background: transparent; border: 1.5px dashed color-mix(in srgb, var(--amber) 55%, transparent) }
+.group header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px }
+.group header .mono { color: var(--muted) }
+.group ul { list-style: none; margin: 0; padding: 0; display: grid }
+.group li { display: flex; justify-content: space-between; gap: 16px; padding-block: 11px; border-top: 1px solid var(--line); font-size: 16px }
+.group li span:last-child { font: 400 13px var(--mono); color: var(--muted); white-space: nowrap }
+.badge { display: inline-block; font: 600 12px var(--mono); letter-spacing: .04em; color: var(--amber); border: 1px solid color-mix(in srgb, var(--amber) 50%, transparent); border-radius: 999px; padding: 5px 10px; justify-self: start }
+.note { color: var(--muted); font-size: 15px }
+.facts { display: grid; border-top: 1px solid var(--line) }
+.facts div { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 20px; padding-block: 20px; border-bottom: 1px solid var(--line) }
+.facts dt { font: 600 12px/1.6 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--mint) }
+.facts dd { margin: 0; color: var(--muted) }
+@media (max-width: 520px) { .facts div { grid-template-columns: 1fr; gap: 6px } }
+.privacy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: start }
+@media (max-width: 860px) { .privacy { grid-template-columns: 1fr } }
+.founder { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 6vw, 96px); align-items: end }
+@media (max-width: 860px) { .founder { grid-template-columns: 1fr } }
+.quote { font: 400 clamp(30px, 3.6vw, 46px)/1.15 var(--display); font-style: italic; margin: 0; text-wrap: balance }
+.quote::before { content: "\201C"; color: var(--mint) }
+.quote::after { content: "\201D"; color: var(--mint) }
+.who-card { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 18px }
+.who-card b { font-size: 18px } .who-card span { color: var(--muted); font-size: 15px }
+
+
+/* biomarker explorer: list left, panel right; the page never moves when you switch */
+.bx { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 24px; align-items: start }
+.bx-list { display: grid; gap: 4px; border: 1px solid var(--line); border-radius: 20px; padding: 10px; background: var(--panel) }
+.bx-group { font: 600 11px var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); padding: 14px 12px 6px }
+.bx-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid transparent; border-radius: 12px; background: transparent; color: var(--text); font: 500 16px var(--body); text-align: left; cursor: pointer }
+.bx-item span:last-child { font: 400 12px var(--mono); color: var(--muted); white-space: nowrap }
+.bx-item:hover { background: color-mix(in srgb, var(--text) 5%, transparent) }
+.bx-item[aria-selected="true"] { background: color-mix(in srgb, var(--mint) 12%, transparent); border-color: color-mix(in srgb, var(--mint) 55%, transparent) }
+.bx-item[aria-selected="true"] span:last-child { color: var(--mint) }
+.bx-item.est span:last-child { color: var(--amber) }
+.bx-panel { position: sticky; top: 92px; border: 1px solid var(--line); border-radius: 22px; padding: clamp(20px, 3vw, 32px); background: radial-gradient(500px 260px at 100% 0%, color-mix(in srgb, var(--mint) 9%, transparent), transparent 70%), var(--panel); display: grid; gap: 22px; min-height: 620px; align-content: start }
+.bx-panel.est { background: var(--panel); border: 1.5px dashed color-mix(in srgb, var(--amber) 55%, transparent) }
+.bx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px }
+.bx-head h3 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -.02em }
+.bx-val { display: flex; align-items: baseline; gap: 8px } .bx-val b { font: 800 44px/1 var(--body); letter-spacing: -.03em; font-variant-numeric: tabular-nums } .bx-val span { color: var(--muted); font-size: 14px }
+.bx-val small { display: block; font: 600 11px var(--mono); letter-spacing: .14em; color: var(--muted); margin-bottom: 6px }
+.bx-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px }
+.bx-card { border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 8px; align-content: start; min-width: 0 }
+.bx-card.wide { grid-column: 1 / -1 }
+.bx-card h4 { margin: 0; font: 600 11px var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--mint) }
+.bx-card p, .bx-card li { color: color-mix(in srgb, var(--text) 82%, var(--muted)); font-size: 15px; line-height: 1.55 }
+.bx-card ul { margin: 0; padding-left: 18px; display: grid; gap: 6px }
+.rbar { display: flex; gap: 3px; height: 10px; margin-top: 4px }
+.rbar i { border-radius: 4px }
+.rbar .ok { background: var(--mint) } .rbar .good { background: color-mix(in srgb, var(--mint) 60%, #fff) } .rbar .warn { background: var(--amber) } .rbar .low { background: #4c7df0 } .rbar .high { background: #f08a4b } .rbar .urgent { background: var(--coral) }
+.rlab { display: flex; gap: 3px; font: 400 11px var(--mono); color: var(--muted) } .rlab span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.bx-src { font: 400 12px var(--mono); color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px }
+.bx-fade { animation: bxin .35s ease both } @keyframes bxin { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+@media (max-width: 900px) {
+  .bx { grid-template-columns: 1fr; gap: 14px }
+  .bx-list { display: flex; overflow-x: auto; padding: 8px; gap: 6px; scrollbar-width: none; position: sticky; top: 72px; z-index: 3 }
+  .bx-group { display: none }
+  .bx-item { flex: 0 0 auto; width: auto; min-height: 44px; font-size: 14px; border-color: var(--line) }
+  .bx-item span:last-child { display: none }
+  .bx-panel { position: static; min-height: 0 }
+  .bx-cards { grid-template-columns: 1fr }
+}
+
+/* validation */
+.vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px }
+@media (max-width: 900px) { .vgrid { grid-template-columns: 1fr } }
+.vcard { border: 1px solid var(--line); border-radius: 20px; padding: 26px; background: var(--panel); display: grid; gap: 16px; align-content: start; min-width: 0 }
+.vlist { list-style: none; margin: 0; padding: 0; display: grid }
+.vlist li { padding-block: 10px; border-top: 1px solid var(--line); font-size: 15px; display: flex; justify-content: space-between; gap: 12px }
+.vlist.dev li { display: grid; gap: 2px } .vlist.dev span { color: var(--muted); font: 400 12px var(--mono) }
+.vstats { display: grid; gap: 0 } .vstats div { display: grid; gap: 4px; padding-block: 14px; border-top: 1px solid var(--line) }
+.vstats b { font: 800 40px/1 var(--body); letter-spacing: -.03em; color: var(--mint) } .vstats span { color: var(--muted); font-size: 14px }
+.vfoot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-top: 28px }
+.vfoot .note { max-width: 70ch }
+
+/* explorer steps one reading per scroll notch on desktop */
+.bx-pin.pinned { height: var(--pinH) }
+.bx-pin.pinned .bx-stick { position: sticky; top: 84px }
+.bx-pin.pinned .bx-panel { position: static }
+.bx-hint { display: none; margin: 0 0 12px; font: 600 11px var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted) }
+.bx-hint span { color: var(--mint) }
+.bx-pin.pinned .bx-hint { display: block }
+</style>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="VitalKick home"></a>
+    <ul>
+      <li><a href="technology.html">How it works</a></li>
+      <li><a href="biomarkers.html">Biomarkers</a></li>
+      <li><a href="#validation">Validation</a></li>
+      <li><a href="research.html">For research</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a class="btn primary" href="book.html">Book a call</a>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="wrap hero">
+    <div class="copy">
+      <span class="k-label">Camera-based vital signs</span>
+      <h1>Vital signs from a <em>60-second</em> selfie.</h1>
+      <p class="lede">VitalKick reads the small colour changes each heartbeat makes in the face, using the front camera people already carry. Twelve readings in one minute, with nothing to wear or ship.</p>
+      <ul class="checks">
+        <li>Processed on the phone. Video is never uploaded.</li>
+        <li>Engine tested against reference devices on skin types II to VI</li>
+        <li>Consent-first data for pilots, studies and care programs</li>
+      </ul>
+      <div class="btns"><a class="btn primary" href="book.html">Book a call</a><a class="btn ghost" href="research.html">For research teams</a></div>
+      <button class="filmlink" type="button" id="filmOpen"><i></i>Watch the 60-second film</button>
+    </div>
+    <div class="device" aria-label="Example of the VitalKick scan screen with three readings" role="img">
+      <div class="phone"><div class="screen">
+        <img src="assets/face-portrait.webp" alt="" width="1280" height="853">
+        <svg viewBox="0 0 100 200" preserveAspectRatio="none" aria-hidden="true">
+          <ellipse class="oval" cx="50" cy="70" rx="30" ry="42"/>
+          <rect class="roi" x="38" y="36" width="24" height="10" rx="2"/>
+          <rect class="roi" x="27" y="72" width="14" height="10" rx="2"/>
+          <rect class="roi" x="59" y="72" width="14" height="10" rx="2"/>
+        </svg>
+        <span class="cap">HOLD STILL · 42 S</span>
+      </div></div>
+      <div class="chip c1"><span>Pulse rate</span><b>72 <small>bpm</small></b><em>Typical</em></div>
+      <div class="chip c2"><span>Blood pressure</span><b>118/76 <small>mmHg</small></b><em>Normal</em></div>
+      <div class="chip c3 est"><span>HbA1c</span><b>5.4 <small>%</small></b><em>Estimate — not a lab result</em></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="stats" data-zoom>
+  <div><b>60 s</b><span>One selfie scan</span></div>
+  <div><b>12</b><span>Readings per scan</span></div>
+  <div><b>0</b><span>Devices to ship or wear</span></div>
+  <div><b>On-phone</b><span>Video never leaves the device</span></div>
+</div></div>
+
+<section id="pharma">
+  <div class="wrap">
+    <div class="sec-head" data-zoom><span class="k-label">For pharma, CROs and research teams</span><h2>Vital signs between site visits, <em>from people who said yes.</em></h2><p class="lede">VitalKick gives studies a one-minute check participants can repeat at home on their own phone, and a consent-first way to find the people a protocol needs.</p></div>
+    <div class="cards">
+      <article class="card" data-zoom><span class="n">01</span><h3>Find the right participants</h3><p>Match consenting users to your criteria, such as age, region and scan-based ranges averaged over weeks. Before consent you see de-identified counts only, and groups under 20 are never shown.</p><a href="research.html">Try the cohort builder →</a></article>
+      <article class="card" data-zoom><span class="n">02</span><h3>Readings between visits</h3><p>Participants scan at home in 60 seconds, as often as the protocol asks. No hardware to ship, calibrate or collect, and adherence is visible from the scan history.</p></article>
+      <article class="card" data-zoom><span class="n">03</span><h3>Consent and privacy built in</h3><p>Each study needs its own consent in the app. Research data is de-identified to the HIPAA Safe Harbor standard, with a business associate agreement wherever health data is involved.</p></article>
+      <article class="card" data-zoom><span class="n">04</span><h3>Your protocol decides</h3><p>Readings are wellness signals, not eligibility decisions. Your site confirms every criterion with its own instruments, under your IRB-approved protocol.</p></article>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="how">
+  <div class="wrap how">
+    <div style="display:grid;gap:22px" data-zoom>
+      <span class="k-label">How it works</span>
+      <h2>A pulse, <em>read from light.</em></h2>
+      <ol class="howsteps">
+        <li><span>01</span><div><b>Blood changes the colour of skin</b><p>Each heartbeat pushes a little more blood into the small vessels of the face, and blood absorbs green light.</p></div></li>
+        <li><span>02</span><div><b>The camera records the change</b><p>The forehead and cheeks get very slightly darker and lighter with every beat, far too little for the eye to see.</p></div></li>
+        <li><span>03</span><div><b>The phone turns it into readings</b><p>On the device, the signal becomes a pulse wave and then twelve readings. The video is discarded when the scan ends.</p></div></li>
+      </ol>
+      <a class="btn ghost" href="technology.html" style="justify-self:start">How the technology works</a>
+    </div>
+    <svg class="layers" viewBox="0 0 560 400" role="img" aria-label="Diagram: light from the screen enters the skin; blood in the vessels absorbs part of it and the camera measures the light that returns" data-zoom>
+      <rect x="230" y="26" width="100" height="44" rx="10" fill="none" stroke="var(--text)" stroke-opacity=".5"/>
+      <circle cx="280" cy="48" r="9" fill="none" stroke="var(--mint)" stroke-width="2"/>
+      <text x="280" y="92" text-anchor="middle">CAMERA</text>
+      <g stroke="var(--mint)" stroke-width="1.5" fill="none" opacity=".75">
+        <path d="M250 104 L210 196" stroke-dasharray="4 5"/><path d="M220 196 L262 104" stroke-dasharray="4 5" opacity=".5"/>
+        <path d="M310 104 L350 196" stroke-dasharray="4 5"/><path d="M340 196 L298 104" stroke-dasharray="4 5" opacity=".5"/>
+      </g>
+      <rect x="40" y="196" width="480" height="44" fill="color-mix(in srgb, var(--text) 10%, var(--panel))"/>
+      <rect x="40" y="240" width="480" height="96" fill="color-mix(in srgb, var(--mint) 6%, var(--panel))"/>
+      <rect x="40" y="336" width="480" height="40" fill="color-mix(in srgb, var(--amber) 5%, var(--panel))"/>
+      <g fill="none" stroke="var(--mint)" stroke-width="2.2" opacity=".85">
+        <path d="M40 286 C120 266 170 306 250 286 S380 266 520 290"/>
+        <path d="M40 314 C140 300 200 326 300 312 S440 300 520 318" opacity=".55"/>
+      </g>
+      <text x="56" y="223">EPIDERMIS</text><text x="56" y="262">DERMIS · SMALL VESSELS</text><text x="56" y="361">FAT</text>
+    </svg>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="biomarkers">
+  <div class="wrap">
+    <div class="sec-head"><span class="k-label">Biomarkers</span><h2>What each reading shows, <em>and why it matters.</em></h2><p class="lede">Pick a reading to see what it measures, the typical range, and what VitalKick suggests when a number sits outside it.</p></div>
+    <div class="bx-pin" id="bxPin"><div class="bx-stick">
+      <p class="bx-hint" aria-hidden="true">Scroll to step through each reading · <span id="bxCount">1 / 10</span></p>
+      <div class="bx">
+        <div class="bx-list" id="bxList" role="tablist" aria-label="Biomarkers"></div>
+        <div class="bx-panel" id="bxPanel" role="tabpanel" aria-live="polite"></div>
+      </div>
+    </div></div>
+    <div class="btns" style="margin-top:28px"><a class="btn ghost" href="biomarkers.html">See every biomarker in detail →</a><a class="btn primary" href="book.html">Book a call</a></div>
+  </div>
+</section>
+
+<section id="validation">
+  <div class="wrap">
+    <div class="sec-head" data-zoom><span class="k-label">Validation</span><h2>Tested against <em>reference devices.</em></h2><p class="lede">The rPPG engine inside VitalKick was tested by our technology partner against established measuring devices, in a controlled lab and in real-world pilots.</p></div>
+    <div class="vgrid">
+      <article class="vcard" data-zoom><span class="k-label">Who it was tested on</span>
+        <ul class="vlist"><li>Fitzpatrick skin types II to VI</li><li>Body mass index from 19 to 48</li><li>Women and men</li><li>Multiple ethnicities</li><li>People living with a wide range of health conditions</li><li>Lab and everyday conditions</li></ul></article>
+      <article class="vcard" data-zoom><span class="k-label">Compared against</span>
+        <ul class="vlist dev"><li><b>Polar H10</b><span>chest strap · pulse, HRV</span></li><li><b>Covidien Nellcor</b><span>pulse oximeter · oxygen</span></li><li><b>Withings BPM Connect</b><span>arm cuff · blood pressure</span></li><li><b>Vernier Go Direct</b><span>respiration belt · breathing</span></li><li><b>Lab blood draws</b><span>reference for estimates</span></li></ul>
+        <p class="note">Lab sessions ran in a fixed-light room, with clinicians checking setup and conditions for each measurement.</p></article>
+      <article class="vcard" data-zoom><span class="k-label">Real-world pilot · insurer in Asia</span>
+        <div class="vstats"><div><b>66%</b><span>of users active each week, against a 35% target</span></div><div><b>83%</b><span>satisfied, against a 60% target</span></div><div><b>2×</b><span>scans a week across all ages, 4× for ages 20 to 25</span></div></div></article>
+    </div>
+    <div class="vfoot" data-zoom><p class="note">Validation data courtesy of our rPPG technology partner. Results describe the partner's testing of the engine, not a medical claim about any one reading.</p><a class="btn ghost" href="validation.html">Read the validation summary</a></div>
+  </div>
+</section>
+
+<section id="uses">
+  <div class="wrap">
+    <div class="sec-head" data-zoom><span class="k-label">Who it's for</span><h2>One scan, <em>many settings.</em></h2><p class="lede">A link or an app on a phone, tablet or laptop is all a patient, member or employee needs.</p></div>
+    <div class="uses">
+      <article class="use" data-zoom><span class="k-label">Telehealth</span><h3>Vitals before, during and after the visit</h3><p>Patients scan in the virtual waiting room, so the clinician opens the session with numbers instead of guesses.</p></article>
+      <article class="use" data-zoom><span class="k-label">Between visits</span><h3>Daily check-ins without shipping devices</h3><p>Send a reminder, collect the scan, and follow trends between visits, including recovery at home after discharge.</p></article>
+      <article class="use" data-zoom><span class="k-label">Value-based care</span><h3>Digital vitals for every member</h3><p>Capitated groups and health plans get regular readings across a whole panel, without buying and shipping hardware for each patient.</p></article>
+      <article class="use" data-zoom><span class="k-label">Senior living</span><h3>Ageing in place, checked often</h3><p>Frequent, quick checks at home or in a facility, without staff time spent on cuffs and clips.</p></article>
+      <article class="use" data-zoom><span class="k-label">Employers &amp; wellness</span><h3>A wellness check people actually repeat</h3><p>A one-minute scan with a clear score and trends gives wellness programs something to engage with every week.</p></article>
+      <article class="use" data-zoom><span class="k-label">Research &amp; trials</span><h3>Find the people a study needs</h3><p>Match consenting users to a pilot's or trial's target population, then refer them for screening.</p><a href="research.html">Explore research matching →</a></article>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap privacy">
+    <div class="sec-head" style="margin:0" data-zoom><span class="k-label">Privacy by construction</span><h2>Rules written <em>into the product.</em></h2><p class="lede">Enforced in code and in the database, not left to policy.</p></div>
+    <dl class="facts" data-zoom>
+      <div><dt>Video</dt><dd>Processed on the device and never uploaded, logged or saved unencrypted.</dd></div>
+      <div><dt>Face data</dt><dd>No face images and no face geometry are stored. VitalKick cannot recognise who you are from your face.</dd></div>
+      <div><dt>Consent</dt><dd>Every health-data write checks consent in the database. Withdrawing is recorded as a new entry, never by editing history.</dd></div>
+      <div><dt>Access log</dt><dd>Every read and write of health data records who, what, when and from where.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section id="team">
+  <div class="wrap founder">
+    <div style="display:grid;gap:22px" data-zoom>
+      <span class="k-label">Built by clinicians</span>
+      <h2>Designed by a physician who has checked vitals <em>the hardware way.</em></h2>
+    </div>
+    <div class="who-card" data-zoom>
+      <b>Sadik Bizanti, MD</b>
+      <span>Founder and CEO. A physician who has built and run care programs that check on patients at home between visits, and the person who signs off every clinical threshold in the app.</span>
+    </div>
+  </div>
+</section>
+<!--FAQ-->
+
+<section id="closing">
+  <div class="wrap">
+    <div class="logobox"><canvas data-seq="logo" data-n="100" aria-hidden="true"></canvas></div>
+    <h2 style="max-width:18ch">See it on <em>your</em> population.</h2>
+    <p class="lede" style="max-width:52ch">Thirty minutes with Sadik Bizanti, MD, about your study, program or patients, and what a pilot would look like.</p>
+    <div class="btns" style="justify-content:center"><a class="btn primary" href="book.html">Book a call with the founder</a><a class="btn ghost" href="research.html#contact">Plan a pilot</a></div>
+  </div>
+</section>
+
+<dialog class="film" id="film" aria-label="VitalKick 60-second film">
+  <button type="button" id="filmClose" aria-label="Close">×</button>
+  <video id="filmVideo" src="assets/vitalkick-reel.mp4" poster="assets/poster.jpg" controls playsinline preload="none"></video>
+</dialog>
+
+<!--FOOTER-->
+
+<script src="assets/biomarkers.js"></script>
+<script>
+(() => {
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const inv = (a, b, x) => clamp((x - a) / (b - a));
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+  const vh = () => innerHeight;
+  const prog = el => { const r = el.getBoundingClientRect(); return clamp(-r.top / Math.max(1, r.height - vh())); };
+
+  // ---------- image sequences ----------
+  const seqs = [...document.querySelectorAll('canvas[data-seq]')].map(cv => {
+    const name = cv.dataset.seq, n = +cv.dataset.n, imgs = new Array(n), ctx = cv.getContext('2d');
+    // each sequence ships as one file (concatenated WebP frames) plus a .json index of [offset, length]
+    let urls = null, loading = null;
+    const fetchPack = () => loading || (loading = Promise.all([fetch(`assets/seq/${name}.json`).then(r => r.json()), fetch(`assets/seq/${name}-frames.webp`).then(r => r.arrayBuffer())])
+      .then(([idx, buf]) => { urls = idx.map(([o, l]) => URL.createObjectURL(new Blob([buf.slice(o, o + l)], { type: 'image/webp' }))); seqObj.preload(); })
+      .catch(() => {}));
+    const load = i => { if (imgs[i] || !urls) return; const im = new Image(); im.decoding = 'async'; im.src = urls[i]; imgs[i] = im; im.onload = () => { if (i === seqObj.want || seqObj.last < 0) seqObj.draw(seqObj.want); }; };
+    const seqObj = { cv, n, want: 0, last: -1,
+      preload() { if (!urls) { fetchPack(); return; } for (let s = 8; s >= 1; s = s >> 1) for (let i = 0; i < n; i += s) load(i); },
+      draw(i) {
+        let k = i; while (k >= 0 && !(imgs[k] && imgs[k].complete && imgs[k].naturalWidth)) k--;
+        if (k < 0) return; const im = imgs[k];
+        const W = cv.clientWidth, H = cv.clientHeight, dpr = Math.min(devicePixelRatio || 1, 2);
+        if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+        const s = Math.max(cv.width / im.naturalWidth, cv.height / im.naturalHeight);
+        const w = im.naturalWidth * s, h = im.naturalHeight * s;
+        ctx.drawImage(im, (cv.width - w) * cv.__fx, (cv.height - h) / 2, w, h); seqObj.last = k;
+      },
+      set(p) { const i = Math.round(clamp(p) * (n - 1)); this.want = i; load(i); this.draw(i); } };
+    cv.__fx = .5;
+    return seqObj;
+  });
+  const S = Object.fromEntries(seqs.map(s => [s.cv.dataset.seq, s]));
+  // start loading sequences when they get near the viewport
+  
+  
+
+  // the chrome logo plays once, small, when it comes into view
+  const logo = seqs.find(s => s.cv.dataset.seq === 'logo');
+  if (logo) {
+    logo.cv.__fx = .5;
+    const run = () => { logo.preload(); if (reduce) { const t = setInterval(() => { logo.set(1); }, 300); setTimeout(() => clearInterval(t), 3000); return; }
+      const t0 = performance.now(), D = 3200; const tick = now => { const k = clamp((now - t0) / D); logo.set(1 - Math.pow(1 - k, 2)); if (k < 1) requestAnimationFrame(tick); }; requestAnimationFrame(tick); };
+    const lo = new IntersectionObserver(es => { if (es[0].isIntersecting) { lo.disconnect(); run(); } }, { threshold: .4 });
+    lo.observe(logo.cv);
+  }
+
+  // ---------- biomarker explorer ----------
+  const M = window.VK_MARKERS || [], list = $('bxList'), panel = $('bxPanel');
+  let lastGroup = '';
+  M.forEach((m, i) => {
+    if (m.group !== lastGroup) { lastGroup = m.group; const h = document.createElement('div'); h.className = 'bx-group'; h.textContent = m.group; list.appendChild(h); }
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'bx-item' + (m.est ? ' est' : ''); b.id = 'bx-' + m.id; b.setAttribute('role', 'tab');
+    b.innerHTML = `<span>${m.name}${m.est ? ' (est.)' : ''}</span><span>${m.unit}</span>`;
+    b.addEventListener('click', () => show(i, true)); list.appendChild(b);
+  });
+  list.addEventListener('keydown', e => { if (!['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(e.key)) return; e.preventDefault(); const d = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1 : -1; show((cur + d + M.length) % M.length, true, true); });
+  let cur = 0;
+  function bar(r) {
+    const span = r.hi - r.lo;
+    return `<div class="rbar">${r.segs.map(([a, b, k]) => `<i class="${k}" style="flex:${(b - a) / span}"></i>`).join('')}</div><div class="rlab">${r.segs.map(([a, b, , l]) => `<span style="flex:${(b - a) / span}">${l}</span>`).join('')}</div>`;
+  }
+  function show(i, user, focus) {
+    cur = i; const m = M[i];
+    list.querySelectorAll('.bx-item').forEach((b, k) => { b.setAttribute('aria-selected', String(k === i)); b.tabIndex = k === i ? 0 : -1; });
+    const btn = $('bx-' + m.id); if (focus) btn.focus({ preventScroll: true });
+    if (user && innerWidth < 900) btn.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    panel.className = 'bx-panel' + (m.est ? ' est' : ''); panel.setAttribute('aria-labelledby', btn.id);
+    panel.innerHTML = `<div class="bx-fade" style="display:grid;gap:22px">
+      <div class="bx-head"><div style="display:grid;gap:8px"><span class="k-label" style="color:var(--muted)">${m.group}</span><h3>${m.name}${m.est ? ' (est.)' : ''}</h3>${m.est ? '<span class="badge">Estimate — not a lab result</span>' : ''}</div>
+      <div class="bx-val"><div><small>EXAMPLE READING</small><b>${m.sample}</b> <span>${m.unit}</span></div></div></div>
+      <div class="bx-cards">
+        <div class="bx-card"><h4>What it shows</h4><p>${m.what}</p></div>
+        <div class="bx-card"><h4>Why it matters</h4><p>${m.why}</p></div>
+        <div class="bx-card wide"><h4>Typical range</h4>${m.range ? `<p>${m.range.text}</p>${bar(m.range)}` : `<p>${m.rangeText}</p>`}</div>
+        <div class="bx-card wide"><h4>If it is outside the range</h4><ul>${m.act.map(a => `<li>${a}</li>`).join('')}</ul></div>
+      </div>
+      <p class="bx-src">Source: ${m.src}</p></div>`;
+  }
+  if (M.length) show(0, false);
+
+  // on desktop, scrolling steps through the readings one at a time while the explorer stays in place
+  const pin = $('bxPin'), stick = pin.querySelector('.bx-stick'), STEP = 190, TOP = 84;
+  let pinned = false, lockUntil = 0;
+  const span = () => Math.max(1, pin.offsetHeight - stick.offsetHeight);
+  function pinStep() {
+    if (!pinned) return;
+    const i = Math.min(M.length - 1, Math.floor(clamp((TOP - pin.getBoundingClientRect().top) / span()) * M.length));
+    if (i !== cur && performance.now() > lockUntil) show(i, false);
+    $('bxCount').textContent = `${cur + 1} / ${M.length}`;
+  }
+  function pinLayout() {
+    pin.classList.remove('pinned');
+    pinned = !reduce && innerWidth >= 900 && stick.offsetHeight <= innerHeight - TOP - 24;
+    if (pinned) { pin.classList.add('pinned'); pin.style.setProperty('--pinH', (stick.offsetHeight + M.length * STEP) + 'px'); }
+    pinStep();
+  }
+  // a click moves the page to that reading's place, so scrolling continues from it
+  list.addEventListener('click', e => {
+    if (!pinned) return; const b = e.target.closest('.bx-item'); if (!b) return;
+    const i = M.findIndex(m => 'bx-' + m.id === b.id);
+    lockUntil = performance.now() + 900;
+    scrollTo({ top: pin.getBoundingClientRect().top + scrollY - TOP + (i + .5) / M.length * span(), behavior: reduce ? 'auto' : 'smooth' });
+  });
+  addEventListener('scroll', pinStep, { passive: true });
+  addEventListener('resize', pinLayout);
+  addEventListener('load', pinLayout);
+  pinLayout();
+
+
+  // gentle fade-in
+  const fo = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); fo.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('[data-zoom]').forEach(el => fo.observe(el));
+
+  // film opens on request only
+  const dlg = $('film'), vid = $('filmVideo');
+  $('filmOpen').addEventListener('click', () => { dlg.showModal(); vid.play().catch(() => {}); });
+  const shut = () => { vid.pause(); dlg.close(); };
+  $('filmClose').addEventListener('click', shut);
+  dlg.addEventListener('click', e => { if (e.target === dlg) shut(); });
+  dlg.addEventListener('close', () => vid.pause());
+})();
+</script>

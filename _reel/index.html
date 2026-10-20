@@ -1,0 +1,75 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>VitalKick Reel</title>
+<style>
+@font-face{font-family:Inter;font-weight:300;src:url(node_modules/@fontsource/inter/files/inter-latin-300-normal.woff2)}
+@font-face{font-family:Inter;font-weight:400;src:url(node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2)}
+@font-face{font-family:Inter;font-weight:600;src:url(node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2)}
+@font-face{font-family:Inter;font-weight:800;src:url(node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2)}
+@font-face{font-family:Inter;font-weight:900;src:url(node_modules/@fontsource/inter/files/inter-latin-900-normal.woff2)}
+@font-face{font-family:Grotesk;font-weight:500;src:url(node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-500-normal.woff2)}
+@font-face{font-family:Grotesk;font-weight:700;src:url(node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2)}
+@font-face{font-family:Mono;font-weight:400;src:url(node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2)}
+@font-face{font-family:Mono;font-weight:600;src:url(node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2)}
+@font-face{font-family:ISerif;font-style:italic;src:url(node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2)}
+@font-face{font-family:ISerif;font-style:normal;src:url(node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2)}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#030506}
+.layer{position:absolute;left:0;top:0;width:1920px;height:1080px}
+#web{perspective:2400px;perspective-origin:50% 45%;overflow:hidden;display:none;background:#060a0b}
+#page{position:absolute;left:0;top:0;width:1440px;height:1480px;transform-style:preserve-3d;transform-origin:720px 740px}
+.wl{position:absolute;left:0;top:0;width:1440px;height:1480px;transform-style:preserve-3d;pointer-events:none}
+.wl .box{position:absolute}
+.tag{position:absolute;font:600 13px Mono;letter-spacing:2px;color:#62E6CF;background:rgba(3,10,10,.85);border:1px solid rgba(98,230,207,.6);padding:5px 9px;border-radius:4px;white-space:nowrap;opacity:0}
+.outline{position:absolute;border:1.5px solid rgba(98,230,207,.0);border-radius:18px;pointer-events:none}
+#bgL .box{left:0;top:0;width:1440px;height:1480px;background:
+ radial-gradient(800px 600px at 1050px 380px,rgba(98,230,207,.16),transparent 70%),
+ radial-gradient(700px 500px at 200px 1100px,rgba(98,230,207,.07),transparent 70%),
+ linear-gradient(#070b0c,#050708);border-radius:22px;box-shadow:0 60px 120px rgba(0,0,0,.6)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:60px 60px;border-radius:22px}
+.nav{left:60px;top:34px;width:1320px;height:64px;display:flex;align-items:center;justify-content:space-between;font:500 16px Inter;color:#b9c7c4}
+.wm{width:150px;height:38px;background:#62E6CF;-webkit-mask:url(assets/wordmark.png) center/contain no-repeat}
+.nav .links{display:flex;gap:40px}
+.btn{display:inline-block;font:600 16px Inter;padding:16px 26px;border-radius:999px}
+.btn.p{background:#62E6CF;color:#031311}
+.btn.s{border:1px solid rgba(255,255,255,.25);color:#e8f0ee}
+.hero{left:60px;top:190px;width:620px;color:#eaf3f1}
+.eyebrow{font:600 14px Mono;letter-spacing:3px;color:#62E6CF;margin-bottom:26px}
+.hero h1{font:800 76px/1.02 Inter;letter-spacing:-2.5px;margin:0 0 26px}
+.hero h1 em{font:400 84px ISerif;font-style:italic;color:#62E6CF;letter-spacing:-1px}
+.hero p{font:400 20px/1.55 Inter;color:#a8b6b3;margin:0 0 36px;width:540px}
+.hero .ctas{display:flex;gap:16px}
+.media{left:740px;top:150px;width:640px;height:600px;border-radius:28px;overflow:hidden;background:url(assets/selfie.jpg) 62% 20%/cover;box-shadow:0 40px 80px rgba(0,0,0,.55)}
+.media:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(3,6,7,.75))}
+.fc{background:rgba(10,18,19,.78);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:18px 22px;color:#e9f2f0;font:500 14px Inter;box-shadow:0 20px 40px rgba(0,0,0,.45)}
+.fc .k{font:600 12px Mono;letter-spacing:2px;color:#8fa29e}
+.fc .v{font:800 40px Inter;letter-spacing:-1px;margin-top:6px}
+.fc .v small{font:500 16px Inter;color:#8fa29e;margin-left:6px}
+.fc .bar{height:6px;border-radius:3px;margin-top:12px;background:linear-gradient(90deg,#3a6df0 0 20%,#62E6CF 20% 70%,#f2b84b 70% 85%,#f06a5a 85%)}
+.stats{left:60px;top:830px;width:1320px;height:120px;display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);align-items:center}
+.stats div{font:800 44px Inter;color:#eaf3f1;letter-spacing:-1px;width:300px;padding-left:20px}
+.stats span{display:block;font:500 14px Mono;letter-spacing:2px;color:#7f918d;margin-top:6px}
+.feat{left:60px;top:1010px;width:1320px;display:flex;gap:30px}
+.feat .c{flex:1;height:250px;border-radius:22px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);padding:30px;box-sizing:border-box;color:#e9f2f0}
+.feat .n{font:600 14px Mono;color:#62E6CF;letter-spacing:2px}
+.feat h3{font:800 30px Inter;margin:60px 0 10px;letter-spacing:-.5px}
+.feat p{font:400 16px/1.5 Inter;color:#9aaba7;margin:0}
+.foot{left:60px;top:1330px;width:1320px;height:90px;display:flex;justify-content:space-between;align-items:center;font:500 14px Mono;color:#6f817d;letter-spacing:1.5px;border-top:1px solid rgba(255,255,255,.08)}
+</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<canvas id="gl" class="layer" width="1920" height="1080"></canvas>
+<div id="web" class="layer">
+ <div id="page">
+  <div class="wl" id="bgL" data-tag="00 · CANVAS / GRID" data-tx="40" data-ty="1440"><div class="box"><div class="grid"></div></div></div>
+  <div class="wl" data-tag="01 · NAVIGATION" data-tx="60" data-ty="10"><div class="box nav"><div class="wm"></div><div class="links"><span>How it works</span><span>For clinics</span><span>Privacy</span><span>Research</span></div><span class="btn s" style="padding:12px 22px">Get early access</span></div></div>
+  <div class="wl" data-tag="02 · HERO / H1" data-tx="60" data-ty="160"><div class="box hero"><div class="eyebrow">CAMERA-BASED WELLNESS CHECK</div><h1>Your vitals from a <em>60-second</em> selfie.</h1><p>VitalKick reads tiny colour changes in your face to estimate heart rate, breathing, HRV and more. No cuffs. No wearables.</p><div class="ctas"><span class="btn p" id="cta">Start a scan</span><span class="btn s">How it works</span></div></div></div>
+  <div class="wl" data-tag="03 · MEDIA" data-tx="760" data-ty="120"><div class="box media"></div></div>
+  <div class="wl" data-tag="04 · FLOATING UI" data-tx="1100" data-ty="770"><div class="box fc" style="left:690px;top:470px;width:250px"><div class="k">HEART RATE</div><div class="v">72<small>bpm</small></div><div class="bar"></div></div><div class="box fc" style="left:1150px;top:200px;width:230px"><div class="k">BREATHING</div><div class="v">14<small>/min</small></div></div><div class="box fc" style="left:1110px;top:640px;width:250px"><div class="k">TODAY'S FOCUS</div><div style="font:600 18px Inter;margin-top:8px">Sleep · Steps · BP</div></div></div>
+  <div class="wl" data-tag="05 · STATS" data-tx="60" data-ty="800"><div class="box stats"><div>60 s<span>ONE SCAN</span></div><div>12<span>READINGS</span></div><div>0<span>WEARABLES</span></div><div>100%<span>ON-DEVICE VIDEO</span></div></div></div>
+  <div class="wl" data-tag="06 · FEATURE CARDS" data-tx="60" data-ty="980"><div class="box feat"><div class="c"><div class="n">01</div><h3>Scan</h3><p>Look at your front camera for one minute. Video stays on the phone.</p></div><div class="c"><div class="n">02</div><h3>Understand</h3><p>Every number on a clear range, with the two or three that matter most.</p></div><div class="c"><div class="n">03</div><h3>Improve</h3><p>Meals, movement and sleep tips, tracked week over week.</p></div></div></div>
+  <div class="wl" data-tag="07 · FOOTER" data-tx="60" data-ty="1300"><div class="box foot"><span>© 2026 VITALKICK</span><span>GENERAL WELLNESS TOOL · NOT A MEDICAL DEVICE</span></div></div>
+ </div>
+</div>
+<canvas id="c2d" class="layer" width="1920" height="1080"></canvas>
+<canvas id="hud" class="layer" width="1920" height="1080"></canvas>
+<script type="module" src="main.js"></script>
+</body></html>

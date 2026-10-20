@@ -1,5 +1,7 @@
 # Publish the VitalKick website on GitHub
 
+> **Superseded.** The site now runs on Vercel at https://vitalkick.sireenai.com. See `HANDOFF.md`. This guide is kept only in case GitHub Pages is ever wanted.
+
 This repository is the whole VitalKick website. You need a free GitHub account (you have one: **Medkickfunding**), a computer, and about 10 minutes. No code, no terminal.
 
 When you finish, the site is live at:
