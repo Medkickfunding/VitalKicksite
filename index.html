@@ -872,11 +872,12 @@ document.querySelectorAll('[data-faq]').forEach(root => {
     const cw = narrow ? W - 32 : Math.min(W * .44, 700), ch = cw * 9 / 16;
     const cx = narrow ? 16 : W - cw - Math.max(24, (W - 1180) / 2 + 24), cy = narrow ? H - ch - 24 : (H - ch) / 2 + 30;
     const k = ease(inv(.05, .7, p));
-    // full-bleed cover rect
-    const fw = Math.max(W, H * 16 / 9), fh = fw * 9 / 16, fx = (W - fw) / 2, fy = (H - fh) / 2;
+    // full-bleed rect: cover on wide screens; on phones fit the width so the reel's on-screen text is never cropped
+    const fw = narrow ? W : Math.max(W, H * 16 / 9), fh = fw * 9 / 16, fx = (W - fw) / 2, fy = (H - fh) / 2;
     box.style.left = lerp(cx, fx, k) + 'px'; box.style.top = lerp(cy, fy, k) + 'px';
     box.style.width = lerp(cw, fw, k) + 'px'; box.style.height = lerp(ch, fh, k) + 'px';
     box.style.borderRadius = lerp(16, 0, k) + 'px';
+    box.style.opacity = narrow ? inv(.04, .3, p) : 1; // on phones the reel would sit under the buttons until the copy fades
     copy.style.opacity = 1 - inv(.05, .4, p); copy.style.transform = `translateY(${-inv(.05, .5, p) * 80}px) scale(${1 - inv(.05, .5, p) * .06})`;
     shade.style.opacity = 0; $('cue').style.opacity = 1 - inv(0, .1, p);
   }
