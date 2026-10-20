@@ -176,90 +176,84 @@ section { padding-block: clamp(64px, 9vw, 120px) }
 </head>
 <body>
 <style>
-/* ---------- scroll scenes ---------- */
-.scene { position: relative }
-.stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: grid }
-.stage .wrap { width: 100% }
-.nav { position: fixed; inset: 0 0 auto 0; top: 0; padding-top: env(safe-area-inset-top, 0px) }
+/* Calm layout: normal scrolling, no pinned scenes. Motion is limited to gentle fade-ins and one short logo reveal. */
 .k-label { font: 600 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--mint) }
+.nav { position: fixed; inset: 0 0 auto 0; top: 0; padding-top: env(safe-area-inset-top, 0px) }
 
 /* hero */
-#hero { height: 260vh }
-#hero .stage { align-items: center }
-#hero .copy { position: relative; z-index: 2; display: grid; gap: 24px; max-width: 520px; padding-top: 68px }
-#hero .lede { font-size: 19px; max-width: 44ch }
-#reelBox { position: absolute; z-index: 1; overflow: hidden; border-radius: 16px; background: #000; box-shadow: 0 40px 140px -30px color-mix(in srgb, var(--mint) 35%, transparent) }
-#reelBox video { width: 100%; height: 100%; object-fit: cover }
-#reelShade { position: absolute; inset: 0; background: linear-gradient(90deg, var(--ink) 0%, transparent 60%); opacity: 0; pointer-events: none }
-#sound { position: absolute; right: 18px; bottom: 18px; min-height: 40px; padding: 0 16px; font-size: 13px; background: color-mix(in srgb, var(--ink) 70%, transparent); backdrop-filter: blur(8px); z-index: 3 }
-.scroll-cue { position: absolute; left: 50%; bottom: 28px; translate: -50% 0; color: var(--muted); font: 600 11px var(--mono); letter-spacing: .2em; z-index: 2 }
-.scroll-cue::after { content: ""; display: block; width: 1px; height: 36px; margin: 10px auto 0; background: linear-gradient(var(--mint), transparent); animation: cue 1.8s ease-in-out infinite }
-@keyframes cue { 0% { transform: scaleY(0); transform-origin: top } 50% { transform: scaleY(1); transform-origin: top } 51% { transform-origin: bottom } 100% { transform: scaleY(0); transform-origin: bottom } }
-@media (max-width: 860px) { #hero .copy { align-self: start; padding-top: 88px; gap: 16px } #hero h1 { font-size: 40px } #hero .lede { font-size: 16px } .scroll-cue { display: none } }
+#hero { padding-block: clamp(120px, 14vw, 170px) clamp(56px, 7vw, 96px); position: relative; overflow: hidden }
+#hero::before { content: ""; position: absolute; inset: -20% -10% auto 40%; height: 120%; background: radial-gradient(closest-side, color-mix(in srgb, var(--mint) 9%, transparent), transparent); pointer-events: none }
+.hero { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(32px, 6vw, 88px); align-items: center; position: relative }
+@media (max-width: 900px) { .hero { grid-template-columns: 1fr } }
+.hero .copy { display: grid; gap: 22px }
+.hero h1 { font-size: clamp(40px, 5.6vw, 72px) }
+.hero .lede { font-size: clamp(17px, 1.5vw, 19px); max-width: 46ch }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+.checks li { display: flex; gap: 12px; align-items: baseline; color: color-mix(in srgb, var(--text) 85%, var(--muted)) }
+.checks li::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); translate: 0 -2px }
+.filmlink { display: inline-flex; align-items: center; gap: 10px; color: var(--muted); font: 600 14px var(--body); background: none; border: 0; cursor: pointer; padding: 6px 0; min-height: 44px; justify-self: start }
+.filmlink i { width: 30px; height: 30px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--mint) 50%, transparent); display: grid; place-items: center }
+.filmlink i::after { content: ""; border-left: 8px solid var(--mint); border-block: 5px solid transparent; translate: 1px 0 }
+.filmlink:hover { color: var(--text) }
 
-/* problem */
-#problem { height: 320vh }
-#problem .stage { align-items: center }
-.prob { display: grid; gap: 40px }
-.prob h2 { max-width: 16ch }
-.fr-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px }
-@media (max-width: 760px) { .fr-grid { grid-template-columns: 1fr 1fr } }
-.fric { position: relative; border: 1px solid var(--line); border-radius: 16px; padding: 20px; background: var(--panel); display: grid; gap: 6px; min-width: 0 }
-.fric b { font-size: 18px } .fric span { color: var(--muted); font-size: 14px }
-.fric::after { content: ""; position: absolute; left: 14px; right: 14px; top: 50%; height: 2px; background: var(--coral); transform: scaleX(var(--strike, 0)); transform-origin: left }
-.answer { font: 400 clamp(40px, 6vw, 84px)/1 var(--display); font-style: italic; color: var(--mint) }
+/* product card */
+.device { position: relative; justify-self: center; width: min(100%, 420px); aspect-ratio: 4 / 5 }
+.phone { position: absolute; left: 50%; top: 0; translate: -50% 0; height: 100%; aspect-ratio: 9 / 18; border-radius: 34px; padding: 10px; background: linear-gradient(160deg, #1b2627, #0b1112); border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); box-shadow: 0 40px 90px -40px rgba(0, 0, 0, .9) }
+.screen { position: relative; height: 100%; border-radius: 26px; overflow: hidden; background: #000 }
+.screen img { width: 100%; height: 100%; object-fit: cover; object-position: 66% 30%; filter: grayscale(1) contrast(1.02) brightness(.92) }
+.screen svg { position: absolute; inset: 0; width: 100%; height: 100% }
+.screen .roi { fill: none; stroke: var(--mint); stroke-width: 1.2; opacity: .85 }
+.screen .oval { fill: none; stroke: var(--mint); stroke-width: 1.2; stroke-dasharray: 3 5; opacity: .9 }
+.screen .cap { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; font: 600 10px var(--mono); letter-spacing: .16em; color: color-mix(in srgb, var(--text) 80%, transparent) }
+.chip { position: absolute; display: grid; gap: 2px; min-width: 150px; padding: 12px 14px; border-radius: 14px; background: color-mix(in srgb, var(--panel) 92%, transparent); border: 1px solid var(--line); backdrop-filter: blur(10px); box-shadow: 0 18px 40px -24px rgba(0, 0, 0, .9) }
+.chip span { font: 600 10px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+.chip b { font: 800 22px/1.15 var(--body); letter-spacing: -.02em; font-variant-numeric: tabular-nums } .chip b small { font: 400 12px var(--mono); color: var(--muted) }
+.chip em { font: 600 11px var(--body); font-style: normal; color: var(--mint) }
+.chip.est { border-style: dashed; border-color: color-mix(in srgb, var(--amber) 55%, transparent) } .chip.est em { color: var(--amber) }
+.chip.c1 { left: -4%; top: 14% } .chip.c2 { right: -6%; top: 40% } .chip.c3 { left: -2%; bottom: 10% }
+@media (max-width: 520px) { .chip { min-width: 128px; padding: 10px 12px } .chip b { font-size: 18px } .chip.c1 { left: 0 } .chip.c2 { right: 0 } .chip.c3 { left: 0 } }
 
-/* light (sequence) */
-#light, #scan, #face { height: 380vh }
-#face { height: 260vh }
-.seq { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover }
-canvas.seq { display: block }
-.side { position: relative; z-index: 2; align-self: center; display: grid; gap: 22px; max-width: 520px }
-.side::before { content: ""; position: absolute; inset: -60px -80px -60px -200px; z-index: -1; background: radial-gradient(closest-side, color-mix(in srgb, var(--ink) 85%, transparent), transparent) }
-.steps-txt { position: relative; min-height: 210px }
-.steps-txt p { position: absolute; inset: 0 0 auto 0; font: 700 clamp(26px, 3vw, 38px)/1.18 var(--body); letter-spacing: -.02em; opacity: 0; transform: translateY(24px); transition: opacity .35s, transform .45s }
-.steps-txt p.on { opacity: 1; transform: none }
-.steps-txt p em { font: 400 1.1em var(--display); font-style: italic; color: var(--mint) }
-.ppg { width: 100%; height: 70px }
-.dots { display: flex; gap: 8px } .dots i { width: 22px; height: 3px; border-radius: 2px; background: var(--line) } .dots i.on { background: var(--mint) }
+/* stats strip */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--line) }
+@media (max-width: 760px) { .stats { grid-template-columns: 1fr 1fr } }
+.stats div { padding: 26px 22px; display: grid; gap: 6px }
+.stats div + div { border-left: 1px solid var(--line) }
+@media (max-width: 760px) { .stats div:nth-child(3) { border-left: 0 } .stats div:nth-child(n+3) { border-top: 1px solid var(--line) } }
+.stats b { font: 800 clamp(28px, 3vw, 38px)/1 var(--body); letter-spacing: -.03em } .stats span { color: var(--muted); font-size: 14px }
 
-/* scan timeline */
-#scan .stage .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; height: 100% }
-@media (max-width: 860px) { #scan .stage .wrap { grid-template-columns: 1fr; align-content: end; padding-bottom: 24px } }
-.tl { position: relative; z-index: 2; display: grid; gap: 18px; background: color-mix(in srgb, var(--ink) 82%, transparent); border: 1px solid var(--line); border-radius: 20px; padding: 24px; backdrop-filter: blur(10px); grid-column: 1 }
-@media (max-width: 860px) { .tl { grid-column: 1; padding: 16px; gap: 10px } .tl .why { display: none } #scan canvas.seq { height: 58% } }
-.clock { display: flex; align-items: baseline; gap: 10px } .clock b { font: 800 56px/1 var(--body); letter-spacing: -.03em; font-variant-numeric: tabular-nums } .clock span { color: var(--muted) }
-.track { position: relative; height: 6px; border-radius: 3px; background: var(--line) } .track i { position: absolute; inset: 0 auto 0 0; border-radius: 3px; background: var(--mint); width: 0 }
-.track u { position: absolute; top: -5px; width: 2px; height: 16px; background: color-mix(in srgb, var(--text) 35%, transparent) }
-.rlist { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px }
-.rlist li { display: flex; justify-content: space-between; gap: 10px; font-size: 15px; color: color-mix(in srgb, var(--muted) 70%, transparent); padding-block: 4px; border-bottom: 1px solid var(--line); transition: color .3s }
-.rlist li span:last-child { font: 400 12px var(--mono) }
-.rlist li.on { color: var(--text) } .rlist li.on span:last-child { color: var(--mint) }
-.rlist li.est.on { color: var(--text) } .rlist li.est.on span:last-child { color: var(--amber) }
-@media (max-width: 860px) { .rlist li { font-size: 13px } }
-.why { color: var(--muted); font-size: 14px }
+/* cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px }
+.card { border: 1px solid var(--line); border-radius: 20px; padding: 26px; background: var(--panel); display: grid; gap: 12px; align-content: start; min-width: 0 }
+.card .n { font: 600 12px var(--mono); letter-spacing: .14em; color: var(--mint) }
+.card h3 { font-size: 20px; margin: 0 } .card p { color: var(--muted); font-size: 15px; margin: 0 }
+.card a { color: var(--mint); font-weight: 600; text-decoration: none; font-size: 15px }
 
-/* edge */
-#edge { height: 300vh }
-#edge .stage { align-items: center }
-.edge { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: center }
-@media (max-width: 900px) { .edge { grid-template-columns: 1fr; gap: 24px } }
-.edge svg { width: 100%; height: auto }
-.ed-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line) }
-.ed-list li { padding-block: 14px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; color: var(--muted); transition: color .3s }
-.ed-list li::before { content: "✓"; color: var(--mint) }
-.ed-list li.on { color: var(--text) }
+/* how it works */
+.how { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 6vw, 80px); align-items: center }
+@media (max-width: 900px) { .how { grid-template-columns: 1fr } }
+.howsteps { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line) }
+.howsteps li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; padding-block: 18px; border-bottom: 1px solid var(--line) }
+.howsteps li > span { font: 600 12px var(--mono); color: var(--mint); padding-top: 4px }
+.howsteps b { display: block; font-size: 17px; margin-bottom: 4px } .howsteps p { margin: 0; color: var(--muted); font-size: 15px }
+.layers { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 22px; background: var(--panel) }
+.layers text { font: 600 11px var(--mono); letter-spacing: .1em; fill: var(--muted) }
 
-/* history (horizontal) */
-#history { height: 420vh }
-#history .stage { align-content: center; gap: 40px }
-.htrack { display: flex; gap: 22px; padding-inline: max(24px, calc((100vw - var(--wrap)) / 2 + 24px)); will-change: transform }
-.hcard { flex: 0 0 min(340px, 78vw); border: 1px solid var(--line); border-radius: 20px; padding: 26px; background: var(--panel); display: grid; gap: 14px; align-content: start; min-height: 300px }
-.hcard .yr { font: 400 64px/1 var(--display); color: var(--mint) }
-.hcard p { color: var(--muted); font-size: 15px }
-.hcard.now { background: radial-gradient(400px 260px at 100% 0%, color-mix(in srgb, var(--mint) 22%, transparent), transparent 70%), var(--panel); border-color: color-mix(in srgb, var(--mint) 45%, transparent) }
-.hline { height: 2px; background: var(--line); margin-inline: max(24px, calc((100vw - var(--wrap)) / 2 + 24px)); position: relative } .hline i { position: absolute; inset: 0 auto 0 0; background: var(--mint); width: 0 }
+/* fade-in on scroll */
+[data-zoom] { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease }
+[data-zoom].in { opacity: 1; transform: none }
 
+/* closing: the chrome logo, small */
+#closing { text-align: center }
+#closing .wrap { display: grid; justify-items: center; gap: 22px }
+.logobox { width: min(360px, 70vw); aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #000 }
+.logobox canvas { width: 100%; height: 100%; display: block }
+
+dialog.film { width: min(1100px, calc(100vw - 32px)); padding: 0; border: 1px solid var(--line); border-radius: 18px; background: #000; overflow: hidden }
+dialog.film::backdrop { background: rgba(2, 5, 6, .85) }
+dialog.film video { display: block; width: 100%; height: auto }
+dialog.film button { position: absolute; top: 10px; right: 10px; z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: rgba(0, 0, 0, .6); color: var(--text); font-size: 20px; cursor: pointer }
+
+@media (prefers-reduced-motion: reduce) { [data-zoom] { opacity: 1; transform: none; transition: none } }
 /* use cases + generic scroll zoom */
 .uses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px }
 @media (max-width: 900px) { .uses { grid-template-columns: 1fr } }
@@ -296,14 +290,6 @@ canvas.seq { display: block }
 .who-card { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 18px }
 .who-card b { font-size: 18px } .who-card span { color: var(--muted); font-size: 15px }
 
-
-/* skin cross-section */
-#light .lightwrap { display: grid; align-items: center; height: 100% }
-@media (max-width: 860px) { #light .lightwrap { align-items: end; padding-bottom: 36px } #light .steps-txt { min-height: 150px } #light .steps-txt p { font-size: 22px } #light .side::before { inset: -40px -40px -40px -40px } #light .side { align-self: end } }
-
-#face .facewrap { display: grid; align-items: center; height: 100% }
-@media (max-width: 860px) { #face .facewrap { align-items: end; padding-bottom: 36px } #face .side { align-self: end } #face .steps-txt p { font-size: 22px } #face .steps-txt { min-height: 150px } }
-#skin3d { pointer-events: none }
 
 /* biomarker explorer: list left, panel right; the page never moves when you switch */
 .bx { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 24px; align-items: start }
@@ -355,127 +341,109 @@ canvas.seq { display: block }
 .vfoot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-top: 28px }
 .vfoot .note { max-width: 70ch }
 
-/* outro */
-#outro { height: 300vh }
-#outro .stage { align-items: end }
-#outro .end { position: relative; z-index: 2; display: grid; gap: 20px; justify-items: center; text-align: center; padding-bottom: 9vh; opacity: 0 }
-
-@media (prefers-reduced-motion: reduce) {
-  #hero, #problem, #light, #scan, #face, #edge, #history, #outro { height: auto }
-  .stage { position: relative; height: auto; min-height: 100vh }
-  .htrack { flex-wrap: wrap; transform: none !important }
-  .steps-txt p { position: static; opacity: 1; transform: none; margin-bottom: 12px }
-  .steps-txt { min-height: 0 }
-}
 </style>
 
 <nav class="nav" aria-label="Main">
   <div class="wrap">
     <a class="brand" href="index.html" aria-label="VitalKick home"></a>
     <ul>
-      <li><a href="#light">How it works</a></li>
+      <li><a href="technology.html">How it works</a></li>
       <li><a href="biomarkers.html">Biomarkers</a></li>
       <li><a href="#validation">Validation</a></li>
-      <li><a href="#uses">Who it's for</a></li>
       <li><a href="research.html">For research</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
     <a class="btn primary" href="book.html">Book a call</a>
   </div>
 </nav>
 
-<!-- 1 HERO: reel card zooms to full screen as you scroll -->
-<section class="scene" id="hero">
-  <div class="stage">
-    <div id="reelBox"><video id="reel" src="assets/vitalkick-reel.mp4" poster="assets/poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="VitalKick motion reel, 60 seconds"></video><div id="reelShade"></div><button class="btn ghost" id="sound" type="button">Play with sound</button></div>
-    <div class="wrap"><div class="copy" id="heroCopy">
-      <span class="k-label">Camera-based wellness check</span>
-      <h1>Your vitals from a <em>60-second</em> selfie.</h1>
-      <p class="lede">VitalKick reads the tiny colour changes each heartbeat makes in your face, using the front camera you already carry. One minute, 12 readings, nothing to wear.</p>
-      <div class="btns"><a class="btn primary" href="book.html">Book a call</a><a class="btn ghost" href="#light">See how it works</a></div>
-    </div></div>
-    <span class="scroll-cue" id="cue">SCROLL</span>
-  </div>
-</section>
-
-<!-- 5 SCAN: phone sequence + 60 s timeline -->
-<section class="scene" id="scan">
-  <div class="stage">
-    <canvas class="seq" data-seq="phone" data-n="100"></canvas>
-    <div class="wrap">
-      <div class="tl">
-        <span class="k-label">One scan, second by second</span>
-        <div class="clock"><b id="sec">0</b><span>of 60 seconds</span></div>
-        <div class="track" id="track"><i></i><u style="left:33.3%"></u><u style="left:58.3%"></u><u style="left:61.7%"></u><u style="left:83.3%"></u></div>
-        <ul class="rlist" id="rlist">
-          <li data-at="20"><span>Pulse rate</span><span>20 s</span></li>
-          <li data-at="35"><span>Blood pressure</span><span>35 s</span></li>
-          <li data-at="35"><span>Oxygen saturation</span><span>35 s</span></li>
-          <li data-at="37"><span>Breathing rate</span><span>37 s</span></li>
-          <li data-at="37"><span>Pulse-respiration quotient</span><span>37 s</span></li>
-          <li data-at="50"><span>HRV (RMSSD, SDNN)</span><span>50 s</span></li>
-          <li data-at="50"><span>Stress level</span><span>50 s</span></li>
-          <li data-at="50"><span>Sympathetic / parasympathetic</span><span>50 s</span></li>
-          <li data-at="60" class="est"><span>Hemoglobin (est.)</span><span>60 s</span></li>
-          <li data-at="60" class="est"><span>HbA1c (est.)</span><span>60 s</span></li>
-        </ul>
-        <p class="why">Best results come from one scan each morning, in the same place and good light. Why a full minute: heart-rate variability needs about 50 seconds of heartbeats before the numbers mean anything physiologically. Estimates carry their own badge in the app.</p>
-      </div>
+<section id="hero">
+  <div class="wrap hero">
+    <div class="copy">
+      <span class="k-label">Camera-based vital signs</span>
+      <h1>Vital signs from a <em>60-second</em> selfie.</h1>
+      <p class="lede">VitalKick reads the small colour changes each heartbeat makes in the face, using the front camera people already carry. Twelve readings in one minute, with nothing to wear or ship.</p>
+      <ul class="checks">
+        <li>Processed on the phone. Video is never uploaded.</li>
+        <li>Engine tested against reference devices on skin types II to VI</li>
+        <li>Consent-first data for pilots, studies and care programs</li>
+      </ul>
+      <div class="btns"><a class="btn primary" href="book.html">Book a call</a><a class="btn ghost" href="research.html">For research teams</a></div>
+      <button class="filmlink" type="button" id="filmOpen"><i></i>Watch the 60-second film</button>
+    </div>
+    <div class="device" aria-label="Example of the VitalKick scan screen with three readings" role="img">
+      <div class="phone"><div class="screen">
+        <img src="assets/face-portrait.webp" alt="" width="1280" height="853">
+        <svg viewBox="0 0 100 200" preserveAspectRatio="none" aria-hidden="true">
+          <ellipse class="oval" cx="50" cy="70" rx="30" ry="42"/>
+          <rect class="roi" x="38" y="36" width="24" height="10" rx="2"/>
+          <rect class="roi" x="27" y="72" width="14" height="10" rx="2"/>
+          <rect class="roi" x="59" y="72" width="14" height="10" rx="2"/>
+        </svg>
+        <span class="cap">HOLD STILL · 42 S</span>
+      </div></div>
+      <div class="chip c1"><span>Pulse rate</span><b>72 <small>bpm</small></b><em>Typical</em></div>
+      <div class="chip c2"><span>Blood pressure</span><b>118/76 <small>mmHg</small></b><em>Normal</em></div>
+      <div class="chip c3 est"><span>HbA1c</span><b>5.4 <small>%</small></b><em>Estimate — not a lab result</em></div>
     </div>
   </div>
 </section>
 
-<!-- 2 PROBLEM -->
-<section class="scene" id="problem">
-  <div class="stage"><div class="wrap prob">
-    <span class="k-label">The problem</span>
-    <h2>Checking your vitals today still means <em>hardware, labs and waiting.</em></h2>
-    <div class="fr-grid" id="frics">
-      <div class="fric"><b>Devices to buy</b><span>Cuffs, clips and sensors, each with its own cost and upkeep</span></div>
-      <div class="fric"><b>Logistics</b><span>Shipping, calibration and recalls</span></div>
-      <div class="fric"><b>Trained operator</b><span>Instructions that are hard to follow at home</span></div>
-      <div class="fric"><b>Needles</b><span>Blood draws and the fear that keeps people away</span></div>
-      <div class="fric"><b>Days to results</b><span>Lab work that comes back long after the visit</span></div>
-      <div class="fric"><b>Siloed data</b><span>Numbers stuck on separate devices, taken one at a time</span></div>
+<div class="wrap"><div class="stats" data-zoom>
+  <div><b>60 s</b><span>One selfie scan</span></div>
+  <div><b>12</b><span>Readings per scan</span></div>
+  <div><b>0</b><span>Devices to ship or wear</span></div>
+  <div><b>On-phone</b><span>Video never leaves the device</span></div>
+</div></div>
+
+<section id="pharma">
+  <div class="wrap">
+    <div class="sec-head" data-zoom><span class="k-label">For pharma, CROs and research teams</span><h2>Vital signs between site visits, <em>from people who said yes.</em></h2><p class="lede">VitalKick gives studies a one-minute check participants can repeat at home on their own phone, and a consent-first way to find the people a protocol needs.</p></div>
+    <div class="cards">
+      <article class="card" data-zoom><span class="n">01</span><h3>Find the right participants</h3><p>Match consenting users to your criteria, such as age, region and scan-based ranges averaged over weeks. Before consent you see de-identified counts only, and groups under 20 are never shown.</p><a href="research.html">Try the cohort builder →</a></article>
+      <article class="card" data-zoom><span class="n">02</span><h3>Readings between visits</h3><p>Participants scan at home in 60 seconds, as often as the protocol asks. No hardware to ship, calibrate or collect, and adherence is visible from the scan history.</p></article>
+      <article class="card" data-zoom><span class="n">03</span><h3>Consent and privacy built in</h3><p>Each study needs its own consent in the app. Research data is de-identified to the HIPAA Safe Harbor standard, with a business associate agreement wherever health data is involved.</p></article>
+      <article class="card" data-zoom><span class="n">04</span><h3>Your protocol decides</h3><p>Readings are wellness signals, not eligibility decisions. Your site confirms every criterion with its own instruments, under your IRB-approved protocol.</p></article>
     </div>
-    <p class="answer" id="answer" style="opacity:0">Less hardware. More insight.</p>
-  </div></div>
-</section>
-
-<!-- 4 FACE: photoscanned head with scan sweep -->
-<section class="scene" id="face">
-  <div class="stage">
-    <canvas id="faceCv" class="seq" aria-hidden="true"></canvas>
-    <div class="wrap facewrap"><div class="side">
-      <span class="k-label">Where it looks</span>
-      <div class="steps-txt" data-steps style="min-height:170px">
-        <p>First the face is found and followed, <em>frame by frame.</em></p>
-        <p>Only three patches matter: the forehead and both cheeks, where thin skin covers dense small vessels.</p>
-        <p>Then the picture is thrown away. No face image or face geometry is stored. <em>Only numbers.</em></p>
-      </div>
-      <div class="dots" data-dots><i></i><i></i><i></i></div>
-    </div></div>
   </div>
 </section>
 
-<!-- LIGHT: animated skin cross-section, how rPPG works -->
-<section class="scene" id="light">
-  <div class="stage">
-    <canvas id="skin3d" class="seq" aria-hidden="true"></canvas>
-    <canvas id="skin" class="seq" aria-hidden="true"></canvas>
-    <div class="wrap lightwrap"><div class="side">
-      <span class="k-label">How it works · rPPG</span>
-      <div class="steps-txt" data-steps>
-        <p>Every heartbeat pushes a little more blood into the tiny vessels under your skin.</p>
-        <p>Blood soaks up green light, so a little less light bounces back with each beat.</p>
-        <p>The camera records that change. It is <em>far too small</em> for your eyes to see.</p>
-        <p>Filtering turns it into a clean pulse wave. That is <em>rPPG:</em> your heartbeat, read from light.</p>
-      </div>
-      <div class="dots" data-dots><i></i><i></i><i></i><i></i></div>
-    </div></div>
+<hr class="rule">
+
+<section id="how">
+  <div class="wrap how">
+    <div style="display:grid;gap:22px" data-zoom>
+      <span class="k-label">How it works</span>
+      <h2>A pulse, <em>read from light.</em></h2>
+      <ol class="howsteps">
+        <li><span>01</span><div><b>Blood changes the colour of skin</b><p>Each heartbeat pushes a little more blood into the small vessels of the face, and blood absorbs green light.</p></div></li>
+        <li><span>02</span><div><b>The camera records the change</b><p>The forehead and cheeks get very slightly darker and lighter with every beat, far too little for the eye to see.</p></div></li>
+        <li><span>03</span><div><b>The phone turns it into readings</b><p>On the device, the signal becomes a pulse wave and then twelve readings. The video is discarded when the scan ends.</p></div></li>
+      </ol>
+      <a class="btn ghost" href="technology.html" style="justify-self:start">How the technology works</a>
+    </div>
+    <svg class="layers" viewBox="0 0 560 400" role="img" aria-label="Diagram: light from the screen enters the skin; blood in the vessels absorbs part of it and the camera measures the light that returns" data-zoom>
+      <rect x="230" y="26" width="100" height="44" rx="10" fill="none" stroke="var(--text)" stroke-opacity=".5"/>
+      <circle cx="280" cy="48" r="9" fill="none" stroke="var(--mint)" stroke-width="2"/>
+      <text x="280" y="92" text-anchor="middle">CAMERA</text>
+      <g stroke="var(--mint)" stroke-width="1.5" fill="none" opacity=".75">
+        <path d="M250 104 L210 196" stroke-dasharray="4 5"/><path d="M220 196 L262 104" stroke-dasharray="4 5" opacity=".5"/>
+        <path d="M310 104 L350 196" stroke-dasharray="4 5"/><path d="M340 196 L298 104" stroke-dasharray="4 5" opacity=".5"/>
+      </g>
+      <rect x="40" y="196" width="480" height="44" fill="color-mix(in srgb, var(--text) 10%, var(--panel))"/>
+      <rect x="40" y="240" width="480" height="96" fill="color-mix(in srgb, var(--mint) 6%, var(--panel))"/>
+      <rect x="40" y="336" width="480" height="40" fill="color-mix(in srgb, var(--amber) 5%, var(--panel))"/>
+      <g fill="none" stroke="var(--mint)" stroke-width="2.2" opacity=".85">
+        <path d="M40 286 C120 266 170 306 250 286 S380 266 520 290"/>
+        <path d="M40 314 C140 300 200 326 300 312 S440 300 520 318" opacity=".55"/>
+      </g>
+      <text x="56" y="223">EPIDERMIS</text><text x="56" y="262">DERMIS · SMALL VESSELS</text><text x="56" y="361">FAT</text>
+    </svg>
   </div>
 </section>
 
-<!-- BIOMARKERS: click a marker on the left, details swap on the right -->
+<hr class="rule">
+
 <section id="biomarkers">
   <div class="wrap">
     <div class="sec-head"><span class="k-label">Biomarkers</span><h2>What each reading shows, <em>and why it matters.</em></h2><p class="lede">Pick a reading to see what it measures, the typical range, and what VitalKick suggests when a number sits outside it.</p></div>
@@ -487,9 +455,6 @@ canvas.seq { display: block }
   </div>
 </section>
 
-<hr class="rule">
-
-<!-- VALIDATION -->
 <section id="validation">
   <div class="wrap">
     <div class="sec-head" data-zoom><span class="k-label">Validation</span><h2>Tested against <em>reference devices.</em></h2><p class="lede">The rPPG engine inside VitalKick was tested by our technology partner against established measuring devices, in a controlled lab and in real-world pilots.</p></div>
@@ -506,56 +471,6 @@ canvas.seq { display: block }
   </div>
 </section>
 
-<!-- 6 EDGE -->
-<section class="scene" id="edge">
-  <div class="stage"><div class="wrap edge">
-    <div style="display:grid;gap:22px">
-      <span class="k-label">Runs on the phone, not in the cloud</span>
-      <h2>Your video <em>never leaves</em> the device.</h2>
-      <ul class="ed-list" id="edList">
-        <li>Works without an internet connection, then syncs later</li>
-        <li>Only computed numbers are stored, and only with consent</li>
-        <li>No face images or face geometry are kept anywhere</li>
-        <li>Organisations keep full ownership of their data</li>
-        <li>No per-scan cloud computing cost at large volumes</li>
-      </ul>
-    </div>
-    <svg id="edgeSvg" viewBox="0 0 560 420" role="img" aria-label="Diagram: video stays on the phone; only numbers go to the cloud, with consent">
-      <rect x="40" y="90" width="150" height="260" rx="26" fill="var(--panel)" stroke="var(--text)" stroke-opacity=".5" stroke-width="2"/>
-      <rect x="86" y="104" width="58" height="10" rx="5" fill="var(--ink)"/>
-      <text x="115" y="378" fill="var(--muted)" font-size="13" text-anchor="middle" font-family="JetBrains Mono, monospace">PHONE</text>
-      <g id="faceIcon"><circle cx="115" cy="190" r="34" fill="none" stroke="var(--mint)" stroke-width="2"/><circle cx="103" cy="184" r="3" fill="var(--mint)"/><circle cx="127" cy="184" r="3" fill="var(--mint)"/><path d="M101 202 q14 10 28 0" fill="none" stroke="var(--mint)" stroke-width="2"/></g>
-      <text id="numTxt" x="115" y="290" fill="var(--text)" font-size="22" text-anchor="middle" font-weight="800" font-family="Inter, sans-serif" opacity="0">72 · 118/76</text>
-      <path d="M392 150 a42 42 0 0 1 80 -10 a32 32 0 0 1 20 62 h-104 a30 30 0 0 1 4 -52z" fill="var(--panel)" stroke="var(--text)" stroke-opacity=".5" stroke-width="2"/>
-      <text x="440" y="236" fill="var(--muted)" font-size="13" text-anchor="middle" font-family="JetBrains Mono, monospace">CLOUD</text>
-      <path id="vidPath" d="M190 180 C 280 150, 330 150, 395 165" fill="none" stroke="var(--coral)" stroke-width="2" stroke-dasharray="6 7" opacity=".7"/>
-      <g id="block" opacity="0"><circle cx="292" cy="158" r="18" fill="var(--ink)" stroke="var(--coral)" stroke-width="2"/><path d="M284 150 l16 16 M300 150 l-16 16" stroke="var(--coral)" stroke-width="2.5"/></g>
-      <text id="vidLbl" x="290" y="132" fill="var(--coral)" font-size="12" text-anchor="middle" font-family="JetBrains Mono, monospace">VIDEO</text>
-      <path id="numPath" d="M190 290 C 290 320, 360 300, 430 210" fill="none" stroke="var(--mint)" stroke-width="2.5" stroke-dasharray="300" stroke-dashoffset="300"/>
-      <text id="numLbl" x="330" y="330" fill="var(--mint)" font-size="12" text-anchor="middle" font-family="JetBrains Mono, monospace" opacity="0">NUMBERS ONLY · WITH CONSENT</text>
-      <circle id="pkt" r="6" fill="var(--coral)" cx="190" cy="180"/>
-    </svg>
-  </div></div>
-</section>
-
-<!-- 7 HISTORY: horizontal scroll -->
-<section class="scene" id="history">
-  <div class="stage">
-    <div class="wrap" style="display:grid;gap:14px"><span class="k-label">An 80-year-old idea, now in your camera</span><h2>Pulse oximeters have used light to read the blood <em>since the 1940s.</em></h2></div>
-    <div class="htrack" id="htrack">
-      <article class="hcard"><span class="yr">1940s</span><h3>The first oximeter</h3><p>Glen Millikan builds a portable ear oximeter to protect pilots from oxygen loss at altitude during the Second World War.</p></article>
-      <article class="hcard"><span class="yr">1975</span><h3>Pulse oximetry is born</h3><p>Nihon Kohden's OLV-5100 ear oximeter uses the pulse in the light signal, the principle every pulse oximeter still uses.</p></article>
-      <article class="hcard"><span class="yr">1977</span><h3>The finger clip</h3><p>Minolta's OXIMET MET-1471 moves the sensor to the fingertip.</p></article>
-      <article class="hcard"><span class="yr">1980s</span><h3>Into US hospitals</h3><p>Biox brings pulse oximeters to the US market. Within a decade they are standard in recovery rooms and ICUs.</p></article>
-      <article class="hcard"><span class="yr">2000s</span><h3>Beyond oxygen</h3><p>Light-based sensors start to estimate hemoglobin without a needle.</p></article>
-      <article class="hcard"><span class="yr">2019</span><h3>Blood pressure from light</h3><p>A wearable PPG sensor reaches the market for cuffless blood pressure monitoring.</p></article>
-      <article class="hcard now"><span class="yr">Today</span><h3>No sensor at all</h3><p>VitalKick reads the same pulse signal from video of your face. The sensor is the camera you already own.</p></article>
-    </div>
-    <div class="hline"><i id="hline"></i></div>
-  </div>
-</section>
-
-<!-- 8 USE CASES -->
 <section id="uses">
   <div class="wrap">
     <div class="sec-head" data-zoom><span class="k-label">Who it's for</span><h2>One scan, <em>many settings.</em></h2><p class="lede">A link or an app on a phone, tablet or laptop is all a patient, member or employee needs.</p></div>
@@ -570,8 +485,6 @@ canvas.seq { display: block }
   </div>
 </section>
 
-<hr class="rule">
-
 <section id="privacy">
   <div class="wrap privacy">
     <div class="sec-head" style="margin:0" data-zoom><span class="k-label">Privacy by construction</span><h2>Rules written <em>into the product.</em></h2><p class="lede">Enforced in code and in the database, not left to policy.</p></div>
@@ -583,8 +496,6 @@ canvas.seq { display: block }
     </dl>
   </div>
 </section>
-
-<hr class="rule">
 
 <section id="team">
   <div class="wrap founder">
@@ -598,8 +509,6 @@ canvas.seq { display: block }
     </div>
   </div>
 </section>
-
-<!-- 9 OUTRO: logo reveal sequence -->
 <section id="faq">
   <div class="wrap">
     <div class="sec-head"><span class="k-label">FAQ</span><h2>Questions, <em>answered.</em></h2><p class="lede">The ones we hear most. Tap a question to open it.</p></div>
@@ -619,12 +528,19 @@ document.querySelectorAll('[data-faq]').forEach(root => {
 });
 </script>
 
-<section class="scene" id="outro">
-  <div class="stage">
-    <canvas class="seq" data-seq="logo" data-n="100"></canvas>
-    <div class="wrap"><div class="end" id="end"><h2>Ready to see it on <em>your</em> population?</h2><div class="btns" style="justify-content:center"><a class="btn primary" href="book.html">Book a call with the founder</a><a class="btn ghost" href="research.html#contact">Plan a pilot</a></div></div></div>
+<section id="closing">
+  <div class="wrap">
+    <div class="logobox"><canvas data-seq="logo" data-n="100" aria-hidden="true"></canvas></div>
+    <h2 style="max-width:18ch">See it on <em>your</em> population.</h2>
+    <p class="lede" style="max-width:52ch">Thirty minutes with Sadik Bizanti, MD, about your study, program or patients, and what a pilot would look like.</p>
+    <div class="btns" style="justify-content:center"><a class="btn primary" href="book.html">Book a call with the founder</a><a class="btn ghost" href="research.html#contact">Plan a pilot</a></div>
   </div>
 </section>
+
+<dialog class="film" id="film" aria-label="VitalKick 60-second film">
+  <button type="button" id="filmClose" aria-label="Close">×</button>
+  <video id="filmVideo" src="assets/vitalkick-reel.mp4" poster="assets/poster.jpg" controls playsinline preload="none"></video>
+</dialog>
 
 <footer class="sfoot">
   <div class="wrap">
@@ -641,7 +557,6 @@ document.querySelectorAll('[data-faq]').forEach(root => {
 </footer>
 
 <script src="assets/biomarkers.js"></script>
-<script type="module" src="assets/skin3d.js"></script>
 <script>
 (() => {
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -679,149 +594,18 @@ document.querySelectorAll('[data-faq]').forEach(root => {
   });
   const S = Object.fromEntries(seqs.map(s => [s.cv.dataset.seq, s]));
   // start loading sequences when they get near the viewport
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { const s = seqs.find(x => x.cv.closest('.scene') === e.target); s && s.preload(); io.unobserve(e.target); } }), { rootMargin: '150% 0px' });
-  seqs.forEach(s => io.observe(s.cv.closest('.scene')));
+  
+  
 
-
-  // ---------- skin cross-section (procedural) ----------
-  const skin = $('skin'), sctx = skin.getContext('2d'), lightSc = $('light');
-  let skinP = 0, skinOn = false;
-  const beat = t => { const k = t % .85; return Math.exp(-k * 9) + .55 * Math.exp(-Math.max(0, k - .16) * 11) * (k > .16 ? 1 : 0); };
-
-  function skinOverlay(c, W, H, narrow, p, t) {
-    c.font = '600 11px "JetBrains Mono", monospace';
-    (window.__skinLabels || []).forEach(L => { if (L.a <= 0.01) return; c.globalAlpha = L.a; c.strokeStyle = 'rgba(98,230,207,.8)'; c.lineWidth = 1; const tx = Math.max(16, L.x - (narrow ? 30 : 70)); c.beginPath(); c.arc(L.x, L.y, 3, 0, 7); c.fillStyle = '#62e6cf'; c.fill(); c.beginPath(); c.moveTo(L.x, L.y); c.lineTo(tx, L.y); c.stroke(); c.fillStyle = '#e8f1ef'; c.textAlign = 'left'; const tw = c.measureText(L.t).width; c.fillText(L.t, Math.max(16, tx - tw + (narrow ? tw : 0)), L.y - 7); });
-    const Lt = window.__skinLight; if (Lt && Lt.a > .01) { c.globalAlpha = Lt.a * .9; c.fillStyle = 'rgba(232,241,239,.75)'; c.fillText('LIGHT', Lt.light.x - 18, Lt.light.y - 12); c.fillText('CAMERA', Lt.cam.x - 22, Lt.cam.y - 12); }
-    c.globalAlpha = 1;
-    const ks = inv(.45, .58, p), kf = inv(.72, .85, p);
-    if (ks > 0) {
-      const gw = narrow ? W - 32 : Math.min(460, W * .32), gh = narrow ? 86 : 110, gx = narrow ? 16 : W - gw - Math.max(24, (W - 1180) / 2 + 24), gy = narrow ? 80 : H * .13;
-      c.globalAlpha = ks; c.fillStyle = 'rgba(5,9,10,.78)'; c.beginPath(); c.roundRect(gx, gy, gw, gh, 14); c.fill(); c.strokeStyle = 'rgba(98,230,207,.25)'; c.stroke();
-      c.fillStyle = kf > .5 ? '#62e6cf' : 'rgba(232,241,239,.65)'; c.fillText(kf > .5 ? 'FILTERED PULSE WAVE' : 'RAW GREEN SIGNAL', gx + 14, gy + 20);
-      c.beginPath(); c.lineWidth = 2; c.strokeStyle = kf > .5 ? '#62e6cf' : 'rgba(120,255,170,.85)';
-      for (let x = 0; x <= gw - 28; x += 3) { const tt = t * 1.2 + x / 70; const clean = Math.pow(Math.max(0, Math.sin(tt * Math.PI * 2)), 3) - .35 * Math.max(0, Math.sin(tt * Math.PI * 2 - 1.8)); const noise = Math.sin(x * .9 + t * 7) * .35 + Math.sin(x * .37 - t * 3) * .45 + Math.sin(x * .13 + t) * .5; const v = lerp(clean * .5 + noise * .5, clean, kf); const y = gy + gh * .64 - v * gh * .3; x ? c.lineTo(gx + 14 + x, y) : c.moveTo(gx + 14 + x, y); }
-      c.stroke();
-      if (kf > 0) { c.globalAlpha = kf * ks; c.fillStyle = '#e8f1ef'; c.font = '800 26px Inter, sans-serif'; c.textAlign = 'right'; c.fillText('72 bpm', gx + gw - 14, gy + 30); c.textAlign = 'left'; }
-      c.globalAlpha = 1;
-    }
+  // the chrome logo plays once, small, when it comes into view
+  const logo = seqs.find(s => s.cv.dataset.seq === 'logo');
+  if (logo) {
+    logo.cv.__fx = .5;
+    const run = () => { logo.preload(); if (reduce) { const t = setInterval(() => { logo.set(1); }, 300); setTimeout(() => clearInterval(t), 3000); return; }
+      const t0 = performance.now(), D = 3200; const tick = now => { const k = clamp((now - t0) / D); logo.set(1 - Math.pow(1 - k, 2)); if (k < 1) requestAnimationFrame(tick); }; requestAnimationFrame(tick); };
+    const lo = new IntersectionObserver(es => { if (es[0].isIntersecting) { lo.disconnect(); run(); } }, { threshold: .4 });
+    lo.observe(logo.cv);
   }
-  function drawSkin(t) {
-    const dpr = Math.min(devicePixelRatio || 1, 2), W = skin.clientWidth, H = skin.clientHeight;
-    if (skin.width !== Math.round(W * dpr)) { skin.width = Math.round(W * dpr); skin.height = Math.round(H * dpr); }
-    const c = sctx; c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
-    const narrow = W < 860, p = skinP;
-    if (window.__skin3d) { skinOverlay(c, W, H, narrow, p, t); return; }
-    const rx = narrow ? 16 : Math.max(W * .5, (W - 1180) / 2 + 600), ry = narrow ? 76 : H * .14, rw = narrow ? W - 32 : W - Math.max(W * .5, (W - 1180) / 2 + 600) - Math.max(24, (W - 1180) / 2), rh = narrow ? H * .44 : H * .74;
-    const z = .82 + .18 * ease(inv(0, .2, p));
-    c.save(); c.translate(rx + rw / 2, ry + rh / 2); c.scale(z, z); c.translate(-(rx + rw / 2), -(ry + rh / 2));
-    // layers
-    const top = ry + rh * .26, epi = rh * .1, der = rh * .34;
-    const lay = (y, h, a, b, lab) => { const g = c.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, a); g.addColorStop(1, b); c.fillStyle = g; c.beginPath(); c.roundRect(rx, y, rw, h, 4); c.fill(); c.fillStyle = 'rgba(232,241,239,.55)'; c.font = '600 11px "JetBrains Mono", monospace'; c.fillText(lab, rx + 12, y + 18); };
-    c.save(); c.beginPath(); c.roundRect(rx, top, rw, rh * .74, 18); c.clip();
-    lay(top, epi, '#caa08c', '#b58773', 'EPIDERMIS');
-    lay(top + epi, der, '#8f5a52', '#6e4440', 'DERMIS');
-    lay(top + epi + der, rh * .3, '#c9a86f', '#a88a57', 'FAT');
-    // capillary loops, width pulses with the heartbeat
-    const pb = beat(t), n = 6;
-    for (let i = 0; i < n; i++) {
-      const x = rx + rw * (.12 + i * .15), y0 = top + epi + der * .92, y1 = top + epi + der * (.25 + (i % 2) * .08), w = 10 + 7 * pb * inv(.15, .3, p + .15);
-      c.strokeStyle = `rgba(214,46,62,${.85})`; c.lineWidth = w; c.lineCap = 'round';
-      c.beginPath(); c.moveTo(x - 14, y0); c.bezierCurveTo(x - 14, y1, x + 14, y1, x + 14, y0); c.stroke();
-      c.strokeStyle = 'rgba(255,140,150,.35)'; c.lineWidth = w * .35; c.stroke();
-    }
-    c.restore();
-    // light rays from the screen / ambient light, reflected to the camera
-    const kr = inv(.18, .32, p);
-    if (kr > 0) {
-      const lx = rx + rw * .08, ly = ry + 8, cx = rx + rw * .9, cy = ry + 12;
-      c.fillStyle = 'rgba(232,241,239,.75)'; c.font = '600 11px "JetBrains Mono", monospace'; c.fillText('LIGHT', lx - 6, ly - 4 + 20); c.fillText('CAMERA', cx - 34, cy + 16);
-      c.strokeStyle = 'rgba(232,241,239,.7)'; c.lineWidth = 1.5; c.strokeRect(cx - 18, cy + 24, 36, 22); c.beginPath(); c.arc(cx, cy + 35, 6, 0, 7); c.stroke();
-      for (let i = 0; i < 7; i++) {
-        const ph = ((t * .55 + i / 7) % 1), hx = rx + rw * (.15 + i * .1), hy = top + epi + der * .45;
-        const absorbed = i % 3 === 1;
-        let x, y;
-        if (ph < .5) { const k = ph / .5; x = lerp(lx + 10, hx, k); y = lerp(ly + 34, hy, k); }
-        else if (absorbed) { const k = (ph - .5) / .5; x = hx; y = hy; c.globalAlpha = (1 - k) * kr; c.fillStyle = '#5bff9e'; c.beginPath(); c.arc(x, y, 5 * (1 - k), 0, 7); c.fill(); c.globalAlpha = 1; continue; }
-        else { const k = (ph - .5) / .5; x = lerp(hx, cx, k); y = lerp(hy, cy + 50, k); }
-        c.strokeStyle = `rgba(91,255,158,${.25 * kr})`; c.lineWidth = 1.5; c.beginPath(); c.moveTo(lx + 10, ly + 34); c.lineTo(hx, hy); if (!absorbed) c.lineTo(cx, cy + 50); c.stroke();
-        c.fillStyle = `rgba(120,255,170,${.95 * kr})`; c.beginPath(); c.arc(x, y, 4, 0, 7); c.fill();
-      }
-    }
-    c.restore();
-    // signal panel: raw, then filtered
-    const ks = inv(.45, .58, p), kf = inv(.72, .85, p);
-    if (ks > 0) {
-      const gx = rx + 10, gy = ry + rh * .02, gw = rw - 20, gh = rh * .2;
-      c.globalAlpha = ks; c.fillStyle = 'rgba(5,9,10,.82)'; c.beginPath(); c.roundRect(gx, gy, gw, gh, 12); c.fill(); c.strokeStyle = 'rgba(205,240,232,.15)'; c.stroke();
-      c.font = '600 11px "JetBrains Mono", monospace'; c.fillStyle = kf > .5 ? '#62e6cf' : 'rgba(232,241,239,.65)'; c.fillText(kf > .5 ? 'FILTERED PULSE WAVE' : 'RAW GREEN SIGNAL', gx + 12, gy + 18);
-      c.beginPath(); c.lineWidth = 2; c.strokeStyle = kf > .5 ? '#62e6cf' : 'rgba(120,255,170,.85)';
-      for (let x = 0; x <= gw - 24; x += 3) {
-        const tt = t * 1.2 + x / 70; const clean = Math.pow(Math.max(0, Math.sin(tt * Math.PI * 2 / 1.0)), 3) - .35 * Math.max(0, Math.sin(tt * Math.PI * 2 - 1.8));
-        const noise = Math.sin(x * .9 + t * 7) * .35 + Math.sin(x * .37 - t * 3) * .45 + Math.sin(x * .13 + t) * .5;
-        const v = lerp(clean * .5 + noise * .5, clean, kf);
-        const y = gy + gh * .62 - v * gh * .32; x ? c.lineTo(gx + 12 + x, y) : c.moveTo(gx + 12 + x, y);
-      }
-      c.stroke();
-      if (kf > 0) { c.globalAlpha = kf * ks; c.fillStyle = '#e8f1ef'; c.font = '800 28px Inter, sans-serif'; c.textAlign = 'right'; c.fillText('72 bpm', gx + gw - 12, gy + 34); c.textAlign = 'left'; }
-      c.globalAlpha = 1;
-    }
-  }
-  const skinLoop = now => { if (skinOn) { drawSkin(now / 1000); requestAnimationFrame(skinLoop); } };
-  new IntersectionObserver(es => es.forEach(e => { const was = skinOn; skinOn = e.isIntersecting; if (skinOn && !was) requestAnimationFrame(skinLoop); })).observe(lightSc);
-
-
-  // ---------- face scan (portrait + landmark mesh) ----------
-  const fcv = $('faceCv'), fctx = fcv.getContext('2d'), faceSc = $('face');
-  let faceP = 0, faceOn = false, FM = null; const fimg = new Image(); fimg.decoding = 'async'; fimg.src = 'assets/face-portrait.webp';
-  fetch('assets/face-mesh.json').then(r => r.json()).then(j => { FM = j; }).catch(() => {});
-  const hull = pts => { pts = pts.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]); const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]); const lo = [], up = []; for (const p of pts) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); } for (const p of pts.slice().reverse()) { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); } return lo.slice(0, -1).concat(up.slice(0, -1)); };
-  const ROI = [['FOREHEAD', [10, 338, 297, 299, 9, 69, 67, 109, 151, 108, 337]], ['CHEEK', [50, 101, 118, 117, 123, 147, 187, 205, 36]], ['CHEEK', [280, 330, 347, 346, 352, 376, 411, 425, 266]]];
-  function drawFace(t) {
-    const dpr = Math.min(devicePixelRatio || 1, 2), W = fcv.clientWidth, H = fcv.clientHeight;
-    if (fcv.width !== Math.round(W * dpr)) { fcv.width = Math.round(W * dpr); fcv.height = Math.round(H * dpr); }
-    const c = fctx; c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
-    if (!fimg.complete || !fimg.naturalWidth) return;
-    const p = faceP, narrow = W < 860, iw = fimg.naturalWidth, ih = fimg.naturalHeight;
-    // region and focal point (face sits at ~73% x, 35% y of the photo)
-    const rh = narrow ? H * .62 : H, z = lerp(1.0, 1.14, ease(inv(0, .7, p)));
-    const s = Math.max(W / iw, rh / ih) * z, fx = .73, fy = .36;
-    let ox = narrow ? W / 2 - fx * iw * s : Math.min(0, Math.max(W - iw * s, W * .68 - fx * iw * s)), oy = narrow ? rh * .46 - fy * ih * s : Math.min(0, Math.max(H - ih * s, H * .45 - fy * ih * s));
-    const fade = 1 - .82 * ease(inv(.68, .85, p));
-    c.save(); c.globalAlpha = fade; if (p > .68) c.filter = `blur(${inv(.68, .85, p) * 8}px)`; c.drawImage(fimg, ox, oy, iw * s, ih * s); c.restore();
-    if (narrow) { const g = c.createLinearGradient(0, rh * .7, 0, rh); g.addColorStop(0, 'rgba(5,9,10,0)'); g.addColorStop(1, 'rgba(5,9,10,1)'); c.fillStyle = g; c.fillRect(0, rh * .7, W, rh * .3 + 2); c.fillStyle = '#05090a'; c.fillRect(0, rh, W, H - rh); }
-    else { const g = c.createLinearGradient(0, 0, W * .55, 0); g.addColorStop(0, 'rgba(5,9,10,.85)'); g.addColorStop(1, 'rgba(5,9,10,0)'); c.fillStyle = g; c.fillRect(0, 0, W * .55, H); }
-    if (!FM) return;
-    const P = FM.p.map(([x, y]) => [ox + x * iw * s, oy + y * ih * s]);
-    let y0 = 1e9, y1 = -1e9; P.forEach(q => { y0 = Math.min(y0, q[1]); y1 = Math.max(y1, q[1]); });
-    const scanY = lerp(y0 - 10, y1 + 10, ease(inv(.02, .3, p)));
-    const meshA = (p < .33 ? 1 : lerp(1, .22, inv(.33, .45, p))) * (1 - inv(.62, .72, p));
-    if (meshA > .01) {
-      c.lineWidth = narrow ? .6 : .8; c.strokeStyle = `rgba(98,230,207,${.55 * meshA})`; c.beginPath();
-      for (const [a, b] of FM.e) { const A = P[a], B = P[b]; if (A[1] > scanY || B[1] > scanY) continue; c.moveTo(A[0], A[1]); c.lineTo(B[0], B[1]); }
-      c.stroke();
-      c.fillStyle = `rgba(200,255,240,${.8 * meshA})`; for (let i = 0; i < P.length; i += 3) { if (P[i][1] <= scanY) c.fillRect(P[i][0] - .9, P[i][1] - .9, 1.8, 1.8); }
-      if (p < .33) { const sl = c.createLinearGradient(0, scanY - 40, 0, scanY); sl.addColorStop(0, 'rgba(98,230,207,0)'); sl.addColorStop(1, 'rgba(98,230,207,.35)'); c.fillStyle = sl; c.fillRect(P[234][0] - 40, scanY - 40, P[454][0] - P[234][0] + 80, 40); c.fillStyle = '#9ff5e6'; c.fillRect(P[234][0] - 40, scanY - 1, P[454][0] - P[234][0] + 80, 2); }
-    }
-    // regions of interest pulse with the heartbeat
-    const kr = inv(.33, .42, p) * (1 - inv(.66, .74, p));
-    if (kr > 0) {
-      const b = beat(t);
-      ROI.forEach(([lab, ids]) => { const h = hull(ids.map(i => P[i])); c.beginPath(); h.forEach((q, i) => i ? c.lineTo(q[0], q[1]) : c.moveTo(q[0], q[1])); c.closePath();
-        c.fillStyle = `rgba(98,230,207,${(.14 + .22 * b) * kr})`; c.fill(); c.strokeStyle = `rgba(98,230,207,${.9 * kr})`; c.lineWidth = 1.5; c.stroke();
-        const cx = h.reduce((a, q) => a + q[0], 0) / h.length, cy = Math.min(...h.map(q => q[1]));
-        c.globalAlpha = kr; c.fillStyle = '#e8f1ef'; c.font = '600 10px "JetBrains Mono", monospace'; c.textAlign = 'center'; c.fillText(lab, cx, cy - 8); c.textAlign = 'left'; c.globalAlpha = 1; });
-    }
-    // dissolve: points collapse into the numbers
-    const kd = inv(.68, .92, p);
-    if (kd > 0) {
-      const cx = (P[234][0] + P[454][0]) / 2, cy = (P[10][1] + P[152][1]) / 2;
-      c.fillStyle = `rgba(98,230,207,${.8 * (1 - kd)})`;
-      for (let i = 0; i < P.length; i += 2) { const k = ease(clamp(kd * 1.3 - (i % 7) * .03)); c.fillRect(lerp(P[i][0], cx, k) - 1, lerp(P[i][1], cy, k) - 1, 2, 2); }
-      const kt = inv(.8, .95, p); if (kt > 0) { c.globalAlpha = kt; c.fillStyle = '#62e6cf'; c.font = `800 ${narrow ? 26 : 40}px Inter, sans-serif`; c.textAlign = 'center'; c.fillText('72 · 118/76 · 98%', cx, cy + 12); c.font = '600 11px "JetBrains Mono", monospace'; c.fillStyle = 'rgba(232,241,239,.7)'; c.fillText('PULSE · BLOOD PRESSURE · OXYGEN', cx, cy + (narrow ? 38 : 46)); c.textAlign = 'left'; c.globalAlpha = 1; }
-    }
-  }
-  const faceLoop = now => { if (faceOn) { drawFace(now / 1000); requestAnimationFrame(faceLoop); } };
-  new IntersectionObserver(es => es.forEach(e => { const was = faceOn; faceOn = e.isIntersecting; if (faceOn && !was) requestAnimationFrame(faceLoop); }), { rootMargin: '20% 0px' }).observe(faceSc);
 
   // ---------- biomarker explorer ----------
   const M = window.VK_MARKERS || [], list = $('bxList'), panel = $('bxPanel');
@@ -857,98 +641,18 @@ document.querySelectorAll('[data-faq]').forEach(root => {
   }
   if (M.length) show(0, false);
 
-  // ---------- step text ----------
-  function steps(scene, p) {
-    const ps = scene.querySelectorAll('[data-steps] p'), ds = scene.querySelectorAll('[data-dots] i');
-    const i = Math.min(ps.length - 1, Math.floor(p * ps.length * .999));
-    ps.forEach((el, k) => el.classList.toggle('on', k === i)); ds.forEach((el, k) => el.classList.toggle('on', k <= i));
-  }
 
-  // ---------- scenes ----------
-  const hero = $('hero'), box = $('reelBox'), copy = $('heroCopy'), shade = $('reelShade');
-  function heroUpdate() {
-    const p = prog(hero), W = innerWidth, H = vh();
-    const narrow = W < 860;
-    const cw = narrow ? W - 32 : Math.min(W * .44, 700), ch = cw * 9 / 16;
-    const cx = narrow ? 16 : W - cw - Math.max(24, (W - 1180) / 2 + 24), cy = narrow ? H - ch - 24 : (H - ch) / 2 + 30;
-    const k = ease(inv(.05, .7, p));
-    // full-bleed rect: cover on wide screens; on phones fit the width so the reel's on-screen text is never cropped
-    const fw = narrow ? W : Math.max(W, H * 16 / 9), fh = fw * 9 / 16, fx = (W - fw) / 2, fy = (H - fh) / 2;
-    box.style.left = lerp(cx, fx, k) + 'px'; box.style.top = lerp(cy, fy, k) + 'px';
-    box.style.width = lerp(cw, fw, k) + 'px'; box.style.height = lerp(ch, fh, k) + 'px';
-    box.style.borderRadius = lerp(16, 0, k) + 'px';
-    box.style.opacity = narrow ? inv(.04, .3, p) : 1; // on phones the reel would sit under the buttons until the copy fades
-    copy.style.opacity = 1 - inv(.05, .4, p); copy.style.transform = `translateY(${-inv(.05, .5, p) * 80}px) scale(${1 - inv(.05, .5, p) * .06})`;
-    shade.style.opacity = 0; $('cue').style.opacity = 1 - inv(0, .1, p);
-  }
-  function problemUpdate() {
-    const sc = $('problem'), p = prog(sc), fr = [...sc.querySelectorAll('.fric')];
-    fr.forEach((el, i) => {
-      const a = inv(.04 + i * .06, .14 + i * .06, p), st = inv(.5 + i * .04, .58 + i * .04, p), out = inv(.82, .92, p);
-      el.style.opacity = a * (1 - out * .85); el.style.transform = `translateY(${(1 - a) * 40}px) scale(${lerp(.94, 1, a) - out * .04})`;
-      el.style.setProperty('--strike', st);
-    });
-    const ans = $('answer'), ka = inv(.84, .96, p); ans.style.opacity = ka; ans.style.transform = `scale(${lerp(.9, 1, ka)})`;
-  }
-  function seqScene(id, name, fx) {
-    const sc = $(id), p = prog(sc); if (fx != null) S[name].cv.__fx = fx; S[name].set(p); steps(sc, p);
-    if (id === 'light') { // PPG trace grows with progress
-      const pts = []; const N = Math.round(10 + p * 250);
-      for (let x = 0; x <= N; x += 2) { const ph = x / 62; const y = 50 - Math.pow(Math.max(0, Math.sin(ph * Math.PI * 2)), 3) * 34 - Math.max(0, Math.sin(ph * Math.PI * 2 - 1.8)) * 10; pts.push(`${x * 2},${y.toFixed(1)}`); }
-      $('ppgPath').setAttribute('d', 'M' + pts.join(' L'));
-    }
-  }
-  function scanUpdate() {
-    const sc = $('scan'), p = prog(sc); S.phone.cv.__fx = innerWidth < 860 ? .72 : .5; S.phone.set(p);
-    const sec = Math.round(inv(.05, .9, p) * 60); $('sec').textContent = sec;
-    $('track').firstElementChild.style.width = (sec / 60 * 100) + '%';
-    $('rlist').querySelectorAll('li').forEach(li => li.classList.toggle('on', sec >= +li.dataset.at));
-  }
-  function edgeUpdate() {
-    const sc = $('edge'), p = prog(sc);
-    const vid = $('vidPath'), L = vid.getTotalLength(), t = (p * 3) % 1, stop = .45;
-    const pt = vid.getPointAtLength(Math.min(t, stop) * L), pk = $('pkt');
-    pk.setAttribute('cx', pt.x); pk.setAttribute('cy', pt.y); pk.setAttribute('opacity', p < .55 ? 1 - inv(stop - .05, stop, t) * .7 : 0);
-    $('block').setAttribute('opacity', inv(.12, .2, p));
-    const kn = inv(.5, .8, p); $('numPath').setAttribute('stroke-dashoffset', 300 * (1 - kn)); $('numLbl').setAttribute('opacity', inv(.7, .8, p)); $('numTxt').setAttribute('opacity', inv(.45, .55, p));
-    $('edList').querySelectorAll('li').forEach((li, i) => li.classList.toggle('on', p > .1 + i * .15));
-  }
-  function historyUpdate() {
-    const sc = $('history'), p = prog(sc), tr = $('htrack');
-    const max = Math.max(0, tr.scrollWidth - innerWidth);
-    tr.style.transform = `translateX(${-ease(inv(.08, .92, p)) * max}px)`; $('hline').style.width = inv(.08, .92, p) * 100 + '%';
-  }
-  function outroUpdate() {
-    const sc = $('outro'), p = prog(sc); S.logo.set(inv(0, .72, p)); const ko = ease(inv(.72, .92, p)); S.logo.cv.style.transform = `translateY(${-ko * 16}%) scale(${1 - ko * .28})`;
-    const e = $('end'), k = inv(.8, .97, p); e.style.opacity = k; e.style.transform = `translateY(${(1 - k) * 30}px)`;
-  }
-  const zooms = [...document.querySelectorAll('[data-zoom]')];
-  function zoomUpdate() {
-    const H = vh();
-    zooms.forEach(el => { const r = el.getBoundingClientRect(); const k = ease(clamp((H - r.top) / (H * .45)));
-      el.style.opacity = lerp(.15, 1, k); el.style.transform = `translateY(${(1 - k) * 50}px) scale(${lerp(.92, 1, k)})`; });
-  }
-  function frame() {
-    heroUpdate(); problemUpdate(); { const p = prog($('light')); skinP = p; steps($('light'), p); } { const p = prog($('face')); faceP = p; steps($('face'), p); } window.__skinP = skinP;
-    scanUpdate(); edgeUpdate(); historyUpdate(); outroUpdate(); zoomUpdate();
-  }
-  let queued = false;
-  const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; frame(); }); } };
-  if (reduce) {
-    // static final states, no pinning
-    seqs.forEach(s => { s.preload(); s.set(1); });
-    document.querySelectorAll('.fric').forEach(f => f.style.setProperty('--strike', 1)); $('answer').style.opacity = 1; $('end').style.opacity = 1;
-    $('rlist').querySelectorAll('li').forEach(li => li.classList.add('on')); $('sec').textContent = 60; $('track').firstElementChild.style.width = '100%';
-    heroUpdate();
-  } else {
-    addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll); frame();
-    S.phone.preload();
-  }
+  // gentle fade-in
+  const fo = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); fo.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('[data-zoom]').forEach(el => fo.observe(el));
 
-  // sound
-  const v = $('reel'), b = $('sound');
-  b.addEventListener('click', () => { v.muted = !v.muted; if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); } b.textContent = v.muted ? 'Play with sound' : 'Mute'; });
-  if (reduce) { v.removeAttribute('autoplay'); v.pause(); }
+  // film opens on request only
+  const dlg = $('film'), vid = $('filmVideo');
+  $('filmOpen').addEventListener('click', () => { dlg.showModal(); vid.play().catch(() => {}); });
+  const shut = () => { vid.pause(); dlg.close(); };
+  $('filmClose').addEventListener('click', shut);
+  dlg.addEventListener('click', e => { if (e.target === dlg) shut(); });
+  dlg.addEventListener('close', () => vid.pause());
 })();
 </script>
 
