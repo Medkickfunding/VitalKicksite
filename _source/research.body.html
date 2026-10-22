@@ -255,9 +255,9 @@ form input:focus, form select:focus, form textarea:focus { outline: 2px solid va
     const mx = Math.max(1, ...bins), W = 640, H = 150, bw = (W - 20) / 18;
     let svg = '';
     const band = [[90, 120, 'Normal'], [120, 130, 'Elevated'], [130, 140, 'Stage 1'], [140, 180, 'Stage 2']];
-    band.forEach(([lo, hi, lab]) => { const x = 10 + (lo - 90) / 5 * bw; svg += `<text x="${x + 4}" y="12" fill="var(--muted)" font-size="11" font-family="JetBrains Mono, monospace">${lab}</text><line x1="${x}" x2="${x}" y1="0" y2="${H - 22}" stroke="var(--line)"/>`; });
+    band.forEach(([lo, hi, lab]) => { const x = 10 + (lo - 90) / 5 * bw; svg += `<text x="${x + 4}" y="12" fill="var(--muted)" font-size="11" font-family="Fira Code, monospace">${lab}</text><line x1="${x}" x2="${x}" y1="0" y2="${H - 22}" stroke="var(--line)"/>`; });
     bins.forEach((n, i) => { const h = (n / mx) * (H - 44); svg += `<rect x="${10 + i * bw + 2}" y="${H - 22 - h}" width="${bw - 4}" height="${Math.max(h, n ? 1 : 0)}" rx="3" fill="var(--mint)" opacity="${.35 + .65 * (n / mx)}"/>`; });
-    [90, 120, 130, 140, 160, 180].forEach(v => { const x = 10 + (v - 90) / 5 * bw; svg += `<text x="${x}" y="${H - 6}" fill="var(--muted)" font-size="11" text-anchor="middle" font-family="JetBrains Mono, monospace">${v}</text>`; });
+    [90, 120, 130, 140, 160, 180].forEach(v => { const x = 10 + (v - 90) / 5 * bw; svg += `<text x="${x}" y="${H - 6}" fill="var(--muted)" font-size="11" text-anchor="middle" font-family="Fira Code, monospace">${v}</text>`; });
     $('hist').innerHTML = svg;
   }
   ids.forEach(k => $(k).addEventListener('input', () => { clearPreset(); run(); }));
