@@ -7,7 +7,7 @@
 <meta name="description" content="Find consenting participants who match your pilot or clinical trial target population.">
 <meta property="og:title" content="VitalKick for Research"><meta property="og:description" content="Find consenting participants who match your pilot or clinical trial target population."><meta property="og:image" content="assets/poster.jpg">
 <link rel="icon" href="assets/icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Fira+Code:wght@400;600&display=swap">
 <style>
 /* Layout concept: an instrument panel. Hairline grid ground, mono labels that carry real units, one framed "screen" per page. */
 :root {
@@ -20,9 +20,9 @@
   --mint-ink: #04201b;
   --amber: #f2b84b;      /* estimates only */
   --coral: #ff6b5c;
-  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
-  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --display: "Universal Sans Display", "Universal Sans Text", "Inter", -apple-system, Arial, sans-serif;
+  --body: "Universal Sans Text", "Universal Sans Display", "Inter", -apple-system, Arial, sans-serif;
+  --mono: "Fira Code", Menlo, monospace;
   --wrap: 1180px;
   color-scheme: dark;
 }
@@ -439,9 +439,9 @@ form input:focus, form select:focus, form textarea:focus { outline: 2px solid va
     const mx = Math.max(1, ...bins), W = 640, H = 150, bw = (W - 20) / 18;
     let svg = '';
     const band = [[90, 120, 'Normal'], [120, 130, 'Elevated'], [130, 140, 'Stage 1'], [140, 180, 'Stage 2']];
-    band.forEach(([lo, hi, lab]) => { const x = 10 + (lo - 90) / 5 * bw; svg += `<text x="${x + 4}" y="12" fill="var(--muted)" font-size="11" font-family="JetBrains Mono, monospace">${lab}</text><line x1="${x}" x2="${x}" y1="0" y2="${H - 22}" stroke="var(--line)"/>`; });
+    band.forEach(([lo, hi, lab]) => { const x = 10 + (lo - 90) / 5 * bw; svg += `<text x="${x + 4}" y="12" fill="var(--muted)" font-size="11" font-family="Fira Code, monospace">${lab}</text><line x1="${x}" x2="${x}" y1="0" y2="${H - 22}" stroke="var(--line)"/>`; });
     bins.forEach((n, i) => { const h = (n / mx) * (H - 44); svg += `<rect x="${10 + i * bw + 2}" y="${H - 22 - h}" width="${bw - 4}" height="${Math.max(h, n ? 1 : 0)}" rx="3" fill="var(--mint)" opacity="${.35 + .65 * (n / mx)}"/>`; });
-    [90, 120, 130, 140, 160, 180].forEach(v => { const x = 10 + (v - 90) / 5 * bw; svg += `<text x="${x}" y="${H - 6}" fill="var(--muted)" font-size="11" text-anchor="middle" font-family="JetBrains Mono, monospace">${v}</text>`; });
+    [90, 120, 130, 140, 160, 180].forEach(v => { const x = 10 + (v - 90) / 5 * bw; svg += `<text x="${x}" y="${H - 6}" fill="var(--muted)" font-size="11" text-anchor="middle" font-family="Fira Code, monospace">${v}</text>`; });
     $('hist').innerHTML = svg;
   }
   ids.forEach(k => $(k).addEventListener('input', () => { clearPreset(); run(); }));

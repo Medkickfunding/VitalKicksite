@@ -9,9 +9,9 @@
   --mint-ink: #04201b;
   --amber: #f2b84b;      /* estimates only */
   --coral: #ff6b5c;
-  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
-  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --display: "Universal Sans Display", "Universal Sans Text", "Inter", -apple-system, Arial, sans-serif;
+  --body: "Universal Sans Text", "Universal Sans Display", "Inter", -apple-system, Arial, sans-serif;
+  --mono: "Fira Code", Menlo, monospace;
   --wrap: 1180px;
   color-scheme: dark;
 }
